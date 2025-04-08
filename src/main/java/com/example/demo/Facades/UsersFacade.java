@@ -1,4 +1,3 @@
 package com.example.demo.Facades;
-
-public class UsersFacade {
+public class UsersFacade{
 }
