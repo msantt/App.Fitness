@@ -3,8 +3,6 @@ package com.example.demo.Entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -110,8 +108,23 @@ public class Grupos {
         this.status = status;
     }
 
-    public Usuarios getCriador() {
-        return criador;
+    public UsuariosRecord getCriador() {
+        if (criador == null) {
+            return null;
+        }
+
+        return new UsuariosRecord(
+                criador.getId(),
+                criador.getNome(),
+                criador.getEmail(),
+                criador.getSenha(),
+                criador.getDataNascimento(),
+                criador.getObjetivo(),
+                criador.getUrlFoto(),
+                criador.getDataCriacao(),
+                criador.getStatus(),
+                criador.getExibirHistorico()
+        );
     }
 
     public void setCriador(Usuarios idCriador) {

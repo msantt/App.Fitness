@@ -1,8 +1,6 @@
 package com.example.demo.Interfaces;
 
-import com.example.demo.Entities.Desafios;
 import com.example.demo.Entities.Grupos;
-import com.example.demo.Entities.Usuarios;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +19,7 @@ public interface IGrupos {
 
     List<Grupos> buscarPorStatus(boolean status);
 
-    List<Grupos> buscarPorCriadorId(Usuarios criador);
+    List<Grupos> buscarPorCriadorId(int criador);
 
     List<Grupos> buscarPorNome(String nome);
 }

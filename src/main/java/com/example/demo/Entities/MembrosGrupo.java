@@ -3,7 +3,6 @@ package com.example.demo.Entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "membros_grupo")
@@ -52,16 +51,16 @@ public class MembrosGrupo {
         this.id = id;
     }
 
-    public Grupos getGrupo() {
-        return grupo;
+    public GrupoRecord getGrupo() {
+        return new GrupoRecord(grupo.getId(),grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(),grupo.getDataCriacao(),grupo.getStatus(),grupo.getCriador());
     }
 
     public void setGrupo(Grupos idGrupo) {
         this.grupo = idGrupo;
     }
 
-    public Usuarios getUsuario() {
-        return usuario;
+    public UsuariosRecord getUsuario() {
+        return new UsuariosRecord(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(),usuario.getDataNascimento(), usuario.getObjetivo(), usuario.getUrlFoto(), usuario.getDataCriacao(),usuario.getStatus(),usuario.getExibirHistorico());
     }
 
     public void setUsuario(Usuarios idUsuario) {

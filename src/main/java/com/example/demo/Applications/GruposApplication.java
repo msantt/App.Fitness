@@ -1,7 +1,6 @@
 package com.example.demo.Applications;
 
 import com.example.demo.Entities.Grupos;
-import com.example.demo.Entities.Usuarios;
 import com.example.demo.Interfaces.IGrupos;
 import com.example.demo.Repositories.GruposRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +51,8 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
-    public List<Grupos> buscarPorCriadorId(Usuarios criador) {
-        return gruposRepository.findByCriador(criador);
+    public List<Grupos> buscarPorCriadorId(int criador) {
+        return gruposRepository.findByCriadorId(criador);
     }
 
     @Override
