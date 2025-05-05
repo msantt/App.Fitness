@@ -17,12 +17,12 @@ public interface ICategorias {
 
     void deletar(int id);
 
-    boolean existePorNome(String email);
+    boolean existePorNome(String nome);
 
     boolean existePorId(int id);
 
-    List<Categoria> buscarCategoriasComDesafiosAtivos();
+    List<Categoria> listarCategoriasComDesafiosAtivos();
 
 
-    List<Desafios> buscarDesafiosPorCategoriaId(int idCategoria);
+    List<Desafios> listarDesafiosPorCategoriaId(int idCategoria);
 }

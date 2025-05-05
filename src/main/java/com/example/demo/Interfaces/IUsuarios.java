@@ -23,9 +23,9 @@ public interface IUsuarios {
 
     boolean existePorId(int id);
 
-    List<Grupos> buscarGruposPorUsuarioId(int idUsuario);
+    List<Grupos> listarGruposPorUsuarioId(int idUsuario);
 
-    List<CheckIn> buscarCheckinsPorUsuarioId(int idUsuario);
+    List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario);
 
     List<Usuarios> buscarAtivos();
 

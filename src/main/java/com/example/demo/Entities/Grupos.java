@@ -33,7 +33,7 @@ public class Grupos {
 
     @ManyToOne
     @JoinColumn(name = "id_criador")
-    private Usuarios idCriador;
+    private Usuarios criador;
 
     @OneToMany(mappedBy = "grupos")
     private List<Desafios> desafios;
@@ -41,14 +41,14 @@ public class Grupos {
     @OneToMany(mappedBy = "grupo")
     private List<MembrosGrupo> membros;
 
-    public Grupos(int id, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Boolean status, Usuarios idCriador) {
+    public Grupos(int id, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Boolean status, Usuarios criador) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.urlFoto = urlFoto;
         this.dataCriacao = dataCriacao;
         this.status = status;
-        this.idCriador = idCriador;
+        this.criador = criador;
     }
 
     public List<MembrosGrupo> getMembros() {
@@ -110,12 +110,12 @@ public class Grupos {
         this.status = status;
     }
 
-    public Usuarios getIdCriador() {
-        return idCriador;
+    public Usuarios getCriador() {
+        return criador;
     }
 
-    public void setIdCriador(Usuarios idCriador) {
-        this.idCriador = idCriador;
+    public void setCriador(Usuarios idCriador) {
+        this.criador = idCriador;
     }
 
     public List<Desafios> getDesafios() {

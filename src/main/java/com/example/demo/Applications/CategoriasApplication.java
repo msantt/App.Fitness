@@ -13,9 +13,10 @@ import java.util.Optional;
 @Service
 public class CategoriasApplication implements ICategorias {
 
-    @Autowired
+
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
     public CategoriasApplication(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
@@ -46,8 +47,8 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public boolean existePorNome(String email) {
-        return (categoriaRepository.findByNome(email) != null);
+    public boolean existePorNome(String nome) {
+        return (categoriaRepository.findByNome(nome) != null);
     }
 
     @Override
@@ -56,12 +57,12 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public List<Categoria> buscarCategoriasComDesafiosAtivos() {
+    public List<Categoria> listarCategoriasComDesafiosAtivos() {
         return categoriaRepository.findCategoriasComDesafiosAtivos();
     }
 
     @Override
-    public List<Desafios> buscarDesafiosPorCategoriaId(int idCategoria) {
+    public List<Desafios> listarDesafiosPorCategoriaId(int idCategoria) {
         return categoriaRepository.findDesafiosPorCategoriaId(idCategoria);
     }
 }

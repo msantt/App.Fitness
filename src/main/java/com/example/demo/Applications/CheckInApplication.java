@@ -13,9 +13,10 @@ import java.util.Optional;
 @Service
 public class CheckInApplication implements ICheckIn{
 
-    @Autowired
+
     private CheckInRepository checkInRepository;
 
+    @Autowired
     public CheckInApplication(CheckInRepository checkInRepository) {
         this.checkInRepository = checkInRepository;
     }

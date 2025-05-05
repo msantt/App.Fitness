@@ -37,7 +37,7 @@ public class Usuarios {
     @Column(name = "exibir_historico")
     private Boolean exibirHistorico;
 
-    @OneToMany(mappedBy = "idCriador")
+    @OneToMany(mappedBy = "criador")
     private List<Grupos> gruposCriados;
 
     @OneToMany(mappedBy = "usuario")

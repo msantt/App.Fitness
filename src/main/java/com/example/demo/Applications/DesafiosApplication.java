@@ -12,9 +12,10 @@ import java.util.Optional;
 @Service
 public class DesafiosApplication implements IDesafios {
 
-    @Autowired
+
     private DesafiosRepository desafiosRepository;
 
+    @Autowired
     public DesafiosApplication(DesafiosRepository desafiosRepository) {
         this.desafiosRepository = desafiosRepository;
     }

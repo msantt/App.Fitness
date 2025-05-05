@@ -11,5 +11,5 @@ public interface GruposRepository extends JpaRepository<Grupos, Integer> {
 
     List<Grupos> findByStatus(Boolean status);
 
-    List<Grupos> findByIdCriador_Id(int idCriador);
+    List<Grupos> findByCriador(Usuarios usuario);
 }

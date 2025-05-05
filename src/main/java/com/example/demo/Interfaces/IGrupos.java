@@ -21,7 +21,7 @@ public interface IGrupos {
 
     List<Grupos> buscarPorStatus(boolean status);
 
-    List<Grupos> buscarPorCriadorId(int idCriador);
+    List<Grupos> buscarPorCriadorId(Usuarios criador);
 
     List<Grupos> buscarPorNome(String nome);
 }

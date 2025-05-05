@@ -137,12 +137,12 @@ public class Desafios {
         this.recompensa = recompensa;
     }
 
-    public Boolean getPublico() {
+    public Boolean getIsPublico() {
         return isPublico;
     }
 
-    public void setPublico(Boolean publico) {
-        isPublico = publico;
+    public void setIsPublico(Boolean isPublico) {
+        this.isPublico = isPublico;
     }
 
     public List<CheckIn> getCheckIns() {

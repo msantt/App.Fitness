@@ -15,9 +15,10 @@ import java.util.Optional;
 public class MembrosGrupoApplication implements IMembrosGrupo {
 
 
-    @Autowired
+
     private MembrosGrupoRepository membrosGrupoRepository;
 
+    @Autowired
     public MembrosGrupoApplication(MembrosGrupoRepository membrosGrupoRepository) {
         this.membrosGrupoRepository = membrosGrupoRepository;
     }
@@ -63,7 +64,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
     }
 
     @Override
-    public MembrosGrupo findByIdGrupoAndIdUsuario(Grupos grupo, Usuarios usuario) {
+    public MembrosGrupo buscarPorGrupoEUsuario(Grupos grupo, Usuarios usuario) {
         return membrosGrupoRepository.findByGrupoAndUsuario(grupo, usuario);
     }
 

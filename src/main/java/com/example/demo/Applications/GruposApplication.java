@@ -1,6 +1,7 @@
 package com.example.demo.Applications;
 
 import com.example.demo.Entities.Grupos;
+import com.example.demo.Entities.Usuarios;
 import com.example.demo.Interfaces.IGrupos;
 import com.example.demo.Repositories.GruposRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,10 @@ import java.util.Optional;
 @Service
 public class GruposApplication implements IGrupos {
 
-    @Autowired
+
     private GruposRepository gruposRepository;
 
+    @Autowired
     public GruposApplication(GruposRepository gruposRepository) {
         this.gruposRepository = gruposRepository;
     }
@@ -50,8 +52,8 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
-    public List<Grupos> buscarPorCriadorId(int idCriador) {
-        return gruposRepository.findByIdCriador_Id(idCriador);
+    public List<Grupos> buscarPorCriadorId(Usuarios criador) {
+        return gruposRepository.findByCriador(criador);
     }
 
     @Override

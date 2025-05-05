@@ -25,7 +25,7 @@ public interface IMembrosGrupo {
 
     List<MembrosGrupo> buscarPorStatus(Boolean status);
 
-    MembrosGrupo findByIdGrupoAndIdUsuario(Grupos grupo, Usuarios usuario);
+    MembrosGrupo buscarPorGrupoEUsuario(Grupos grupo, Usuarios usuario);
 
     List<MembrosGrupo> buscarPorRole(String role);
 }

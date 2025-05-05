@@ -14,9 +14,10 @@ import java.util.Optional;
 @Service
 public class UsuariosApplication implements IUsuarios {
 
-    @Autowired
+
     private UsuariosRepository usuariosRepository;
 
+    @Autowired
     public UsuariosApplication(UsuariosRepository usuariosRepository) {
         this.usuariosRepository = usuariosRepository;
     }
@@ -60,12 +61,12 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
-    public List<Grupos> buscarGruposPorUsuarioId(int idUsuario) {
+    public List<Grupos> listarGruposPorUsuarioId(int idUsuario) {
         return usuariosRepository.findGruposPorUsuarioId(idUsuario);
     }
 
     @Override
-    public List<CheckIn> buscarCheckinsPorUsuarioId(int idUsuario) {
+    public List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario) {
         return usuariosRepository.findCheckinsPorUsuarioId(idUsuario);
     }
 

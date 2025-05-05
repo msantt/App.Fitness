@@ -60,11 +60,11 @@ public class MembrosGrupo {
         this.grupo = idGrupo;
     }
 
-    public Usuarios getIdUsuario() {
+    public Usuarios getUsuario() {
         return usuario;
     }
 
-    public void setIdUsuario(Usuarios idUsuario) {
+    public void setUsuario(Usuarios idUsuario) {
         this.usuario = idUsuario;
     }
 
