@@ -1,7 +1,6 @@
 package com.example.demo.Entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.NaturalId;
 
 import java.util.Date;
 import java.util.List;
@@ -25,11 +24,9 @@ public class Desafios {
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
-
     @ManyToOne
     @JoinColumn(name = "id_grupo")
     private Grupos grupos;
-
 
     @Column(name = "data_inicio")
     private Date dataInicio;
@@ -89,16 +86,16 @@ public class Desafios {
         this.descricao = descricao;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public CategoriaRecord getCategoria() {
+        return new CategoriaRecord(categoria.getId(), categoria.getNome(), categoria.getDescricao());
     }
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    public Grupos getGrupos() {
-        return grupos;
+    public GrupoRecord getGrupos() {
+        return new GrupoRecord(grupos.getId(), grupos.getNome(), grupos.getDescricao(), grupos.getUrlFoto(), grupos.getDataCriacao(), grupos.getStatus(), grupos.getCriador());
     }
 
     public void setGrupos(Grupos grupos) {

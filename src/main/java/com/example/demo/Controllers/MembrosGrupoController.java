@@ -1,8 +1,5 @@
 package com.example.demo.Controllers;
 
-
-import com.example.demo.Entities.Desafios;
-import com.example.demo.Entities.Grupos;
 import com.example.demo.Entities.MembrosGrupo;
 import com.example.demo.Facades.MembrosGrupoFacede;
 import jakarta.validation.Valid;

@@ -53,16 +53,16 @@ public class CheckIn {
         this.id = id;
     }
 
-    public Usuarios getUsuario() {
-        return usuario;
+    public UsuariosRecord getUsuario() {
+        return new UsuariosRecord(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(),usuario.getDataNascimento(), usuario.getObjetivo(), usuario.getUrlFoto(), usuario.getDataCriacao(),usuario.getStatus(),usuario.getExibirHistorico());
     }
 
     public void setUsuario(Usuarios usuario) {
         this.usuario = usuario;
     }
 
-    public Desafios getDesafio() {
-        return desafio;
+    public DesafiosRecord getDesafio() {
+        return new DesafiosRecord(desafio.getId(), desafio.getNome(), desafio.getDescricao(),desafio.getCategoria(),desafio.getGrupos(),desafio.getDataInicio(),desafio.getDataFim(),desafio.getStatus(),desafio.getRecompensa(),desafio.getIsPublico());
     }
 
     public void setDesafio(Desafios desafio) {
