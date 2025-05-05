@@ -2,7 +2,6 @@ package com.example.demo.Facades;
 
 import com.example.demo.Applications.GruposApplication;
 import com.example.demo.Entities.Grupos;
-import com.example.demo.Entities.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +48,7 @@ public class GruposFacede {
     }
 
 
-    public List<Grupos> buscarPorCriadorId(Usuarios criador) {
+    public List<Grupos> buscarPorCriadorId(int criador) {
         return gruposApplication.buscarPorCriadorId(criador);
     }
 
