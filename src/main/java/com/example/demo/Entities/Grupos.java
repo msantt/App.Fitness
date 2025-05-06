@@ -1,5 +1,7 @@
 package com.example.demo.Entities;
 
+import com.example.demo.Enum.Status;
+import com.example.demo.Record.UsuariosRecord;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -26,8 +28,9 @@ public class Grupos {
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Boolean status;
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "id_criador")
@@ -39,7 +42,7 @@ public class Grupos {
     @OneToMany(mappedBy = "grupo")
     private List<MembrosGrupo> membros;
 
-    public Grupos(int id, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Boolean status, Usuarios criador) {
+    public Grupos(int id, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Status status, Usuarios criador) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -100,11 +103,11 @@ public class Grupos {
         this.dataCriacao = dataCriacao;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

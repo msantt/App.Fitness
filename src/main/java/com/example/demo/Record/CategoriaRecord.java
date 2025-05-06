@@ -1,4 +1,4 @@
-package com.example.demo.Entities;
+package com.example.demo.Record;
 
 public record CategoriaRecord(int id, String nome, String descricao) {
 }

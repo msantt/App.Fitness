@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Entities.MembrosGrupo;
+import com.example.demo.Enum.Status;
 import com.example.demo.Facades.MembrosGrupoFacede;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,7 @@ public class MembrosGrupoController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<MembrosGrupo>> buscarPorStatus(@PathVariable boolean status) {
+    public ResponseEntity<List<MembrosGrupo>> buscarPorStatus(@PathVariable Status status) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorStatus(status);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }

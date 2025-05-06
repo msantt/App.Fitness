@@ -2,6 +2,7 @@ package com.example.demo.Facades;
 
 import com.example.demo.Applications.DesafiosApplication;
 import com.example.demo.Entities.Desafios;
+import com.example.demo.Enum.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +54,7 @@ public class DesafiosFacede {
     }
 
 
-    public List<Desafios> buscarPorStatus(boolean status) {
+    public List<Desafios> buscarPorStatus(Status status) {
         return desafiosApplication.buscarPorStatus(status);
     }
 }

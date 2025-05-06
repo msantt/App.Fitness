@@ -3,6 +3,7 @@ package com.example.demo.Interfaces;
 import com.example.demo.Entities.Grupos;
 import com.example.demo.Entities.MembrosGrupo;
 import com.example.demo.Entities.Usuarios;
+import com.example.demo.Enum.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public interface IMembrosGrupo {
 
     List<MembrosGrupo> buscarPorUsuario(int usuarioId);
 
-    List<MembrosGrupo> buscarPorStatus(Boolean status);
+    List<MembrosGrupo> buscarPorStatus(Status status);
 
     MembrosGrupo buscarPorGrupoEUsuario(Grupos grupo, Usuarios usuario);
 

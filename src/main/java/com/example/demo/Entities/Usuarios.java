@@ -1,5 +1,8 @@
 package com.example.demo.Entities;
 
+import com.example.demo.Enum.Objetivo;
+import com.example.demo.Enum.Status;
+import com.example.demo.Enum.TipoUsuario;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -22,8 +25,9 @@ public class Usuarios {
     @Column(name = "data_nascimento")
     private Date dataNascimento;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "objetivo")
-    private String objetivo;
+    private Objetivo objetivo;
 
     @Column(name = "url_foto")
     private String urlFoto;
@@ -31,11 +35,16 @@ public class Usuarios {
     @Column(name = "data_criacao")
     private Date dataCriacao;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Boolean status;
+    private Status status;
 
     @Column(name = "exibir_historico")
     private Boolean exibirHistorico;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private TipoUsuario tipoUsuario;
 
     @OneToMany(mappedBy = "criador")
     private List<Grupos> gruposCriados;
@@ -48,7 +57,7 @@ public class Usuarios {
 
 
 
-    public Usuarios(int id, String nome, String email, String senha, Date dataNascimento, String objetivo, String urlFoto, Date dataCriacao, Boolean status, Boolean exibirHistorico) {
+    public Usuarios(int id, String nome, String email, String senha, Date dataNascimento, Objetivo objetivo, String urlFoto, Date dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -59,6 +68,7 @@ public class Usuarios {
         this.dataCriacao = dataCriacao;
         this.status = status;
         this.exibirHistorico = exibirHistorico;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public Usuarios() {
@@ -105,11 +115,11 @@ public class Usuarios {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getObjetivo() {
+    public Objetivo getObjetivo() {
         return objetivo;
     }
 
-    public void setObjetivo(String objetivo) {
+    public void setObjetivo(Objetivo objetivo) {
         this.objetivo = objetivo;
     }
 
@@ -129,11 +139,11 @@ public class Usuarios {
         this.dataCriacao = dataCriacao;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -143,6 +153,14 @@ public class Usuarios {
 
     public void setExibirHistorico(Boolean exibirHistorico) {
         this.exibirHistorico = exibirHistorico;
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public List<Grupos> getGruposCriados() {

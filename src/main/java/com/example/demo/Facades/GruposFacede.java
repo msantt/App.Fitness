@@ -2,6 +2,7 @@ package com.example.demo.Facades;
 
 import com.example.demo.Applications.GruposApplication;
 import com.example.demo.Entities.Grupos;
+import com.example.demo.Enum.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +44,7 @@ public class GruposFacede {
     }
 
 
-    public List<Grupos> buscarPorStatus(boolean status) {
+    public List<Grupos> buscarPorStatus(Status status) {
         return gruposApplication.buscarPorStatus(status);
     }
 

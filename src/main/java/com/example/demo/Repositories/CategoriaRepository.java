@@ -13,9 +13,8 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
 
     boolean existsById(int id);
 
-    @Query("SELECT c FROM Categoria c WHERE EXISTS (SELECT d FROM Desafios d WHERE d.categoria = c AND d.status = true)")
+    @Query("SELECT c FROM Categoria c WHERE EXISTS (SELECT d FROM Desafios d WHERE d.categoria = c AND d.status = 'ATIVO')")
     List<Categoria> findCategoriasComDesafiosAtivos();
-
     @Query("SELECT d FROM Desafios d WHERE d.categoria.id = :idCategoria")
     List<Desafios> findDesafiosPorCategoriaId(@Param("idCategoria") int idCategoria);
 }

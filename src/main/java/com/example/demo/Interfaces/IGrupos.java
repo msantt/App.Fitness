@@ -1,6 +1,7 @@
 package com.example.demo.Interfaces;
 
 import com.example.demo.Entities.Grupos;
+import com.example.demo.Enum.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public interface IGrupos {
 
     boolean existePorId(int id);
 
-    List<Grupos> buscarPorStatus(boolean status);
+    List<Grupos> buscarPorStatus(Status status);
 
     List<Grupos> buscarPorCriadorId(int criador);
 

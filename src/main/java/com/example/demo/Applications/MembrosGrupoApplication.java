@@ -3,6 +3,7 @@ package com.example.demo.Applications;
 import com.example.demo.Entities.Grupos;
 import com.example.demo.Entities.MembrosGrupo;
 import com.example.demo.Entities.Usuarios;
+import com.example.demo.Enum.Status;
 import com.example.demo.Interfaces.IMembrosGrupo;
 import com.example.demo.Repositories.MembrosGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
         return membrosGrupoRepository.findByUsuario_Id(usuarioId);
     }
 
-    @Override
-    public List<MembrosGrupo> buscarPorStatus(Boolean status) {
+    public List<MembrosGrupo> buscarPorStatus(Status status) {
         return membrosGrupoRepository.findByStatus(status);
     }
 

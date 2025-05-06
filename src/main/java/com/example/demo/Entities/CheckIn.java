@@ -1,5 +1,8 @@
 package com.example.demo.Entities;
 
+import com.example.demo.Enum.Status;
+import com.example.demo.Record.DesafiosRecord;
+import com.example.demo.Record.UsuariosRecord;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -29,10 +32,11 @@ public class CheckIn {
     @Column(name = "data_hora_checkin")
     private LocalDateTime dataHoraCheckin;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Boolean status;
+    private Status status;
 
-    public CheckIn(int id, Usuarios usuario, Desafios desafio, String urlFoto, String local, LocalDateTime dataHoraCheckin, Boolean status) {
+    public CheckIn(int id, Usuarios usuario, Desafios desafio, String urlFoto, String local, LocalDateTime dataHoraCheckin, Status status) {
         this.id = id;
         this.usuario = usuario;
         this.desafio = desafio;
@@ -62,7 +66,7 @@ public class CheckIn {
     }
 
     public DesafiosRecord getDesafio() {
-        return new DesafiosRecord(desafio.getId(), desafio.getNome(), desafio.getDescricao(),desafio.getCategoria(),desafio.getGrupos(),desafio.getDataInicio(),desafio.getDataFim(),desafio.getStatus(),desafio.getRecompensa(),desafio.getIsPublico());
+        return new DesafiosRecord(desafio.getId(), desafio.getNome(), desafio.getDescricao(),desafio.getCategoria(),desafio.getGrupos(),desafio.getDataInicio(),desafio.getDataFim(),desafio.getStatus(),desafio.getRecompensa(),desafio.getIsPublico(),desafio.getTipoDesafio(),desafio.getPatrocinador());
     }
 
     public void setDesafio(Desafios desafio) {
@@ -93,11 +97,11 @@ public class CheckIn {
         this.dataHoraCheckin = dataHoraCheckin;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

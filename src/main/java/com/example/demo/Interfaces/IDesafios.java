@@ -1,6 +1,7 @@
 package com.example.demo.Interfaces;
 
 import com.example.demo.Entities.Desafios;
+import com.example.demo.Enum.Status;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +22,5 @@ public interface IDesafios {
 
     List<Desafios> buscarPorIdCategoria(int idCategoria);
 
-    List<Desafios> buscarPorStatus(boolean status);
+    List<Desafios> buscarPorStatus(Status status);
 }

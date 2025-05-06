@@ -1,5 +1,8 @@
 package com.example.demo.Entities;
 
+import com.example.demo.Enum.Status;
+import com.example.demo.Record.GrupoRecord;
+import com.example.demo.Record.UsuariosRecord;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,8 +25,9 @@ public class MembrosGrupo {
     @JoinColumn(name = "usuario_id")
     private Usuarios usuario;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Boolean status;
+    private Status status;
 
     @Column(name = "data_entrada")
     private LocalDate dataEntrada;
@@ -31,7 +35,7 @@ public class MembrosGrupo {
     @Column(name = "role")
     private String role;
 
-    public MembrosGrupo(int id, Grupos grupo, Usuarios usuario, Boolean status, LocalDate dataEntrada, String role) {
+    public MembrosGrupo(int id, Grupos grupo, Usuarios usuario, Status status, LocalDate dataEntrada, String role) {
         this.id = id;
         this.grupo = grupo;
         this.usuario = usuario;
@@ -67,11 +71,11 @@ public class MembrosGrupo {
         this.usuario = idUsuario;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

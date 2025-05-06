@@ -1,6 +1,7 @@
 package com.example.demo.Applications;
 
 import com.example.demo.Entities.Desafios;
+import com.example.demo.Enum.Status;
 import com.example.demo.Interfaces.IDesafios;
 import com.example.demo.Repositories.DesafiosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class DesafiosApplication implements IDesafios {
     }
 
     @Override
-    public List<Desafios> buscarPorStatus(boolean status) {
+    public List<Desafios> buscarPorStatus(Status status) {
         return desafiosRepository.findByStatus(status);
     }
 }

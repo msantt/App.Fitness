@@ -4,7 +4,7 @@ import com.example.demo.Applications.MembrosGrupoApplication;
 import com.example.demo.Entities.Grupos;
 import com.example.demo.Entities.MembrosGrupo;
 import com.example.demo.Entities.Usuarios;
-import com.example.demo.Repositories.MembrosGrupoRepository;
+import com.example.demo.Enum.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +49,7 @@ public class MembrosGrupoFacede {
         return membrosGrupoApplication.buscarPorUsuario(usuarioId);
     }
 
-    public List<MembrosGrupo> buscarPorStatus(Boolean status) {
+    public List<MembrosGrupo> buscarPorStatus(Status status) {
         return membrosGrupoApplication.buscarPorStatus(status);
     }
 

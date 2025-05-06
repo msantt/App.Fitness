@@ -1,5 +1,9 @@
 package com.example.demo.Entities;
 
+import com.example.demo.Enum.Status;
+import com.example.demo.Enum.TipoDesafio;
+import com.example.demo.Record.CategoriaRecord;
+import com.example.demo.Record.GrupoRecord;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -34,8 +38,9 @@ public class Desafios {
     @Column(name = "data_Fim")
     private Date dataFim;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Boolean status;
+    private Status status;
 
     @Column(name = "recompensa")
     private String recompensa;
@@ -43,10 +48,18 @@ public class Desafios {
     @Column(name = "is_publico")
     private Boolean isPublico;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_desafio")
+    private TipoDesafio tipoDesafio;
+
+    @ManyToOne
+    @JoinColumn(name = "id_patrocinador")
+    private Patrocinador patrocinador;
+
     @OneToMany(mappedBy = "desafio")
     private List<CheckIn> checkIns;
 
-    public Desafios(int id, String nome, String descricao, Categoria categoria, Grupos grupos, Date dataInicio, Date dataFim, Boolean status, String recompensa, Boolean isPublico) {
+    public Desafios(int id, String nome, String descricao, Categoria categoria, Grupos grupos, Date dataInicio, Date dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -57,6 +70,8 @@ public class Desafios {
         this.status = status;
         this.recompensa = recompensa;
         this.isPublico = isPublico;
+        this.tipoDesafio = tipoDesafio;
+        this.patrocinador = patrocinador;
     }
 
     public Desafios() {
@@ -118,11 +133,11 @@ public class Desafios {
         this.dataFim = dataFim;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -140,6 +155,22 @@ public class Desafios {
 
     public void setIsPublico(Boolean isPublico) {
         this.isPublico = isPublico;
+    }
+
+    public TipoDesafio getTipoDesafio() {
+        return tipoDesafio;
+    }
+
+    public void setTipoDesafio(TipoDesafio tipoDesafio) {
+        this.tipoDesafio = tipoDesafio;
+    }
+
+    public Patrocinador getPatrocinador() {
+        return patrocinador;
+    }
+
+    public void setPatrocinador(Patrocinador patrocinador) {
+        this.patrocinador = patrocinador;
     }
 
     public List<CheckIn> getCheckIns() {
