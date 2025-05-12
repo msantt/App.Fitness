@@ -3,7 +3,7 @@ package com.example.demo.interfaces;
 import com.example.demo.entities.Recompensa;
 import java.util.List;
 
-public interface IRecompensas {
+public interface IRecompensa {
     Recompensa salvar(Recompensa recompensa);
     Recompensa buscarPorId(int id);
     List<Recompensa> listarTodos();

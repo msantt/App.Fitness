@@ -1,7 +1,7 @@
 package com.example.demo.applications;
 
 import com.example.demo.entities.Recompensa;
-import com.example.demo.interfaces.IRecompensas;
+import com.example.demo.interfaces.IRecompensa;
 import com.example.demo.repositories.RecompensaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RecompensasApplication implements IRecompensas {
+public class RecompensaApplication implements IRecompensa {
 
     private RecompensaRepository recompensaRepository;
 
     @Autowired
-    public RecompensasApplication(RecompensaRepository recompensaRepository) {
+    public RecompensaApplication(RecompensaRepository recompensaRepository) {
         this.recompensaRepository = recompensaRepository;
     }
 
