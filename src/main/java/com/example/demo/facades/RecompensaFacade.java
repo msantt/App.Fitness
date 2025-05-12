@@ -38,10 +38,10 @@ public class RecompensaFacade {
     }
 
     public List<Recompensa> buscarRecompensasPorUsuario(int idUsuario) {
-        return recompensaApplication.buscarPorId(idUsuario);
+        return recompensaApplication.listarPorUsuarioId(idUsuario);
     }
 
     public List<Recompensa> buscarRecompensasPorDesafio(int idDesafio) {
-        return recompensaApplication.buscarPorId(idDesafio);
+        return recompensaApplication.listarPorDesafioId(idDesafio);
     }
 }
