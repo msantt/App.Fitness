@@ -3,7 +3,7 @@ package com.example.demo.applications;
 import com.example.demo.entities.Desafio;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IDesafios;
-import com.example.demo.repositories.DesafiosRepository;
+import com.example.demo.repositories.DesafioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import java.util.Optional;
 public class DesafiosApplication implements IDesafios {
 
 
-    private DesafiosRepository desafiosRepository;
+    private DesafioRepository desafiosRepository;
 
     @Autowired
-    public DesafiosApplication(DesafiosRepository desafiosRepository) {
+    public DesafiosApplication(DesafioRepository desafiosRepository) {
         this.desafiosRepository = desafiosRepository;
     }
 

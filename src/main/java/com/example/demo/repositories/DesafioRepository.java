@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DesafiosRepository extends JpaRepository<Desafio, Integer> {
+public interface DesafioRepository extends JpaRepository<Desafio, Integer> {
 
     List<Desafio> findByNome(String nome);
 

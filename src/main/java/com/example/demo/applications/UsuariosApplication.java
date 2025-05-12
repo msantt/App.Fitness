@@ -4,7 +4,7 @@ import com.example.demo.entities.CheckIn;
 import com.example.demo.entities.Grupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.interfaces.IUsuarios;
-import com.example.demo.repositories.UsuariosRepository;
+import com.example.demo.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,10 @@ import java.util.Optional;
 public class UsuariosApplication implements IUsuarios {
 
 
-    private UsuariosRepository usuariosRepository;
+    private UsuarioRepository usuariosRepository;
 
     @Autowired
-    public UsuariosApplication(UsuariosRepository usuariosRepository) {
+    public UsuariosApplication(UsuarioRepository usuariosRepository) {
         this.usuariosRepository = usuariosRepository;
     }
 

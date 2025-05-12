@@ -3,7 +3,7 @@ package com.example.demo.applications;
 import com.example.demo.entities.Grupo;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IGrupos;
-import com.example.demo.repositories.GruposRepository;
+import com.example.demo.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,10 @@ import java.util.Optional;
 public class GruposApplication implements IGrupos {
 
 
-    private GruposRepository gruposRepository;
+    private GrupoRepository gruposRepository;
 
     @Autowired
-    public GruposApplication(GruposRepository gruposRepository) {
+    public GruposApplication(GrupoRepository gruposRepository) {
         this.gruposRepository = gruposRepository;
     }
 

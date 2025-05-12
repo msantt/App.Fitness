@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface UsuariosRepository extends JpaRepository<Usuario, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByEmail(String email);
 

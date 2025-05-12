@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface GruposRepository extends JpaRepository<Grupo, Integer> {
+public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
     List<Grupo> findByNome(String nome);
 
     List<Grupo> findByStatus(Status status);

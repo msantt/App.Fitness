@@ -18,12 +18,12 @@ public class MembrosGrupo {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
-
-    @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "grupo_id")
+    private Grupo grupo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -34,6 +34,7 @@ public class MembrosGrupo {
 
     @Column(name = "role")
     private String role;
+
 
     public MembrosGrupo(int id, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, String role) {
         this.id = id;
@@ -55,20 +56,20 @@ public class MembrosGrupo {
         this.id = id;
     }
 
-    public GrupoRecord getGrupo() {
-        return new GrupoRecord(grupo.getId(),grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(),grupo.getDataCriacao(),grupo.getStatus(),grupo.getCriador());
-    }
-
-    public void setGrupo(Grupo idGrupo) {
-        this.grupo = idGrupo;
-    }
-
     public UsuariosRecord getUsuario() {
         return new UsuariosRecord(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(),usuario.getDataNascimento(), usuario.getObjetivo(), usuario.getUrlFoto(), usuario.getDataCriacao(),usuario.getStatus(),usuario.getExibirHistorico());
     }
 
     public void setUsuario(Usuario idUsuario) {
         this.usuario = idUsuario;
+    }
+
+    public GrupoRecord getGrupo() {
+        return new GrupoRecord(grupo.getId(),grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(),grupo.getDataCriacao(),grupo.getStatus(),grupo.getCriador());
+    }
+
+    public void setGrupo(Grupo idGrupo) {
+        this.grupo = idGrupo;
     }
 
     public Status getStatus() {
@@ -94,6 +95,5 @@ public class MembrosGrupo {
     public void setRole(String role) {
         this.role = role;
     }
-
 
 }

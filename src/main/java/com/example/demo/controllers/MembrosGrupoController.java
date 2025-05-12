@@ -45,9 +45,9 @@ public class MembrosGrupoController {
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
 
-    @PutMapping
-    public ResponseEntity<MembrosGrupo> atualizar(@PathVariable int id,@Valid @RequestBody MembrosGrupo membrosGrupo){
-       MembrosGrupo existente = membrosGrupoFacade.buscarPorId(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<MembrosGrupo> atualizar(@PathVariable int id, @Valid @RequestBody MembrosGrupo membrosGrupo) {
+        MembrosGrupo existente = membrosGrupoFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
