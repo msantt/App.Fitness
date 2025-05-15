@@ -25,8 +25,6 @@ public interface IUsuarios {
 
     List<Grupo> listarGruposPorUsuarioId(int idUsuario);
 
-    List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario);
-
     List<Usuario> buscarAtivos();
 
 }

@@ -66,11 +66,6 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
-    public List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario) {
-        return usuariosRepository.findCheckinsPorUsuarioId(idUsuario);
-    }
-
-    @Override
     public List<Usuario> buscarAtivos() {
         return usuariosRepository.findByStatusTrue();
     }

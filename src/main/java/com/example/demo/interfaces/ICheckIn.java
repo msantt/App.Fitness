@@ -4,7 +4,6 @@ import com.example.demo.entities.CheckIn;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface ICheckIn {
     CheckIn salvar(CheckIn checkIn);
@@ -17,7 +16,7 @@ public interface ICheckIn {
 
     boolean existePorId(int id);
 
-    List<CheckIn> buscarPorIdUsuario(int idUsuario);
+    List<CheckIn> buscarPorMembrosDesafiosId(int membrosDesafiosId);
 
     List<CheckIn> buscarPorIntervaloDeDatas(LocalDateTime dataInicio, LocalDateTime dataFim);
 }

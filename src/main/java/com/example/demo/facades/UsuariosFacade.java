@@ -59,11 +59,6 @@ public class UsuariosFacade {
     }
 
 
-    public List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario) {
-        return usuariosApplication.listarCheckinsPorUsuarioId(idUsuario);
-    }
-
-
     public List<Usuario> buscarAtivos() {
         return usuariosApplication.buscarAtivos();
     }

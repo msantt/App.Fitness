@@ -1,5 +1,6 @@
 package com.example.demo.applications;
 
+import com.example.demo.config.RegraNegocioException;
 import com.example.demo.entities.Desafio;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IDesafios;
@@ -7,6 +8,7 @@ import com.example.demo.repositories.DesafioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,13 @@ public class DesafiosApplication implements IDesafios {
 
     @Override
     public Desafio salvar(Desafio desafio) {
+        if (desafio.getDataInicio().isBefore(LocalDate.now())) {
+            throw new RegraNegocioException("A data de início deve ser futura.");
+        }
+
+        if (desafio.getDataFim().isBefore(desafio.getDataInicio().plusDays(3))) {
+            throw new RegraNegocioException("O desafio deve ter no mínimo 3 dias de duração.");
+        }
         return desafiosRepository.save(desafio);
     }
 

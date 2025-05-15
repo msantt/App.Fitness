@@ -50,7 +50,7 @@ public class Usuario {
     private List<Grupo> grupoCriados;
 
     @OneToMany(mappedBy = "usuario")
-    private List<CheckIn> checkIns;
+    private List<MembrosDesafio> desafios;
 
     @OneToMany(mappedBy = "usuario")
     private List<MembrosGrupo> membrosGrupos;
@@ -171,20 +171,20 @@ public class Usuario {
         this.grupoCriados = grupoCriados;
     }
 
-    public List<CheckIn> getCheckIns() {
-        return checkIns;
-    }
-
-    public void setCheckIns(List<CheckIn> checkIns) {
-        this.checkIns = checkIns;
-    }
-
     public List<MembrosGrupo> getMembrosGrupos() {
         return membrosGrupos;
     }
 
     public void setMembrosGrupos(List<MembrosGrupo> membrosGrupos) {
         this.membrosGrupos = membrosGrupos;
+    }
+
+    public List<MembrosDesafio> getDesafios() {
+        return desafios;
+    }
+
+    public void setDesafios(List<MembrosDesafio> desafios) {
+        this.desafios = desafios;
     }
 }
 

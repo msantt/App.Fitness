@@ -19,10 +19,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT g FROM Grupo g JOIN MembrosGrupo m ON g.id = m.grupo.id WHERE m.usuario.id = :idUsuario")
     List<Grupo> findGruposPorUsuarioId(@Param("idUsuario") int idUsuario);
-
-    @Query("SELECT c FROM CheckIn c WHERE c.usuario.id = :idUsuario")
-    List<CheckIn> findCheckinsPorUsuarioId(@Param("idUsuario") int idUsuario);
-
-
-
 }

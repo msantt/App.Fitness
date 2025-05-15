@@ -42,8 +42,8 @@ public class CheckinController {
 
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<CheckIn>> buscarPorUsuario(@PathVariable int id) {
-        List<CheckIn> checkIns = checkinFacade.buscarPorIdUsuario(id);
+    public ResponseEntity<List<CheckIn>> buscarPorMembrosDesafiosId(@PathVariable int id) {
+        List<CheckIn> checkIns = checkinFacade.buscarPorMembrosDesafiosId(id);
         return checkIns.isEmpty() ?
                 ResponseEntity.noContent().build() :
                 ResponseEntity.ok(checkIns);

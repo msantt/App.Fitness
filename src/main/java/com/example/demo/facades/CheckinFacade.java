@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CheckinFacade {
@@ -44,8 +43,8 @@ public class CheckinFacade {
     }
 
 
-    public List<CheckIn> buscarPorIdUsuario(int idUsuario) {
-        return checkInApplication.buscarPorIdUsuario(idUsuario);
+    public List<CheckIn> buscarPorMembrosDesafiosId(int membrosDesafiosId) {
+        return checkInApplication.buscarPorMembrosDesafiosId(membrosDesafiosId);
     }
 
 

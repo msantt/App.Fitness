@@ -5,7 +5,9 @@ import com.example.demo.enums.TipoDesafio;
 import com.example.demo.records.CategoriaRecord;
 import com.example.demo.records.GrupoRecord;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Desafio {
     @Column(name = "descricao")
     private String descricao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
@@ -33,10 +35,10 @@ public class Desafio {
     private Grupo grupo;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_Fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -57,9 +59,9 @@ public class Desafio {
     private Patrocinador patrocinador;
 
     @OneToMany(mappedBy = "desafio")
-    private List<CheckIn> checkIns;
+    private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, Date dataInicio, Date dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador) {
+    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -117,19 +119,19 @@ public class Desafio {
         this.grupo = grupo;
     }
 
-    public Date getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataFim() {
+    public LocalDate getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
     }
 
@@ -173,13 +175,11 @@ public class Desafio {
         this.patrocinador = patrocinador;
     }
 
-    public List<CheckIn> getCheckIns() {
-        return checkIns;
+    public List<MembrosDesafio> getMembrosDesafios() {
+        return membrosDesafios;
     }
 
-    public void setCheckIns(List<CheckIn> checkIns) {
-        this.checkIns = checkIns;
+    public void setMembrosDesafios(List<MembrosDesafio> membrosDesafios) {
+        this.membrosDesafios = membrosDesafios;
     }
-
-
 }
