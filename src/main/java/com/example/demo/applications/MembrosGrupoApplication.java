@@ -4,6 +4,7 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosGrupo;
 import com.example.demo.repositories.MembrosGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
     }
 
     @Override
-    public List<MembrosGrupo> buscarPorRole(String role) {
+    public List<MembrosGrupo> buscarPorRole(TipoUsuario role) {
         return membrosGrupoRepository.findByRole(role);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.records.GrupoRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
@@ -32,11 +33,12 @@ public class MembrosGrupo {
     @Column(name = "data_entrada")
     private LocalDate dataEntrada;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private String role;
+    private TipoUsuario role;
 
 
-    public MembrosGrupo(int id, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, String role) {
+    public MembrosGrupo(int id, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, TipoUsuario role) {
         this.id = id;
         this.grupo = grupo;
         this.usuario = usuario;
@@ -88,12 +90,11 @@ public class MembrosGrupo {
         this.dataEntrada = dataEntrada;
     }
 
-    public String getRole() {
+    public TipoUsuario getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(TipoUsuario role) {
         this.role = role;
     }
-
 }

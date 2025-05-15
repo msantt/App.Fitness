@@ -4,6 +4,7 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +29,5 @@ public interface IMembrosGrupo {
 
     MembrosGrupo buscarPorGrupoEUsuario(Grupo grupo, Usuario usuario);
 
-    List<MembrosGrupo> buscarPorRole(String role);
+    List<MembrosGrupo> buscarPorRole(TipoUsuario role);
 }

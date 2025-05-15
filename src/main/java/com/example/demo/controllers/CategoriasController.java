@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Categoria;
+import com.example.demo.entities.Desafio;
 import com.example.demo.facades.CategoriasFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,24 @@ public class CategoriasController {
     public ResponseEntity<Void> deletar(@PathVariable int id) {
         categoriasFacade.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/com-desafios-ativos")
+    public ResponseEntity<List<Categoria>> listarCategoriasComDesafiosAtivos() {
+        List<Categoria> categorias = categoriasFacade.listarCategoriasComDesafiosAtivos();
+        return ResponseEntity.ok(categorias);
+    }
+
+    @GetMapping("/{idCategoria}/desafios")
+    public ResponseEntity<List<Desafio>> listarDesafiosPorCategoriaId(@PathVariable int idCategoria) {
+        List<Desafio> desafios = categoriasFacade.listarDesafiosPorCategoriaId(idCategoria);
+        return ResponseEntity.ok(desafios);
+    }
+
+    @GetMapping("/{idCategoria}/desafios-ativos")
+    public ResponseEntity<List<Desafio>> listarDesafiosAtivosPorCategoria(@PathVariable int idCategoria) {
+        List<Desafio> desafios = categoriasFacade.listarDesafiosAtivosPorCategoria(idCategoria);
+        return ResponseEntity.ok(desafios);
     }
 
 }

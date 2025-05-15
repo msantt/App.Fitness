@@ -61,4 +61,9 @@ public class CategoriasFacade {
     public List<Desafio> listarDesafiosPorCategoriaId(int idCategoria) {
         return categoriasApplication.listarDesafiosPorCategoriaId(idCategoria);
     }
+
+    public List<Desafio> listarDesafiosAtivosPorCategoria(int idCategoria) {
+        return categoriasApplication.listarDesafiosAtivosPorCategoria(idCategoria);
+    }
+
 }

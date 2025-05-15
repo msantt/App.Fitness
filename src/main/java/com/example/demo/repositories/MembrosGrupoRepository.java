@@ -4,6 +4,7 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface MembrosGrupoRepository extends JpaRepository<MembrosGrupo, Inte
 
     MembrosGrupo findByGrupoAndUsuario(Grupo grupo, Usuario usuario);
 
-    List<MembrosGrupo> findByRole(String role);
+    List<MembrosGrupo> findByRole(TipoUsuario role);
 }

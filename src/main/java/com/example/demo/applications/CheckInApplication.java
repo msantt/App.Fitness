@@ -1,11 +1,18 @@
 package com.example.demo.applications;
 
+import com.example.demo.config.RegraNegocioException;
 import com.example.demo.entities.CheckIn;
+import com.example.demo.entities.Desafio;
+import com.example.demo.entities.MembrosDesafio;
+import com.example.demo.entities.Usuario;
+import com.example.demo.enums.Status;
 import com.example.demo.interfaces.ICheckIn;
 import com.example.demo.repositories.CheckInRepository;
 import com.example.demo.repositories.DesafioRepository;
+import com.example.demo.repositories.MembrosDesafioRepository;
 import com.example.demo.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,49 +27,67 @@ public class CheckInApplication implements ICheckIn{
     private final DesafioRepository desafioRepository;
     private final UsuarioRepository usuarioRepository;
     private CheckInRepository checkInRepository;
+    private MembrosDesafioRepository membroDesafioRepository;
 
     @Autowired
-    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository) {
+    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository,MembrosDesafioRepository membroDesafioRepository) {
         this.checkInRepository = checkInRepository;
         this.desafioRepository = desafioRepository;
         this.usuarioRepository = usuarioRepository;
+        this.membroDesafioRepository = membroDesafioRepository;
     }
 
-    @Override
     public CheckIn salvar(CheckIn checkIn) {
 
         if (checkIn.getDataHoraCheckin() == null) {
-            throw new IllegalArgumentException("A data e hora do check-in são obrigatórias.");
+            checkIn.setDataHoraCheckin(LocalDateTime.now());
+        }
+
+        if (checkIn.getDataHoraCheckin() == null) {
+            throw new RegraNegocioException("A data e hora do check-in são obrigatórias.");
         }
 
         if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Check-in deve ser uma data futura.");
+            throw new RegraNegocioException("Check-in não pode ser em data passada.");
         }
+        MembrosDesafio membro = membroDesafioRepository.findById(checkIn.getMembroDesafio().getId())
+                .orElseThrow(() -> new RegraNegocioException("Membro do desafio não encontrado"));
+
+        if (!membro.getStatus().equals(Status.ATIVO)) {
+            throw new RegraNegocioException("Membro do desafio não está ativo.");
+        }
+
+        Desafio desafio = desafioRepository.findById(membro.getDesafio().getId())
+                .orElseThrow(() -> new RegraNegocioException("Desafio não encontrado"));
+
+        if (!desafio.getStatus().equals(Status.ATIVO)) {
+            throw new RegraNegocioException("Check-in só permitido para desafios ativos.");
+        }
+
+        if (desafio.getCategoria() == null) {
+            throw new RegraNegocioException("Desafio não tem categoria associada.");
+        }
+
+        Usuario usuario = usuarioRepository.findById(membro.getUsuario().getId())
+                .orElseThrow(() -> new RegraNegocioException("Usuário não encontrado"));
 
         LocalDate hoje = LocalDate.now();
         LocalDateTime inicioDoDia = hoje.atStartOfDay(); // 00:00
         LocalDateTime fimDoDia = hoje.atTime(LocalTime.MAX); // 23:59:59.999...
 
-//        // Buscar desafio e verificar se a categoria está presente
-//        Desafio desafio = desafioRepository.getById(checkIn.getDesafio().getId());
-//        if (desafio.getCategoria() == null) {
-//            throw new IllegalArgumentException("Desafio não tem categoria associada.");
-//        }
-//
-//        Usuario usuario = usuarioRepository.getById(checkIn.getUsuario().getId());
-//
-//        boolean jaFezCheckinHoje = checkInRepository.existsByUsuarioIdAndDesafioIdAndDataHoraCheckinBetween(
-//                usuario.getId(),
-//                desafio.getId(),
-//                inicioDoDia,
-//                fimDoDia
-//        );
-//
-//        if (jaFezCheckinHoje) {
-//            throw new IllegalStateException("Usuário já fez check-in hoje para esse desafio.");
-//        }
+        boolean jaFezCheckinHoje = checkInRepository
+                .existsByMembroDesafio_Usuario_IdAndMembroDesafio_Desafio_IdAndDataHoraCheckinBetween(
+                        usuario.getId(), desafio.getId(), inicioDoDia, fimDoDia
+                );
+
+        if (jaFezCheckinHoje) {
+            throw new RegraNegocioException("Usuário já fez check-in hoje para esse desafio.");
+        }
+        checkIn.setMembroDesafio(membro);
+
         return checkInRepository.save(checkIn);
     }
+
 
     @Override
     public CheckIn buscarPorId(int id) {

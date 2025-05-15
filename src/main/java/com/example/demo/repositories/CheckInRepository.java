@@ -17,4 +17,6 @@ public interface CheckInRepository extends JpaRepository<CheckIn, Integer> {
     @Query("SELECT c FROM CheckIn c WHERE c.membroDesafio.usuario.id = :idUsuario")
     List<CheckIn> findByUsuarioId(@Param("idUsuario") int idUsuario);
 
+    boolean existsByMembroDesafio_Usuario_IdAndMembroDesafio_Desafio_IdAndDataHoraCheckinBetween(
+            int usuarioId, int desafioId, LocalDateTime inicio, LocalDateTime fim);
 }

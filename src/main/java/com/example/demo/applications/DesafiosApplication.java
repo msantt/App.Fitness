@@ -32,6 +32,23 @@ public class DesafiosApplication implements IDesafios {
         if (desafio.getDataFim().isBefore(desafio.getDataInicio().plusDays(3))) {
             throw new RegraNegocioException("O desafio deve ter no mínimo 3 dias de duração.");
         }
+
+        if (desafio.getGrupos() == null) {
+            throw new RegraNegocioException("O desafio deve estar associado a um grupo.");
+        }
+        if (desafio.getGrupos().status() != Status.ATIVO) {
+            throw new RegraNegocioException("O grupo do desafio deve estar ativo.");
+        }
+
+        if (desafio.getCategoria() == null) {
+            throw new RegraNegocioException("O desafio deve ter uma categoria.");
+        }
+
+        boolean nomeRepetido = existePorNome(desafio.getNome(),desafio);
+
+        if (nomeRepetido) {
+            throw new RegraNegocioException("Já existe um desafio com esse nome no grupo.");
+        }
         return desafiosRepository.save(desafio);
     }
 
@@ -68,5 +85,12 @@ public class DesafiosApplication implements IDesafios {
     @Override
     public List<Desafio> buscarPorStatus(Status status) {
         return desafiosRepository.findByStatus(status);
+    }
+
+    public boolean existePorNome(String nome, Desafio desafio) {
+        return desafiosRepository
+                .findByGrupo_Id(desafio.getGrupos().id())
+                .stream()
+                .anyMatch(d -> d.getNome().equalsIgnoreCase(desafio.getNome()));
     }
 }

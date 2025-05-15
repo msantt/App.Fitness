@@ -5,6 +5,7 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +57,7 @@ public class MembrosGrupoFacade {
         return membrosGrupoApplication.buscarPorGrupoEUsuario(grupo, usuario);
     }
 
-    public List<MembrosGrupo> buscarPorRole(String role) {
+    public List<MembrosGrupo> buscarPorRole(TipoUsuario role) {
         return membrosGrupoApplication.buscarPorRole(role);
     }
 

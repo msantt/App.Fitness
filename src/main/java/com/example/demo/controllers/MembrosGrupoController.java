@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.facades.MembrosGrupoFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class MembrosGrupoController {
 
 
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<MembrosGrupo>> buscarPorRole(@PathVariable String role) {
+    public ResponseEntity<List<MembrosGrupo>> buscarPorRole(@PathVariable TipoUsuario role) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorRole(role);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
