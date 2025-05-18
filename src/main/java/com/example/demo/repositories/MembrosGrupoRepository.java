@@ -20,4 +20,5 @@ public interface MembrosGrupoRepository extends JpaRepository<MembrosGrupo, Inte
     MembrosGrupo findByGrupoAndUsuario(Grupo grupo, Usuario usuario);
 
     List<MembrosGrupo> findByRole(TipoUsuario role);
+    boolean existsByGrupo_IdAndUsuario_Id(int grupoId, int usuarioId);
 }

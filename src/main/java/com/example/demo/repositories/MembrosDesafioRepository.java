@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MembrosDesafioRepository extends JpaRepository<MembrosDesafio, Integer> {
 
-
+    boolean existsByUsuarioIdAndDesafioId(int usuarioId, int desafioId);
 }

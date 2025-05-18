@@ -45,7 +45,6 @@ public class GruposApplication implements IGrupos {
             throw new IllegalArgumentException("O nome do grupo deve ter entre 3 e 20 caracteres.");
         }
 
-
         if (!gruposRepository.findByNome(grupo.getNome()).isEmpty()) {
             throw new RegraNegocioException("Já existe um grupo com esse nome.");
         }

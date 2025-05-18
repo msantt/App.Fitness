@@ -26,20 +26,19 @@ public class MembrosDesafio {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private LocalDate dataInicio;
-    private LocalDate dataConclusao;
+    @Column(name = "data_entrada")
+    private LocalDate dataEntrada;
 
     @OneToMany(mappedBy = "membroDesafio", cascade = CascadeType.ALL)
     private List<CheckIn> checkins;
 
 
-    public MembrosDesafio(int id, Usuario usuario, Desafio desafio, Status status, LocalDate dataConclusao) {
+    public MembrosDesafio(int id, Usuario usuario, Desafio desafio, Status status) {
         this.id = id;
         this.usuario = usuario;
         this.desafio = desafio;
         this.status = status;
-        this.dataInicio = LocalDate.now();
-        this.dataConclusao = dataConclusao;
+        this.dataEntrada = LocalDate.now();
     }
 
     public MembrosDesafio() {
@@ -73,7 +72,7 @@ public class MembrosDesafio {
                 desafio.getId(),desafio.getNome(),
                 desafio.getDescricao(),
                 desafio.getCategoria(),desafio.getGrupos(),
-                desafio.getDataInicio(),desafio.getDataFim(),
+                desafio.getDataInicio(),desafio.getDataInicio(),
                 desafio.getStatus(),desafio.getRecompensa(),
                 desafio.getIsPublico(),desafio.getTipoDesafio(),
                 desafio.getPatrocinador()
@@ -92,19 +91,11 @@ public class MembrosDesafio {
         this.status = status;
     }
 
-    public LocalDate getDataInicio() {
-        return dataInicio;
+    public LocalDate getDataEntrada() {
+        return dataEntrada;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public LocalDate getDataConclusao() {
-        return dataConclusao;
-    }
-
-    public void setDataConclusao(LocalDate dataConclusao) {
-        this.dataConclusao = dataConclusao;
+    public void setDataEntrada(LocalDate dataEntrada) {
+        this.dataEntrada = dataEntrada;
     }
 }

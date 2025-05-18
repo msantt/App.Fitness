@@ -5,6 +5,7 @@ import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoUsuario;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Usuario {
     private String urlFoto;
 
     @Column(name = "data_criacao")
-    private Date dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -57,7 +58,7 @@ public class Usuario {
 
 
 
-    public Usuario(int id, String nome, String email, String senha, Date dataNascimento, Objetivo objetivo, String urlFoto, Date dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
+    public Usuario(int id, String nome, String email, String senha, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -131,11 +132,11 @@ public class Usuario {
         this.urlFoto = urlFoto;
     }
 
-    public Date getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 

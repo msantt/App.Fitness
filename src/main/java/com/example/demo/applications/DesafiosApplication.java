@@ -1,10 +1,14 @@
 package com.example.demo.applications;
 
 import com.example.demo.config.RegraNegocioException;
+import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Desafio;
+import com.example.demo.entities.Grupo;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IDesafios;
+import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.DesafioRepository;
+import com.example.demo.repositories.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +20,22 @@ import java.util.Optional;
 public class DesafiosApplication implements IDesafios {
 
 
+    private final GrupoRepository grupoRepository;
+    private final CategoriaRepository categoriaRepository;
     private DesafioRepository desafiosRepository;
 
     @Autowired
-    public DesafiosApplication(DesafioRepository desafiosRepository) {
+    public DesafiosApplication(DesafioRepository desafiosRepository, GrupoRepository grupoRepository, CategoriaRepository categoriaRepository) {
         this.desafiosRepository = desafiosRepository;
+        this.grupoRepository = grupoRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
     public Desafio salvar(Desafio desafio) {
+        if (desafio.getStatus() == null) {
+            desafio.setStatus(Status.ATIVO);
+        }
         if (desafio.getDataInicio().isBefore(LocalDate.now())) {
             throw new RegraNegocioException("A data de início deve ser futura.");
         }
@@ -36,11 +47,16 @@ public class DesafiosApplication implements IDesafios {
         if (desafio.getGrupos() == null) {
             throw new RegraNegocioException("O desafio deve estar associado a um grupo.");
         }
-        if (desafio.getGrupos().status() != Status.ATIVO) {
+
+        Grupo grupo = grupoRepository.getById(desafio.getGrupos().id());
+
+        if (grupo.getStatus() != Status.ATIVO) {
             throw new RegraNegocioException("O grupo do desafio deve estar ativo.");
         }
 
-        if (desafio.getCategoria() == null) {
+        Categoria categoria = categoriaRepository.getById(desafio.getCategoria().id());
+
+        if (categoria == null) {
             throw new RegraNegocioException("O desafio deve ter uma categoria.");
         }
 

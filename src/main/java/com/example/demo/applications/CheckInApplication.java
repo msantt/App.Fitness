@@ -1,16 +1,10 @@
 package com.example.demo.applications;
 
 import com.example.demo.config.RegraNegocioException;
-import com.example.demo.entities.CheckIn;
-import com.example.demo.entities.Desafio;
-import com.example.demo.entities.MembrosDesafio;
-import com.example.demo.entities.Usuario;
+import com.example.demo.entities.*;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.ICheckIn;
-import com.example.demo.repositories.CheckInRepository;
-import com.example.demo.repositories.DesafioRepository;
-import com.example.demo.repositories.MembrosDesafioRepository;
-import com.example.demo.repositories.UsuarioRepository;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
@@ -26,25 +20,26 @@ public class CheckInApplication implements ICheckIn{
 
     private final DesafioRepository desafioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final CategoriaRepository categoriaRepository;
     private CheckInRepository checkInRepository;
     private MembrosDesafioRepository membroDesafioRepository;
 
     @Autowired
-    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository,MembrosDesafioRepository membroDesafioRepository) {
+    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository) {
         this.checkInRepository = checkInRepository;
         this.desafioRepository = desafioRepository;
         this.usuarioRepository = usuarioRepository;
         this.membroDesafioRepository = membroDesafioRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     public CheckIn salvar(CheckIn checkIn) {
-
-        if (checkIn.getDataHoraCheckin() == null) {
-            checkIn.setDataHoraCheckin(LocalDateTime.now());
+        if (checkIn.getStatus() == null) {
+            checkIn.setStatus(Status.PENDENTE);
         }
 
         if (checkIn.getDataHoraCheckin() == null) {
-            throw new RegraNegocioException("A data e hora do check-in são obrigatórias.");
+            checkIn.setDataHoraCheckin(LocalDateTime.now());
         }
 
         if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
@@ -64,7 +59,9 @@ public class CheckInApplication implements ICheckIn{
             throw new RegraNegocioException("Check-in só permitido para desafios ativos.");
         }
 
-        if (desafio.getCategoria() == null) {
+        Categoria categoria = categoriaRepository.getById(desafio.getCategoria().id());
+
+        if (categoria == null) {
             throw new RegraNegocioException("Desafio não tem categoria associada.");
         }
 
@@ -72,8 +69,8 @@ public class CheckInApplication implements ICheckIn{
                 .orElseThrow(() -> new RegraNegocioException("Usuário não encontrado"));
 
         LocalDate hoje = LocalDate.now();
-        LocalDateTime inicioDoDia = hoje.atStartOfDay(); // 00:00
-        LocalDateTime fimDoDia = hoje.atTime(LocalTime.MAX); // 23:59:59.999...
+        LocalDateTime inicioDoDia = hoje.atStartOfDay();
+        LocalDateTime fimDoDia = hoje.atTime(LocalTime.MAX);
 
         boolean jaFezCheckinHoje = checkInRepository
                 .existsByMembroDesafio_Usuario_IdAndMembroDesafio_Desafio_IdAndDataHoraCheckinBetween(
@@ -85,6 +82,7 @@ public class CheckInApplication implements ICheckIn{
         }
         checkIn.setMembroDesafio(membro);
 
+        checkIn.setStatus(Status.CONCLUIDO);
         return checkInRepository.save(checkIn);
     }
 
