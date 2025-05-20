@@ -4,6 +4,7 @@ import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Desafio;
 import com.example.demo.entities.MembrosDesafio;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosDesafio;
 import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.DesafioRepository;
@@ -33,6 +34,9 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
 
     @Override
     public MembrosDesafio salvar(MembrosDesafio membroDesafio) {
+        if(membroDesafio.getRole() == null){
+            membroDesafio.setRole(TipoUsuario.MEMBRO);
+        }
         if (membroDesafio.getStatus() == null) {
             membroDesafio.setStatus(Status.ATIVO);
         }
@@ -48,7 +52,7 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             membroDesafio.setDataEntrada(LocalDate.now());
         }
 
-        Desafio desafio = desafioRepository.findById(membroDesafio.getDesafio().id())
+        Desafio desafio = desafioRepository.findById(membroDesafio.getDesafio().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Desafio não encontrado."));
 
         if (!desafio.getIsPublico()) {

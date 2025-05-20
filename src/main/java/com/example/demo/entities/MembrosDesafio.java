@@ -18,12 +18,22 @@ public class MembrosDesafio {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_membro_usuario"),
+            insertable = false, updatable = false)
     private Usuario usuario;
 
+    @Column(name = "usuario_id")
+    private int usuarioId;
+
     @ManyToOne
-    @JoinColumn(name = "desafio_id")
+    @JoinColumn(name = "desafio_id", referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "fk_membro_desafio"),
+            insertable = false, updatable = false)
     private Desafio desafio;
+
+    @Column(name = "desafio_id")
+    private int desafioId;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -59,34 +69,42 @@ public class MembrosDesafio {
         this.id = id;
     }
 
-    public UsuariosRecord getUsuario() {
-        return new UsuariosRecord(
-                usuario.getId(), usuario.getNome(),
-                usuario.getEmail(), usuario.getSenha(),
-                usuario.getDataNascimento(), usuario.getObjetivo(),
-                usuario.getUrlFoto(), usuario.getDataCriacao(),
-                usuario.getStatus(),usuario.getExibirHistorico()
-        );
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        if (usuario != null) {
+            this.usuarioId = usuario.getId();
+        }
     }
 
-    public DesafiosRecord getDesafio() {
-        return new DesafiosRecord(
-                desafio.getId(),desafio.getNome(),
-                desafio.getDescricao(),
-                desafio.getCategoria(),desafio.getGrupos(),
-                desafio.getDataInicio(),desafio.getDataInicio(),
-                desafio.getStatus(),desafio.getRecompensa(),
-                desafio.getIsPublico(),desafio.getTipoDesafio(),
-                desafio.getPatrocinador()
-        );
+    public int getDesafioId() {
+        return desafioId;
+    }
+
+    public void setDesafioId(int desafioId) {
+        this.desafioId = desafioId;
+    }
+
+    public Desafio getDesafio() {
+        return desafio;
     }
 
     public void setDesafio(Desafio desafio) {
         this.desafio = desafio;
+        if (desafio != null) {
+            this.desafioId = desafio.getId();
+        }
     }
 
     public Status getStatus() {
@@ -104,6 +122,7 @@ public class MembrosDesafio {
     public void setDataEntrada(LocalDate dataEntrada) {
         this.dataEntrada = dataEntrada;
     }
+
     public TipoUsuario getRole() {
         return role;
     }
@@ -112,16 +131,8 @@ public class MembrosDesafio {
         this.role = role;
     }
 
-    public List<CheckInRecord> getCheckins() {
-        return checkins.stream()
-                .map(checkIn -> new CheckInRecord(
-                        checkIn.getId(),
-                        checkIn.getUrlFoto(),
-                        checkIn.getLocal(),
-                        checkIn.getDataHoraCheckin(),
-                        checkIn.getStatus()
-                ))
-                .toList();
+    public List<CheckIn> getCheckins() {
+        return checkins;
     }
 
     public void setCheckins(List<CheckIn> checkins) {
