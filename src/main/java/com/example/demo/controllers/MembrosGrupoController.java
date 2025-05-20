@@ -40,7 +40,7 @@ public class MembrosGrupoController {
     }
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<MembrosGrupo>> listarTodos() {
         List<MembrosGrupo> membros = membrosGrupoFacade.listarTodos();
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);

@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
 import com.example.demo.records.DesafiosRecord;
+import com.example.demo.records.MembroDesafioRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -53,8 +54,10 @@ public class CheckIn {
         this.id = id;
     }
 
-    public MembrosDesafio getMembroDesafio() {
-        return membroDesafio;
+    public MembroDesafioRecord getMembroDesafio() {
+        return new MembroDesafioRecord(membroDesafio.getId()
+                ,membroDesafio.getUsuario(),membroDesafio.getDesafio(),
+                membroDesafio.getStatus());
     }
 
     public void setMembroDesafio(MembrosDesafio membroDesafio) {

@@ -23,7 +23,7 @@ public class MembrosDesafioController {
         return ResponseEntity.ok(facade.criar(membro));
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<MembrosDesafio>> listar() {
         return ResponseEntity.ok(facade.listar());
     }

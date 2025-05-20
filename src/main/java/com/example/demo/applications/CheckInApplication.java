@@ -45,7 +45,7 @@ public class CheckInApplication implements ICheckIn{
         if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
             throw new RegraNegocioException("Check-in não pode ser em data passada.");
         }
-        MembrosDesafio membro = membroDesafioRepository.findById(checkIn.getMembroDesafio().getId())
+        MembrosDesafio membro = membroDesafioRepository.findById(checkIn.getMembroDesafio().id())
                 .orElseThrow(() -> new RegraNegocioException("Membro do desafio não encontrado"));
 
         if (!membro.getStatus().equals(Status.ATIVO)) {

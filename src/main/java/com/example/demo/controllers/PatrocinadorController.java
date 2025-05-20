@@ -22,7 +22,7 @@ public class PatrocinadorController {
         this.patrocinadorFacade = patrocinadorFacade;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Patrocinador>> buscarTodos() {
         List<Patrocinador> patrocinadores = patrocinadorFacade.listarPatrocinadores();
         return ResponseEntity.ok(patrocinadores);
