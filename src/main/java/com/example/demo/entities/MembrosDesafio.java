@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
+import com.example.demo.records.CheckInRecord;
 import com.example.demo.records.DesafiosRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
@@ -28,6 +30,10 @@ public class MembrosDesafio {
 
     @Column(name = "data_entrada")
     private LocalDate dataEntrada;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private TipoUsuario role;
 
     @OneToMany(mappedBy = "membroDesafio", cascade = CascadeType.ALL)
     private List<CheckIn> checkins;
@@ -97,5 +103,28 @@ public class MembrosDesafio {
 
     public void setDataEntrada(LocalDate dataEntrada) {
         this.dataEntrada = dataEntrada;
+    }
+    public TipoUsuario getRole() {
+        return role;
+    }
+
+    public void setRole(TipoUsuario role) {
+        this.role = role;
+    }
+
+    public List<CheckInRecord> getCheckins() {
+        return checkins.stream()
+                .map(checkIn -> new CheckInRecord(
+                        checkIn.getId(),
+                        checkIn.getUrlFoto(),
+                        checkIn.getLocal(),
+                        checkIn.getDataHoraCheckin(),
+                        checkIn.getStatus()
+                ))
+                .toList();
+    }
+
+    public void setCheckins(List<CheckIn> checkins) {
+        this.checkins = checkins;
     }
 }

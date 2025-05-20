@@ -4,6 +4,7 @@ import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoDesafio;
 import com.example.demo.records.CategoriaRecord;
 import com.example.demo.records.GrupoRecord;
+import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
@@ -58,10 +59,14 @@ public class Desafio {
     @JoinColumn(name = "id_patrocinador")
     private Patrocinador patrocinador;
 
+    @ManyToOne
+    @JoinColumn(name = "criador_id")
+    private Usuario criador;
+
     @OneToMany(mappedBy = "desafio")
     private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador) {
+    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -74,6 +79,7 @@ public class Desafio {
         this.isPublico = isPublico;
         this.tipoDesafio = tipoDesafio;
         this.patrocinador = patrocinador;
+        this.criador = criador;
     }
 
     public Desafio() {
@@ -175,11 +181,26 @@ public class Desafio {
         this.patrocinador = patrocinador;
     }
 
-    public List<MembrosDesafio> getMembrosDesafios() {
-        return membrosDesafios;
-    }
-
     public void setMembrosDesafios(List<MembrosDesafio> membrosDesafios) {
         this.membrosDesafios = membrosDesafios;
+    }
+
+    public UsuariosRecord getCriador() {
+        return new UsuariosRecord(
+                criador.getId(),
+                criador.getNome(),
+                criador.getEmail(),
+                criador.getSenha(),
+                criador.getDataNascimento(),
+                criador.getObjetivo(),
+                criador.getUrlFoto(),
+                criador.getDataCriacao(),
+                criador.getStatus(),
+                criador.getExibirHistorico()
+        );
+    }
+
+    public void setCriador(Usuario usuario) {
+        this.criador = usuario;
     }
 }

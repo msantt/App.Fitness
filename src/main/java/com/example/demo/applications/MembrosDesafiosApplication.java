@@ -30,7 +30,7 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
 
     }
 
-    //erro para salvar
+
     @Override
     public MembrosDesafio salvar(MembrosDesafio membroDesafio) {
         if (membroDesafio.getStatus() == null) {

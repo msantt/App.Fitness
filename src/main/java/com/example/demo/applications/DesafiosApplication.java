@@ -1,18 +1,20 @@
 package com.example.demo.applications;
 
 import com.example.demo.config.RegraNegocioException;
-import com.example.demo.entities.Categoria;
-import com.example.demo.entities.Desafio;
-import com.example.demo.entities.Grupo;
+import com.example.demo.entities.*;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IDesafios;
 import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.DesafioRepository;
 import com.example.demo.repositories.GrupoRepository;
+import com.example.demo.repositories.MembrosDesafioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +24,17 @@ public class DesafiosApplication implements IDesafios {
 
     private final GrupoRepository grupoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final MembrosDesafioRepository membrosDesafioRepository;
     private DesafioRepository desafiosRepository;
+    private UsuariosApplication usuarioRepository;
 
     @Autowired
-    public DesafiosApplication(DesafioRepository desafiosRepository, GrupoRepository grupoRepository, CategoriaRepository categoriaRepository) {
+    public DesafiosApplication(DesafioRepository desafiosRepository, GrupoRepository grupoRepository, CategoriaRepository categoriaRepository, UsuariosApplication usuarioRepository, MembrosDesafioRepository membrosDesafioRepository) {
         this.desafiosRepository = desafiosRepository;
         this.grupoRepository = grupoRepository;
         this.categoriaRepository = categoriaRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.membrosDesafioRepository = membrosDesafioRepository;
     }
 
     @Override
@@ -65,7 +71,21 @@ public class DesafiosApplication implements IDesafios {
         if (nomeRepetido) {
             throw new RegraNegocioException("Já existe um desafio com esse nome no grupo.");
         }
-        return desafiosRepository.save(desafio);
+
+        Desafio desafioSalvo = desafiosRepository.save(desafio);
+
+
+        MembrosDesafio membro = new MembrosDesafio();
+        membro.setDesafio(desafioSalvo);
+        Usuario usuario = usuarioRepository.buscarPorId(desafioSalvo.getCriador().getId());
+        membro.setUsuario(usuario);
+        membro.setStatus(Status.ATIVO);
+        membro.setRole(TipoUsuario.ADMIN);
+        membro.setDataEntrada(LocalDate.from(LocalDateTime.now()));
+
+        membrosDesafioRepository.save(membro);
+
+        return desafioSalvo;
     }
 
     @Override

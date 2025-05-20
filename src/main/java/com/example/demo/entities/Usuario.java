@@ -179,13 +179,5 @@ public class Usuario {
     public void setMembrosGrupos(List<MembrosGrupo> membrosGrupos) {
         this.membrosGrupos = membrosGrupos;
     }
-
-    public List<MembrosDesafio> getDesafios() {
-        return desafios;
-    }
-
-    public void setDesafios(List<MembrosDesafio> desafios) {
-        this.desafios = desafios;
-    }
 }
 
