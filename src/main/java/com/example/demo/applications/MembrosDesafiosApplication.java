@@ -105,4 +105,9 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
     public void deletar(int id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public List<MembrosDesafio> buscarPorDesafioId(int desafioId) {
+        return repository.findByDesafioId(desafioId);
+    }
 }

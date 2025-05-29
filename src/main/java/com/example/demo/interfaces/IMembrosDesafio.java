@@ -9,4 +9,6 @@ public interface IMembrosDesafio {
     List<MembrosDesafio> listarTodos();
     MembrosDesafio buscarPorId(int id);
     void deletar(int id);
+
+    List<MembrosDesafio> buscarPorDesafioId(int desafioId);
 }

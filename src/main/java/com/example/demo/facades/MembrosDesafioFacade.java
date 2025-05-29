@@ -30,4 +30,8 @@ public class MembrosDesafioFacade {
     public void remover(int id) {
         membrosDesafiosApplication.deletar(id);
     }
+
+    public List<MembrosDesafio> buscarPorDesafio(int desafioId) {
+        return membrosDesafiosApplication.buscarPorDesafioId(desafioId);
+    }
 }

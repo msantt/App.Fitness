@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Desafio;
 import com.example.demo.entities.Usuario;
 import com.example.demo.facades.UsuariosFacade;
 import jakarta.validation.Valid;
@@ -50,7 +51,14 @@ public class UsuariosController {
         }
     }
 
-
+    @GetMapping("/{usuarioId}/recomendacoes/populares")
+    public ResponseEntity<List<Desafio>> recomendarPopulares(@PathVariable int usuarioId) {
+        List<Desafio> recomendacoes = usuariosFacade.recomendarDesafiosPopulares(usuarioId);
+        if (recomendacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(recomendacoes);
+    }
 
     @PostMapping
     public ResponseEntity<Void> salvar(@Valid @RequestBody Usuario usuario) {

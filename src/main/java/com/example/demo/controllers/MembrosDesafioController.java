@@ -38,6 +38,15 @@ public class MembrosDesafioController {
         }
     }
 
+    @GetMapping("/desafio/{desafioId}")
+    public ResponseEntity<List<MembrosDesafio>> buscarPorDesafio(@PathVariable int desafioId) {
+        List<MembrosDesafio> membros = facade.buscarPorDesafio(desafioId);
+        if (membros.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(membros);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable int id) {
         facade.remover(id);

@@ -2,6 +2,7 @@ package com.example.demo.facades;
 
 import com.example.demo.applications.UsuariosApplication;
 import com.example.demo.entities.CheckIn;
+import com.example.demo.entities.Desafio;
 import com.example.demo.entities.Grupo;
 import com.example.demo.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,10 @@ public class UsuariosFacade {
 
     public List<Usuario> buscarAtivos() {
         return usuariosApplication.buscarAtivos();
+    }
+
+    public List<Desafio> recomendarDesafiosPopulares(int usuarioId) {
+        return usuariosApplication.recomendarDesafiosPopulares(usuarioId);
     }
 
 }

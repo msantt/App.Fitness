@@ -1,11 +1,14 @@
 package com.example.demo.applications;
 
+import com.example.demo.entities.Desafio;
 import com.example.demo.entities.Grupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IUsuarios;
 import com.example.demo.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -95,4 +98,10 @@ public class UsuariosApplication implements IUsuarios {
     public List<Usuario> buscarAtivos() {
         return usuariosRepository.findByStatusTrue();
     }
+
+    public List<Desafio> recomendarDesafiosPopulares(int usuarioId) {
+        Pageable top5 = PageRequest.of(0, 5);
+        return usuariosRepository.recomendarDesafiosMaisPopularesPorObjetivo(usuarioId, top5).getContent();
+    }
+
 }
