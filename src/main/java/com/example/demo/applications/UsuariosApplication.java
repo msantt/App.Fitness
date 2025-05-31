@@ -63,7 +63,7 @@ public class UsuariosApplication implements IUsuarios {
 
     @Override
     public Usuario buscarPorEmail(String email) {
-        return usuariosRepository.findByEmail(email).orElseThrow();
+        return (Usuario) usuariosRepository.findByEmail(email);
     }
 
     @Override
