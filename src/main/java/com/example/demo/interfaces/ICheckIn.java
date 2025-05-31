@@ -4,19 +4,20 @@ import com.example.demo.entities.CheckIn;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public interface ICheckIn {
     CheckIn salvar(CheckIn checkIn);
 
-    CheckIn buscarPorId(int id);
+    CheckIn buscarPorUUID(UUID id);
 
     List<CheckIn> listarTodos();
 
-    void deletar(int id);
+    void deletar(UUID id);
 
-    boolean existePorId(int id);
+    boolean existePorUUID(UUID id);
 
-    List<CheckIn> buscarPorMembrosDesafiosId(int membrosDesafiosId);
+    List<CheckIn> buscarPorMembrosDesafiosUUID(UUID membrosDesafiosUUID);
 
     List<CheckIn> buscarPorIntervaloDeDatas(LocalDateTime dataInicio, LocalDateTime dataFim);
 }

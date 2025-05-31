@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,11 +37,8 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public Categoria buscarPorId(int id) {
-        return categoriaRepository.findById(id).orElseThrow(()->new RegraNegocioException(
-                "Categoria não encontrada com ID: " + id
-                )
-        );
+    public Categoria buscarPorUUID(UUID id) {
+        return categoriaRepository.findByUuid(id);
     }
 
     @Override
@@ -55,15 +52,15 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public void deletar(int id) {
-        Categoria categoria = buscarPorId(id);
-        List<Desafio> desafios = listarDesafiosPorCategoriaId(id);
+    public void deletar(UUID id) {
+        Categoria categoria = buscarPorUUID(id);
+        List<Desafio> desafios = listarDesafiosPorCategoriaUUID(id);
 
         boolean temDesafiosAtivos = desafios.stream().anyMatch(d -> d.getStatus().equals("ATIVO"));
         if (temDesafiosAtivos) {
             throw new RegraNegocioException("Não é possível excluir categoria com desafios ativos.");
         }
-        categoriaRepository.deleteById(id);
+        categoriaRepository.deleteByUuid(id);
     }
 
     @Override
@@ -72,8 +69,8 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return (categoriaRepository.findById(id) != null);
+    public boolean existePorUUID(UUID id) {
+        return (categoriaRepository.findByUuid(id) != null);
     }
 
     @Override
@@ -82,12 +79,12 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
-    public List<Desafio> listarDesafiosPorCategoriaId(int idCategoria) {
-        return categoriaRepository.findDesafiosPorCategoriaId(idCategoria);
+    public List<Desafio> listarDesafiosPorCategoriaUUID(UUID idCategoria) {
+        return categoriaRepository.findDesafiosPorCategoriaUuid(idCategoria);
     }
 
-    public List<Desafio> listarDesafiosAtivosPorCategoria(int idCategoria) {
-        return listarDesafiosPorCategoriaId(idCategoria).stream()
+    public List<Desafio> listarDesafiosAtivosPorCategoria(UUID idCategoria) {
+        return listarDesafiosPorCategoriaUUID(idCategoria).stream()
                 .filter(d -> d.getStatus().equals("ATIVO"))
                 .collect(Collectors.toList());
     }

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/categorias")
@@ -31,7 +31,7 @@ public class CategoriasController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Categoria> buscarPorId(@PathVariable UUID id) {
         Categoria categoria = categoriasFacade.buscarPorId(id);
         if (categoria != null) {
             return ResponseEntity.ok(categoria);
@@ -57,7 +57,7 @@ public class CategoriasController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> atualizar(@PathVariable int id,@Valid @RequestBody Categoria categorias) {
+    public ResponseEntity<Categoria> atualizar(@PathVariable UUID id,@Valid @RequestBody Categoria categorias) {
         Categoria existente = categoriasFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -68,7 +68,7 @@ public class CategoriasController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         categoriasFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }
@@ -80,13 +80,13 @@ public class CategoriasController {
     }
 
     @GetMapping("/{idCategoria}/desafios")
-    public ResponseEntity<List<Desafio>> listarDesafiosPorCategoriaId(@PathVariable int idCategoria) {
-        List<Desafio> desafios = categoriasFacade.listarDesafiosPorCategoriaId(idCategoria);
+    public ResponseEntity<List<Desafio>> listarDesafiosPorCategoriaId(@PathVariable UUID idCategoria) {
+        List<Desafio> desafios = categoriasFacade.listarDesafiosPorCategoriaUUID(idCategoria);
         return ResponseEntity.ok(desafios);
     }
 
     @GetMapping("/{idCategoria}/desafios-ativos")
-    public ResponseEntity<List<Desafio>> listarDesafiosAtivosPorCategoria(@PathVariable int idCategoria) {
+    public ResponseEntity<List<Desafio>> listarDesafiosAtivosPorCategoria(@PathVariable UUID idCategoria) {
         List<Desafio> desafios = categoriasFacade.listarDesafiosAtivosPorCategoria(idCategoria);
         return ResponseEntity.ok(desafios);
     }

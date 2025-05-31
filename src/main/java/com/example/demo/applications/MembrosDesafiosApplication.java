@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MembrosDesafiosApplication implements IMembrosDesafio {
@@ -52,13 +53,15 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             membroDesafio.setDataEntrada(LocalDate.now());
         }
 
-        Desafio desafio = desafioRepository.findById(membroDesafio.getDesafio().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Desafio não encontrado."));
+        Desafio desafio = desafioRepository.findByUuid(membroDesafio.getDesafio().getId());
+        if (desafio == null) {
+            throw new IllegalArgumentException("Desafio não encontrado.");
+        }
 
         if (!desafio.getIsPublico()) {
-            int grupoId = desafio.getGrupos().id();
-            int usuarioId = membroDesafio.getUsuario().getId();
-            boolean usuarioEhMembroDoGrupo = membrosGrupoRepository.existsByGrupo_IdAndUsuario_Id(grupoId, usuarioId);
+            UUID grupoId = desafio.getGrupos().id();
+            UUID usuarioId = membroDesafio.getUsuario().getId();
+            boolean usuarioEhMembroDoGrupo = membrosGrupoRepository.existsByGrupo_UuidAndUsuario_Uuid(grupoId, usuarioId);
             if (!usuarioEhMembroDoGrupo) {
                 throw new IllegalStateException("Usuário não faz parte do grupo deste desafio privado.");
             }
@@ -68,8 +71,10 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             throw new IllegalStateException("O desafio informado não possui uma categoria válida.");
         }
 
-        Categoria categoria = categoriaRepository.findById(desafio.getCategoria().id())
-                .orElseThrow(() -> new IllegalStateException("Categoria não encontrada."));
+        Categoria categoria = categoriaRepository.findByUuid(desafio.getCategoria().id());
+        if (categoria == null) {
+            throw new IllegalStateException("Categoria não encontrada.");
+        }
 
         desafio.setCategoria(categoria);
         membroDesafio.setDesafio(desafio);
@@ -78,7 +83,7 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             throw new IllegalStateException("Não é possível participar de um desafio inativo ou encerrado.");
         }
 
-        boolean jaCadastrado = repository.existsByUsuarioIdAndDesafioId(
+        boolean jaCadastrado = repository.existsByUsuarioUuidAndDesafioUuid(
                 membroDesafio.getUsuario().getId(),
                 desafio.getId()
         );
@@ -97,17 +102,17 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
     }
 
     @Override
-    public MembrosDesafio buscarPorId(int id) {
-        return repository.findById(id).orElseThrow();
+    public MembrosDesafio buscarPorUUID(UUID id) {
+        return repository.findByUuid(id);
     }
 
     @Override
-    public void deletar(int id) {
-        repository.deleteById(id);
+    public void deletar(UUID id) {
+        repository.deleteByUuid(id);
     }
 
     @Override
-    public List<MembrosDesafio> buscarPorDesafioId(int desafioId) {
-        return repository.findByDesafioId(desafioId);
+    public List<MembrosDesafio> buscarPorDesafioUUID(UUID desafioId) {
+        return repository.findByDesafioUuid(desafioId);
     }
 }

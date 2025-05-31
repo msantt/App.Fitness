@@ -7,6 +7,7 @@ import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "membros_grupo")
@@ -15,8 +16,8 @@ public class MembrosGrupo {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -38,8 +39,8 @@ public class MembrosGrupo {
     private TipoUsuario role;
 
 
-    public MembrosGrupo(int id, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, TipoUsuario role) {
-        this.id = id;
+    public MembrosGrupo(UUID uuid, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, TipoUsuario role) {
+        this.uuid = uuid;
         this.grupo = grupo;
         this.usuario = usuario;
         this.status = status;
@@ -50,12 +51,12 @@ public class MembrosGrupo {
     public MembrosGrupo() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public UsuariosRecord getUsuario() {

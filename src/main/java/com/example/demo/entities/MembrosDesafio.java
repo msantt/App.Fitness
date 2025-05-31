@@ -9,13 +9,14 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "membro_desafio")
 public class MembrosDesafio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id",
@@ -24,7 +25,7 @@ public class MembrosDesafio {
     private Usuario usuario;
 
     @Column(name = "usuario_id")
-    private int usuarioId;
+    private UUID usuarioId;
 
     @ManyToOne
     @JoinColumn(name = "desafio_id", referencedColumnName = "id",
@@ -33,7 +34,7 @@ public class MembrosDesafio {
     private Desafio desafio;
 
     @Column(name = "desafio_id")
-    private int desafioId;
+    private UUID desafioId;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -49,8 +50,8 @@ public class MembrosDesafio {
     private List<CheckIn> checkins;
 
 
-    public MembrosDesafio(int id, Usuario usuario, Desafio desafio, Status status) {
-        this.id = id;
+    public MembrosDesafio(UUID uuid, Usuario usuario, Desafio desafio, Status status) {
+        this.uuid = uuid;
         this.usuario = usuario;
         this.desafio = desafio;
         this.status = status;
@@ -61,19 +62,19 @@ public class MembrosDesafio {
 
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public int getUsuarioId() {
+    public UUID getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(int usuarioId) {
+    public void setUsuarioId(UUID usuarioId) {
         this.usuarioId = usuarioId;
     }
 
@@ -88,11 +89,11 @@ public class MembrosDesafio {
         }
     }
 
-    public int getDesafioId() {
+    public UUID getDesafioId() {
         return desafioId;
     }
 
-    public void setDesafioId(int desafioId) {
+    public void setDesafioId(UUID desafioId) {
         this.desafioId = desafioId;
     }
 

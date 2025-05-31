@@ -10,13 +10,12 @@ import com.example.demo.repositories.DesafioRepository;
 import com.example.demo.repositories.GrupoRepository;
 import com.example.demo.repositories.MembrosDesafioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DesafiosApplication implements IDesafios {
@@ -54,13 +53,13 @@ public class DesafiosApplication implements IDesafios {
             throw new RegraNegocioException("O desafio deve estar associado a um grupo.");
         }
 
-        Grupo grupo = grupoRepository.getById(desafio.getGrupos().id());
+        Grupo grupo = grupoRepository.findByUuid(desafio.getGrupos().id());
 
         if (grupo.getStatus() != Status.ATIVO) {
             throw new RegraNegocioException("O grupo do desafio deve estar ativo.");
         }
 
-        Categoria categoria = categoriaRepository.getById(desafio.getCategoria().id());
+        Categoria categoria = categoriaRepository.findByUuid(desafio.getCategoria().id());
 
         if (categoria == null) {
             throw new RegraNegocioException("O desafio deve ter uma categoria.");
@@ -77,7 +76,7 @@ public class DesafiosApplication implements IDesafios {
 
         MembrosDesafio membro = new MembrosDesafio();
         membro.setDesafio(desafioSalvo);
-        Usuario usuario = usuarioRepository.buscarPorId(desafioSalvo.getCriador().getId());
+        Usuario usuario = usuarioRepository.buscarPorUUID(desafioSalvo.getCriador().getId());
         membro.setUsuario(usuario);
         membro.setStatus(Status.ATIVO);
         membro.setRole(TipoUsuario.ADMIN);
@@ -89,8 +88,8 @@ public class DesafiosApplication implements IDesafios {
     }
 
     @Override
-    public Desafio buscarPorId(int id) {
-        return desafiosRepository.findById(id).orElseThrow();
+    public Desafio buscarPorUUID(UUID id) {
+        return desafiosRepository.findByUuid(id);
     }
 
     @Override
@@ -99,23 +98,23 @@ public class DesafiosApplication implements IDesafios {
     }
 
     @Override
-    public void deletar(int id) {
-        desafiosRepository.deleteById(id);
+    public void deletar(UUID id) {
+        desafiosRepository.deleteByUuid(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return desafiosRepository.existsById(id);
+    public boolean existePorUUID(UUID id) {
+        return desafiosRepository.existsByUuid(id);
     }
 
     @Override
-    public List<Desafio> buscarPorIdGrupo(int idGrupo) {
-        return desafiosRepository.findByGrupo_Id(idGrupo);
+    public List<Desafio> buscarPorUUIDGrupo(UUID idGrupo) {
+        return desafiosRepository.findByGrupo_Uuid(idGrupo);
     }
 
     @Override
-    public List<Desafio> buscarPorIdCategoria(int idCategoria) {
-        return desafiosRepository.findByCategoria_Id(idCategoria);
+    public List<Desafio> buscarPorUUIDCategoria(UUID idCategoria) {
+        return desafiosRepository.findByCategoria_Uuid(idCategoria);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class DesafiosApplication implements IDesafios {
 
     public boolean existePorNome(String nome, Desafio desafio) {
         return desafiosRepository
-                .findByGrupo_Id(desafio.getGrupos().id())
+                .findByGrupo_Uuid(desafio.getGrupos().id())
                 .stream()
                 .anyMatch(d -> d.getNome().equalsIgnoreCase(desafio.getNome()));
     }

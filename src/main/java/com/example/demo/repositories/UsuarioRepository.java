@@ -10,9 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
+    Usuario findByUuid(UUID uuid);
+    void deleteByUuid(UUID uuid);
+    boolean existsByUuid(UUID uuid);
 
     UserDetails findByEmail(String email);
 
@@ -20,21 +24,21 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     boolean existsByEmail(String email);
 
-    @Query("SELECT g FROM Grupo g JOIN MembrosGrupo m ON g.id = m.grupo.id WHERE m.usuario.id = :idUsuario")
-    List<Grupo> findGruposPorUsuarioId(@Param("idUsuario") int idUsuario);
+    @Query("SELECT g FROM Grupo g JOIN MembrosGrupo m ON g.uuid = m.grupo.uuid WHERE m.usuario.uuid = :idUsuario")
+    List<Grupo> findGruposPorUsuarioUuid(@Param("idUsuario") UUID idUsuario);
 
     @Query("""
     SELECT md.desafio
     FROM MembrosDesafio md
     WHERE md.usuario.objetivo = (
-        SELECT u.objetivo FROM Usuario u WHERE u.id = :usuarioId
+        SELECT u.objetivo FROM Usuario u WHERE u.uuid = :usuarioUUID
     )
     AND md.desafio NOT IN (
-        SELECT md2.desafio FROM MembrosDesafio md2 WHERE md2.usuario.id = :usuarioId
+        SELECT md2.desafio FROM MembrosDesafio md2 WHERE md2.usuario.uuid = :usuarioUUID
     )
     GROUP BY md.desafio
     ORDER BY COUNT(md.desafio) DESC
 """)
-    Page<Desafio> recomendarDesafiosMaisPopularesPorObjetivo(@Param("usuarioId") int usuarioId, Pageable pageable);
+    Page<Desafio> recomendarDesafiosMaisPopularesPorObjetivo(@Param("usuarioUUID") UUID usuarioUUID, Pageable pageable);
 
 }

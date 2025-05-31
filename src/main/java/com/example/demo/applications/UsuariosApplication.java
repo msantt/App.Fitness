@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UsuariosApplication implements IUsuarios {
@@ -57,8 +58,8 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
-    public Usuario buscarPorId(int id) {
-        return usuariosRepository.findById(id).orElseThrow();
+    public Usuario buscarPorUUID(UUID id) {
+        return usuariosRepository.findByUuid(id);
     }
 
     @Override
@@ -72,8 +73,8 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
-    public void deletar(int id) {
-        usuariosRepository.deleteById(id);
+    public void deletar(UUID id) {
+        usuariosRepository.deleteByUuid(id);
     }
 
     @Override
@@ -85,13 +86,13 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return usuariosRepository.existsById(id);
+    public boolean existePorUUID(UUID id) {
+        return usuariosRepository.existsByUuid(id);
     }
 
     @Override
-    public List<Grupo> listarGruposPorUsuarioId(int idUsuario) {
-        return usuariosRepository.findGruposPorUsuarioId(idUsuario);
+    public List<Grupo> listarGruposPorUsuarioUUID(UUID idUsuario) {
+        return usuariosRepository.findGruposPorUsuarioUuid(idUsuario);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class UsuariosApplication implements IUsuarios {
         return usuariosRepository.findByStatusTrue();
     }
 
-    public List<Desafio> recomendarDesafiosPopulares(int usuarioId) {
+    public List<Desafio> recomendarDesafiosPopulares(UUID usuarioId) {
         Pageable top5 = PageRequest.of(0, 5);
         return usuariosRepository.recomendarDesafiosMaisPopularesPorObjetivo(usuarioId, top5).getContent();
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class PatrocinadorFacade {
@@ -21,10 +22,10 @@ public class PatrocinadorFacade {
         return patrocinadorApplication.salvarPatrocinador(patrocinador);
     }
 
-    public void deletarPatrocinador(int id) {
+    public void deletarPatrocinador(UUID id) {
         patrocinadorApplication.deletarPatrocinador(id);
     }
-    public Patrocinador atualizarPatrocinador(int id, Patrocinador patrocinador) {
+    public Patrocinador atualizarPatrocinador(UUID id, Patrocinador patrocinador) {
         return patrocinadorApplication.salvarPatrocinador(patrocinador);
     }
 
@@ -32,9 +33,9 @@ public class PatrocinadorFacade {
         return patrocinadorApplication.listarPatrocinadores();
     }
 
-    public Patrocinador buscarPatrocinadorPorId(int id)
+    public Patrocinador buscarPatrocinadorPorId(UUID id)
     {
-        return patrocinadorApplication.buscarPatrocinadorPorId(id);
+        return patrocinadorApplication.buscarPatrocinadorPorUUID(id);
     }
 
     public Patrocinador buscarPatrocinadorPorNome(String nome) {

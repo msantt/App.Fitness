@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/membros-desafio")
@@ -29,7 +30,7 @@ public class MembrosDesafioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MembrosDesafio> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<MembrosDesafio> buscarPorId(@PathVariable UUID id) {
         MembrosDesafio membro = facade.buscar(id);
         if (membro != null) {
             return ResponseEntity.ok(membro);
@@ -39,7 +40,7 @@ public class MembrosDesafioController {
     }
 
     @GetMapping("/desafio/{desafioId}")
-    public ResponseEntity<List<MembrosDesafio>> buscarPorDesafio(@PathVariable int desafioId) {
+    public ResponseEntity<List<MembrosDesafio>> buscarPorDesafio(@PathVariable UUID desafioId) {
         List<MembrosDesafio> membros = facade.buscarPorDesafio(desafioId);
         if (membros.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -48,7 +49,7 @@ public class MembrosDesafioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         facade.remover(id);
         return ResponseEntity.noContent().build();
     }

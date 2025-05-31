@@ -5,6 +5,7 @@ import com.example.demo.entities.MembrosDesafio;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class MembrosDesafioFacade {
@@ -23,15 +24,15 @@ public class MembrosDesafioFacade {
         return membrosDesafiosApplication.listarTodos();
     }
 
-    public MembrosDesafio buscar(int id) {
-        return membrosDesafiosApplication.buscarPorId(id);
+    public MembrosDesafio buscar(UUID id) {
+        return membrosDesafiosApplication.buscarPorUUID(id);
     }
 
-    public void remover(int id) {
+    public void remover(UUID id) {
         membrosDesafiosApplication.deletar(id);
     }
 
-    public List<MembrosDesafio> buscarPorDesafio(int desafioId) {
-        return membrosDesafiosApplication.buscarPorDesafioId(desafioId);
+    public List<MembrosDesafio> buscarPorDesafio(UUID desafioId) {
+        return membrosDesafiosApplication.buscarPorDesafioUUID(desafioId);
     }
 }

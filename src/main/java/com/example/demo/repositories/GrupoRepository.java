@@ -5,11 +5,16 @@ import com.example.demo.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
     List<Grupo> findByNome(String nome);
 
     List<Grupo> findByStatus(Status status);
 
-    List<Grupo> findByCriadorId(int usuario);
+    List<Grupo> findByCriadorUuid(UUID usuario);
+
+    Grupo findByUuid(UUID uuid);
+    boolean existsByUuid(UUID uuid);
+    void deleteByUuid(UUID uuid);
 }

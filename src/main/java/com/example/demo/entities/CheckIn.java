@@ -8,14 +8,15 @@ import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "checkin")
 public class CheckIn {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @ManyToOne
     @JoinColumn(name = "id_membro_desafio")
@@ -34,8 +35,8 @@ public class CheckIn {
     @Column(name = "status")
     private Status status;
 
-    public CheckIn(int id, MembrosDesafio membroDesafio, String urlFoto, String local, Status status) {
-        this.id = id;
+    public CheckIn(UUID uuid, MembrosDesafio membroDesafio, String urlFoto, String local, Status status) {
+        this.uuid = uuid;
         this.membroDesafio = membroDesafio;
         this.urlFoto = urlFoto;
         this.local = local;
@@ -46,12 +47,12 @@ public class CheckIn {
     public CheckIn() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public MembroDesafioRecord getMembroDesafio() {

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "grupos")
@@ -13,8 +14,8 @@ public class Grupo {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @Column(name = "nome")
     private String nome;
@@ -42,14 +43,25 @@ public class Grupo {
     @OneToMany(mappedBy = "grupo")
     private List<MembrosGrupo> membros;
 
-    public Grupo(int id, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Status status, Usuario criador) {
-        this.id = id;
+    public Grupo(UUID uuid, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Status status, Usuario criador) {
+        this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
         this.urlFoto = urlFoto;
         this.dataCriacao = dataCriacao;
         this.status = status;
         this.criador = criador;
+    }
+
+    public Grupo() {
+    }
+
+    public UUID getId() {
+        return uuid;
+    }
+
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public List<MembrosGrupo> getMembros() {
@@ -60,16 +72,6 @@ public class Grupo {
         this.membros = membros;
     }
 
-    public Grupo() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

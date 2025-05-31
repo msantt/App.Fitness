@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -30,7 +31,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable UUID id) {
         Usuario usuario = usuariosFacade.buscarPorId(id);
         if (usuario != null) {
             return ResponseEntity.ok(usuario);
@@ -52,7 +53,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/{usuarioId}/recomendacoes/populares")
-    public ResponseEntity<List<Desafio>> recomendarPopulares(@PathVariable int usuarioId) {
+    public ResponseEntity<List<Desafio>> recomendarPopulares(@PathVariable UUID usuarioId) {
         List<Desafio> recomendacoes = usuariosFacade.recomendarDesafiosPopulares(usuarioId);
         if (recomendacoes.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -67,7 +68,7 @@ public class UsuariosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> atualizar(@PathVariable UUID id, @Valid @RequestBody Usuario usuario) {
         Usuario existente = usuariosFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -78,7 +79,7 @@ public class UsuariosController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         usuariosFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

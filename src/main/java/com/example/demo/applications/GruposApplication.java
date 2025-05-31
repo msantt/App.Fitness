@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GruposApplication implements IGrupos {
@@ -57,7 +57,7 @@ public class GruposApplication implements IGrupos {
 
         MembrosGrupo membro = new MembrosGrupo();
         membro.setGrupo(grupoSalvo);
-        Usuario usuario = usuarioRepository.getById(grupoSalvo.getCriador().getId());
+        Usuario usuario = usuarioRepository.findByUuid(grupoSalvo.getCriador().getId());
         membro.setUsuario(usuario);
         membro.setStatus(Status.ATIVO);
         membro.setRole(TipoUsuario.ADMIN);
@@ -69,8 +69,8 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
-    public Grupo buscarPorId(int id) {
-        return gruposRepository.findById(id).orElseThrow();
+    public Grupo buscarPorUUID(UUID id) {
+        return gruposRepository.findByUuid(id);
     }
 
     @Override
@@ -79,13 +79,13 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
-    public void deletar(int id) {
-        gruposRepository.deleteById(id);
+    public void deletar(UUID id) {
+        gruposRepository.deleteByUuid(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return gruposRepository.existsById(id);
+    public boolean existePorUUID(UUID id) {
+        return gruposRepository.existsByUuid(id);
     }
 
     @Override
@@ -94,8 +94,8 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
-    public List<Grupo> buscarPorCriadorId(int criador) {
-        return gruposRepository.findByCriadorId(criador);
+    public List<Grupo> buscarPorCriadorUUID(UUID criador) {
+        return gruposRepository.findByCriadorUuid(criador);
     }
 
     @Override

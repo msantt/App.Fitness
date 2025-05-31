@@ -7,14 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer> {
     Categoria findByNome(String nome);
 
-    boolean existsById(int id);
+    boolean existsByUuid(UUID uuid);
 
     @Query("SELECT c FROM Categoria c WHERE EXISTS (SELECT d FROM Desafio d WHERE d.categoria = c AND d.status = 'ATIVO')")
     List<Categoria> findCategoriasComDesafiosAtivos();
-    @Query("SELECT d FROM Desafio d WHERE d.categoria.id = :idCategoria")
-    List<Desafio> findDesafiosPorCategoriaId(@Param("idCategoria") int idCategoria);
+    @Query("SELECT d FROM Desafio d WHERE d.categoria.uuid = :idCategoria")
+    List<Desafio> findDesafiosPorCategoriaUuid(@Param("idCategoria") UUID idCategoria);
+
+    Categoria findByUuid(UUID uuid);
+
+    void deleteByUuid(UUID uuid);
 }

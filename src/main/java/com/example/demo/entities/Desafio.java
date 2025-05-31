@@ -11,6 +11,7 @@ import org.springframework.cglib.core.Local;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "desafios")
@@ -18,8 +19,8 @@ public class Desafio {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @Column(name = "nome")
     private String nome;
@@ -66,8 +67,8 @@ public class Desafio {
     @OneToMany(mappedBy = "desafio")
     private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
-        this.id = id;
+    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
+        this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -85,12 +86,12 @@ public class Desafio {
     public Desafio() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getNome() {

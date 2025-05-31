@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MembrosGrupoApplication implements IMembrosGrupo {
@@ -38,7 +38,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
             membrosGrupo.setStatus(Status.ATIVO);
         }
 
-        if (membrosGrupoRepository.existsByGrupo_IdAndUsuario_Id(
+        if (membrosGrupoRepository.existsByGrupo_UuidAndUsuario_Uuid(
                 membrosGrupo.getGrupo().id(), membrosGrupo.getUsuario().getId())) {
             throw new IllegalArgumentException("Este usuário já é membro deste grupo.");
         }
@@ -52,7 +52,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
         if (membrosGrupo.getDataEntrada() == null) {
             membrosGrupo.setDataEntrada(LocalDate.from(LocalDateTime.now()));
         }
-        Grupo grupo = grupoRepository.getById(membrosGrupo.getGrupo().id());
+        Grupo grupo = grupoRepository.findByUuid(membrosGrupo.getGrupo().id());
         if (grupo.getStatus() != Status.ATIVO) {
             throw new IllegalArgumentException("O grupo deve estar ativo.");
         }
@@ -66,8 +66,8 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
     }
 
     @Override
-    public MembrosGrupo buscarPorId(int id) {
-        return membrosGrupoRepository.findById(id).orElseThrow();
+    public MembrosGrupo buscarPorUUID(UUID id) {
+        return membrosGrupoRepository.findByUuid(id);
     }
 
     @Override
@@ -76,23 +76,23 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
     }
 
     @Override
-    public void deletar(int id) {
-    membrosGrupoRepository.deleteById(id);
+    public void deletar(UUID id) {
+    membrosGrupoRepository.deleteByUuid(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return membrosGrupoRepository.existsById(id);
+    public boolean existePorUUID(UUID id) {
+        return membrosGrupoRepository.existsByUuid(id);
     }
 
     @Override
-    public List<MembrosGrupo> buscarPorGrupo(int grupoId) {
-        return membrosGrupoRepository.findByGrupo_Id( grupoId);
+    public List<MembrosGrupo> buscarPorGrupo(UUID grupoId) {
+        return membrosGrupoRepository.findByGrupo_Uuid( grupoId);
     }
 
     @Override
-    public List<MembrosGrupo> buscarPorUsuario(int usuarioId) {
-        return membrosGrupoRepository.findByUsuario_Id(usuarioId);
+    public List<MembrosGrupo> buscarPorUsuario(UUID usuarioId) {
+        return membrosGrupoRepository.findByUsuario_Uuid(usuarioId);
     }
 
     public List<MembrosGrupo> buscarPorStatus(Status status) {

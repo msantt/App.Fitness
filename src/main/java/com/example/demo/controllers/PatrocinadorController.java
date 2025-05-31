@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/patrocinador")
@@ -29,7 +30,7 @@ public class PatrocinadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patrocinador> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Patrocinador> buscarPorId(@PathVariable UUID id) {
         Patrocinador patrocinador = patrocinadorFacade.buscarPatrocinadorPorId(id);
         if (patrocinador != null) {
             return ResponseEntity.ok(patrocinador);
@@ -57,7 +58,7 @@ public class PatrocinadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Patrocinador> atualizar(@PathVariable int id, @Valid @RequestBody Patrocinador patrocinador) {
+    public ResponseEntity<Patrocinador> atualizar(@PathVariable UUID id, @Valid @RequestBody Patrocinador patrocinador) {
         Patrocinador existenteOpt = patrocinadorFacade.buscarPatrocinadorPorId(id);
         if (existenteOpt == null) {
             return ResponseEntity.notFound().build();
@@ -68,7 +69,7 @@ public class PatrocinadorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         patrocinadorFacade.deletarPatrocinador(id);
         return ResponseEntity.noContent().build();
     }

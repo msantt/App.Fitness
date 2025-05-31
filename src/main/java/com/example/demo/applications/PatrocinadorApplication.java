@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PatrocinadorApplication implements IPatrocinador {
@@ -28,7 +29,7 @@ public class PatrocinadorApplication implements IPatrocinador {
             throw new IllegalArgumentException("O nome do patrocinador deve ter entre 3 e 20 caracteres.");
         }
         Optional<Patrocinador> existente = Optional.ofNullable(patrocinadorRepository.findByNome(patrocinador.getNome()));
-        if (existente.isPresent() && (patrocinador.getId() == 0 || existente.get().getId() != patrocinador.getId())) {
+        if (existente.isPresent() && (patrocinador.getId() == null || !existente.get().getId().equals(patrocinador.getId()))) {
             throw new IllegalArgumentException("Já existe um patrocinador com esse nome.");
         }
 
@@ -40,11 +41,11 @@ public class PatrocinadorApplication implements IPatrocinador {
     }
 
     @Override
-    public void deletarPatrocinador(int id) {
-        patrocinadorRepository.deleteById(id);
+    public void deletarPatrocinador(UUID id) {
+        patrocinadorRepository.deleteByUuid(id);
     }
     @Override
-    public Patrocinador atualizarPatrocinador(int id, Patrocinador patrocinador) {
+    public Patrocinador atualizarPatrocinador(UUID id, Patrocinador patrocinador) {
         return patrocinadorRepository.save(patrocinador);
     }
 
@@ -54,9 +55,9 @@ public class PatrocinadorApplication implements IPatrocinador {
     }
 
     @Override
-    public Patrocinador buscarPatrocinadorPorId(int id) {
+    public Patrocinador buscarPatrocinadorPorUUID(UUID id) {
 
-        return patrocinadorRepository.findById(id).orElseThrow();
+        return patrocinadorRepository.findByUuid(id);
     }
 
     @Override
