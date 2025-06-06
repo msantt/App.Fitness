@@ -4,23 +4,23 @@ import com.example.demo.entities.Desafio;
 import com.example.demo.enums.Status;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface IDesafios {
 
     Desafio salvar(Desafio desafio);
 
-    Desafio buscarPorId(int id);
+    Desafio buscarPorUUID(UUID id);
 
     List<Desafio> listarTodos();
 
-    void deletar(int id);
+    void deletar(UUID id);
 
-    boolean existePorId(int id);
+    boolean existePorUUID(UUID id);
 
-    List<Desafio> buscarPorIdGrupo(int idGrupo);
+    List<Desafio> buscarPorUUIDGrupo(UUID idGrupo);
 
-    List<Desafio> buscarPorIdCategoria(int idCategoria);
+    List<Desafio> buscarPorUUIDCategoria(UUID idCategoria);
 
     List<Desafio> buscarPorStatus(Status status);
 }

@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 import com.example.demo.facades.MembrosGrupoFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/membros-grupo")
@@ -29,8 +31,8 @@ public class MembrosGrupoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MembrosGrupo> buscarPorId(@PathVariable int id) {
-        MembrosGrupo membro = membrosGrupoFacade.buscarPorId(id);
+    public ResponseEntity<MembrosGrupo> buscarPorId(@PathVariable UUID id) {
+        MembrosGrupo membro = membrosGrupoFacade.buscarPorUUID(id);
         if (membro != null) {
             return ResponseEntity.ok(membro);
         } else {
@@ -39,15 +41,15 @@ public class MembrosGrupoController {
     }
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<MembrosGrupo>> listarTodos() {
         List<MembrosGrupo> membros = membrosGrupoFacade.listarTodos();
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MembrosGrupo> atualizar(@PathVariable int id, @Valid @RequestBody MembrosGrupo membrosGrupo) {
-        MembrosGrupo existente = membrosGrupoFacade.buscarPorId(id);
+    public ResponseEntity<MembrosGrupo> atualizar(@PathVariable UUID id, @Valid @RequestBody MembrosGrupo membrosGrupo) {
+        MembrosGrupo existente = membrosGrupoFacade.buscarPorUUID(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
@@ -57,8 +59,8 @@ public class MembrosGrupoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
-        if (membrosGrupoFacade.existePorId(id)) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
+        if (membrosGrupoFacade.existePorUUID(id)) {
             membrosGrupoFacade.deletar(id);
             return ResponseEntity.noContent().build();
         } else {
@@ -67,13 +69,13 @@ public class MembrosGrupoController {
     }
 
     @GetMapping("/grupo/{grupoId}")
-    public ResponseEntity<List<MembrosGrupo>> buscarPorGrupo(@PathVariable int grupoId) {
+    public ResponseEntity<List<MembrosGrupo>> buscarPorGrupo(@PathVariable UUID grupoId) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorGrupo(grupoId);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<MembrosGrupo>> buscarPorUsuario(@PathVariable int usuarioId) {
+    public ResponseEntity<List<MembrosGrupo>> buscarPorUsuario(@PathVariable UUID usuarioId) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorUsuario(usuarioId);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
@@ -86,7 +88,7 @@ public class MembrosGrupoController {
 
 
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<MembrosGrupo>> buscarPorRole(@PathVariable String role) {
+    public ResponseEntity<List<MembrosGrupo>> buscarPorRole(@PathVariable TipoUsuario role) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorRole(role);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }

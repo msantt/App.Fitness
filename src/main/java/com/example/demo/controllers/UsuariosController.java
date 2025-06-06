@@ -1,7 +1,10 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Desafio;
+import com.example.demo.entities.Notificacao;
 import com.example.demo.entities.Usuario;
 import com.example.demo.facades.UsuariosFacade;
+import com.example.demo.repositories.NotificacaoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,16 +13,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuariosController {
 
     private final UsuariosFacade usuariosFacade;
+    private final NotificacaoRepository notificacaoRepository;
 
     @Autowired
-    public UsuariosController(UsuariosFacade usuariosFacade) {
+    public UsuariosController(UsuariosFacade usuariosFacade, NotificacaoRepository notificacaoRepository) {
         this.usuariosFacade = usuariosFacade;
+        this.notificacaoRepository = notificacaoRepository;
     }
 
     @GetMapping("/")
@@ -29,7 +35,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable UUID id) {
         Usuario usuario = usuariosFacade.buscarPorId(id);
         if (usuario != null) {
             return ResponseEntity.ok(usuario);
@@ -50,6 +56,20 @@ public class UsuariosController {
         }
     }
 
+    @GetMapping("/{usuarioId}/recomendacoes/populares")
+    public ResponseEntity<List<Desafio>> recomendarPopulares(@PathVariable UUID usuarioId) {
+        List<Desafio> recomendacoes = usuariosFacade.recomendarDesafiosPopulares(usuarioId);
+        if (recomendacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(recomendacoes);
+    }
+
+    @GetMapping("/{uuid}/notificacoes")
+    public List<Notificacao> listarNotificacoes(@PathVariable UUID uuid) {
+        return notificacaoRepository.findByUsuarioUuidOrderByDataCriacaoDesc(uuid);
+    }
+
 
 
     @PostMapping
@@ -59,7 +79,7 @@ public class UsuariosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable int id, @Valid @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> atualizar(@PathVariable UUID id, @Valid @RequestBody Usuario usuario) {
         Usuario existente = usuariosFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -70,7 +90,7 @@ public class UsuariosController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         usuariosFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

@@ -2,14 +2,16 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "patrocinador")
 public class Patrocinador {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -26,8 +28,8 @@ public class Patrocinador {
     @Column(name = "cnpj")
     private String cnpj;
 
-    public Patrocinador(int id, String nome, String descricao, String site, String logoUrl, String cnpj) {
-        this.id = id;
+    public Patrocinador(UUID uuid, String nome, String descricao, String site, String logoUrl, String cnpj) {
+        this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
         this.site = site;
@@ -38,12 +40,12 @@ public class Patrocinador {
     public Patrocinador() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getNome() {

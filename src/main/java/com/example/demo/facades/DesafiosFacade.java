@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class DesafiosFacade {
@@ -23,8 +24,8 @@ public class DesafiosFacade {
     }
 
 
-    public Desafio buscarPorId(int id) {
-        return desafiosApplication.buscarPorId(id);
+    public Desafio buscarPorId(UUID id) {
+        return desafiosApplication.buscarPorUUID(id);
     }
 
 
@@ -33,23 +34,23 @@ public class DesafiosFacade {
     }
 
 
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         desafiosApplication.deletar(id);
     }
 
 
-    public boolean existePorId(int id) {
-        return desafiosApplication.existePorId(id);
+    public boolean existePorUUID(UUID id) {
+        return desafiosApplication.existePorUUID(id);
     }
 
 
-    public List<Desafio> buscarPorIdGrupo(int idGrupo) {
-        return desafiosApplication.buscarPorIdGrupo(idGrupo);
+    public List<Desafio> buscarPorIdGrupo(UUID idGrupo) {
+        return desafiosApplication.buscarPorUUIDGrupo(idGrupo);
     }
 
 
-    public List<Desafio> buscarPorIdCategoria(int idCategoria) {
-        return desafiosApplication.buscarPorIdCategoria(idCategoria);
+    public List<Desafio> buscarPorIdCategoria(UUID idCategoria) {
+        return desafiosApplication.buscarPorUUIDCategoria(idCategoria);
     }
 
 

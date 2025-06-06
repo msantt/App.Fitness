@@ -2,12 +2,14 @@ package com.example.demo.facades;
 
 import com.example.demo.applications.UsuariosApplication;
 import com.example.demo.entities.CheckIn;
+import com.example.demo.entities.Desafio;
 import com.example.demo.entities.Grupo;
 import com.example.demo.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UsuariosFacade {
@@ -24,8 +26,8 @@ public class UsuariosFacade {
     }
 
 
-    public Usuario buscarPorId(int id) {
-        return usuariosApplication.buscarPorId(id);
+    public Usuario buscarPorId(UUID id) {
+        return usuariosApplication.buscarPorUUID(id);
     }
 
 
@@ -39,7 +41,7 @@ public class UsuariosFacade {
     }
 
 
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         usuariosApplication.deletar(id);
     }
 
@@ -49,23 +51,22 @@ public class UsuariosFacade {
     }
 
 
-    public boolean existePorId(int id) {
-        return usuariosApplication.existePorId(id);
+    public boolean existePorId(UUID id) {
+        return usuariosApplication.existePorUUID(id);
     }
 
 
-    public List<Grupo> listarGruposPorUsuarioId(int idUsuario) {
-        return usuariosApplication.listarGruposPorUsuarioId(idUsuario);
-    }
-
-
-    public List<CheckIn> listarCheckinsPorUsuarioId(int idUsuario) {
-        return usuariosApplication.listarCheckinsPorUsuarioId(idUsuario);
+    public List<Grupo> listarGruposPorUsuarioId(UUID idUsuario) {
+        return usuariosApplication.listarGruposPorUsuarioUUID(idUsuario);
     }
 
 
     public List<Usuario> buscarAtivos() {
         return usuariosApplication.buscarAtivos();
+    }
+
+    public List<Desafio> recomendarDesafiosPopulares(UUID usuarioId) {
+        return usuariosApplication.recomendarDesafiosPopulares(usuarioId);
     }
 
 }

@@ -2,26 +2,25 @@ package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
 import com.example.demo.records.DesafiosRecord;
+import com.example.demo.records.MembroDesafioRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "checkin")
 public class CheckIn {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "id_desafio")
-    private Desafio desafio;
+    @JoinColumn(name = "id_membro_desafio")
+    private MembrosDesafio membroDesafio;
 
     @Column(name = "url_foto")
     private String urlFoto;
@@ -36,41 +35,34 @@ public class CheckIn {
     @Column(name = "status")
     private Status status;
 
-    public CheckIn(int id, Usuario usuario, Desafio desafio, String urlFoto, String local, LocalDateTime dataHoraCheckin, Status status) {
-        this.id = id;
-        this.usuario = usuario;
-        this.desafio = desafio;
+    public CheckIn(UUID uuid, MembrosDesafio membroDesafio, String urlFoto, String local, Status status) {
+        this.uuid = uuid;
+        this.membroDesafio = membroDesafio;
         this.urlFoto = urlFoto;
         this.local = local;
-        this.dataHoraCheckin = dataHoraCheckin;
+        this.dataHoraCheckin = LocalDateTime.now();
         this.status = status;
     }
 
     public CheckIn() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public UsuariosRecord getUsuario() {
-        return new UsuariosRecord(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(),usuario.getDataNascimento(), usuario.getObjetivo(), usuario.getUrlFoto(), usuario.getDataCriacao(),usuario.getStatus(),usuario.getExibirHistorico());
+    public MembroDesafioRecord getMembroDesafio() {
+        return new MembroDesafioRecord(membroDesafio.getId()
+                ,membroDesafio.getUsuario(),membroDesafio.getDesafio(),
+                membroDesafio.getStatus());
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public DesafiosRecord getDesafio() {
-        return new DesafiosRecord(desafio.getId(), desafio.getNome(), desafio.getDescricao(),desafio.getCategoria(),desafio.getGrupos(),desafio.getDataInicio(),desafio.getDataFim(),desafio.getStatus(),desafio.getRecompensa(),desafio.getIsPublico(),desafio.getTipoDesafio(),desafio.getPatrocinador());
-    }
-
-    public void setDesafio(Desafio desafio) {
-        this.desafio = desafio;
+    public void setMembroDesafio(MembrosDesafio membroDesafio) {
+        this.membroDesafio = membroDesafio;
     }
 
     public String getUrlFoto() {

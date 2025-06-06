@@ -4,23 +4,23 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.enums.Status;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface IGrupos {
 
     Grupo salvar(Grupo grupo);
 
-    Grupo buscarPorId(int id);
+    Grupo buscarPorUUID(UUID id);
 
     List<Grupo> listarTodos();
 
-    void deletar(int id);
+    void deletar(UUID id);
 
-    boolean existePorId(int id);
+    boolean existePorUUID(UUID id);
 
     List<Grupo> buscarPorStatus(Status status);
 
-    List<Grupo> buscarPorCriadorId(int criador);
+    List<Grupo> buscarPorCriadorUUID(UUID criador);
 
     List<Grupo> buscarPorNome(String nome);
 }

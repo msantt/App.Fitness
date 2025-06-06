@@ -5,4 +5,8 @@ public enum Status {
     INATIVO,
     EXCLUIDO,
     BLOQUEADO,
+    PENDENTE,
+    ACEITO,
+    RECUSADO,
+    CONCLUIDO,
 }

@@ -4,10 +4,13 @@ import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoDesafio;
 import com.example.demo.records.CategoriaRecord;
 import com.example.demo.records.GrupoRecord;
+import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "desafios")
@@ -15,8 +18,8 @@ public class Desafio {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @Column(name = "nome")
     private String nome;
@@ -24,7 +27,7 @@ public class Desafio {
     @Column(name = "descricao")
     private String descricao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
@@ -33,17 +36,17 @@ public class Desafio {
     private Grupo grupo;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_Fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "recompensa")
-    private String recompensa;
+    @Column(name = "valor_aposta")
+    private String valorAposta;
 
     @Column(name = "is_publico")
     private Boolean isPublico;
@@ -56,11 +59,15 @@ public class Desafio {
     @JoinColumn(name = "id_patrocinador")
     private Patrocinador patrocinador;
 
-    @OneToMany(mappedBy = "desafio")
-    private List<CheckIn> checkIns;
+    @ManyToOne
+    @JoinColumn(name = "criador_id")
+    private Usuario criador;
 
-    public Desafio(int id, String nome, String descricao, Categoria categoria, Grupo grupo, Date dataInicio, Date dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador) {
-        this.id = id;
+    @OneToMany(mappedBy = "desafio")
+    private List<MembrosDesafio> membrosDesafios;
+
+    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
+        this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -68,21 +75,22 @@ public class Desafio {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.status = status;
-        this.recompensa = recompensa;
+        this.valorAposta = valorAposta;
         this.isPublico = isPublico;
         this.tipoDesafio = tipoDesafio;
         this.patrocinador = patrocinador;
+        this.criador = criador;
     }
 
     public Desafio() {
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getNome() {
@@ -117,19 +125,19 @@ public class Desafio {
         this.grupo = grupo;
     }
 
-    public Date getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(Date dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public Date getDataFim() {
+    public LocalDate getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(Date dataFim) {
+    public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
     }
 
@@ -141,12 +149,12 @@ public class Desafio {
         this.status = status;
     }
 
-    public String getRecompensa() {
-        return recompensa;
+    public String getValorAposta() {
+        return valorAposta;
     }
 
-    public void setRecompensa(String recompensa) {
-        this.recompensa = recompensa;
+    public void setValorAposta(String valorAposta) {
+        this.valorAposta = valorAposta;
     }
 
     public Boolean getIsPublico() {
@@ -173,13 +181,26 @@ public class Desafio {
         this.patrocinador = patrocinador;
     }
 
-    public List<CheckIn> getCheckIns() {
-        return checkIns;
+    public void setMembrosDesafios(List<MembrosDesafio> membrosDesafios) {
+        this.membrosDesafios = membrosDesafios;
     }
 
-    public void setCheckIns(List<CheckIn> checkIns) {
-        this.checkIns = checkIns;
+    public UsuariosRecord getCriador() {
+        return new UsuariosRecord(
+                criador.getId(),
+                criador.getNome(),
+                criador.getEmail(),
+                criador.getSenha(),
+                criador.getDataNascimento(),
+                criador.getObjetivo(),
+                criador.getUrlFoto(),
+                criador.getDataCriacao(),
+                criador.getStatus(),
+                criador.getExibirHistorico()
+        );
     }
 
-
+    public void setCriador(Usuario usuario) {
+        this.criador = usuario;
+    }
 }

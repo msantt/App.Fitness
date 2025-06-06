@@ -1,4 +1,6 @@
 package com.example.demo.records;
 
-public record CategoriaRecord(int id, String nome, String descricao) {
+import java.util.UUID;
+
+public record CategoriaRecord(UUID id, String nome, String descricao) {
 }

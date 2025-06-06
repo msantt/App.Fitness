@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/desafios")
@@ -28,7 +29,7 @@ public class DesafiosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Desafio> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Desafio> buscarPorId(@PathVariable UUID id) {
         Desafio desafio = desafiosFacade.buscarPorId(id);
         if (desafio != null) {
             return ResponseEntity.ok(desafio);
@@ -38,7 +39,7 @@ public class DesafiosController {
     }
 
     @GetMapping("/categoria/{id}")
-    public ResponseEntity<List<Desafio>> buscarPorCategoria(@PathVariable int id) {
+    public ResponseEntity<List<Desafio>> buscarPorCategoria(@PathVariable UUID id) {
         List<Desafio> desafios = desafiosFacade.buscarPorIdCategoria(id);
         return desafios.isEmpty() ?
                 ResponseEntity.noContent().build() :
@@ -46,7 +47,7 @@ public class DesafiosController {
     }
 
     @GetMapping("/grupo/{id}")// erro
-    public ResponseEntity<List<Desafio>> buscarPorGrupo(@PathVariable int id) {
+    public ResponseEntity<List<Desafio>> buscarPorGrupo(@PathVariable UUID id) {
         List<Desafio> desafios = desafiosFacade.buscarPorIdGrupo(id);
         return desafios.isEmpty() ?
                 ResponseEntity.noContent().build() :
@@ -61,7 +62,7 @@ public class DesafiosController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Desafio> atualizar(@PathVariable int id, @Valid @RequestBody Desafio desafio) {
+    public ResponseEntity<Desafio> atualizar(@PathVariable UUID id, @Valid @RequestBody Desafio desafio) {
         Desafio existente = desafiosFacade.buscarPorId(id);
         if (existente ==  null) {
             return ResponseEntity.notFound().build();
@@ -73,7 +74,7 @@ public class DesafiosController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         desafiosFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

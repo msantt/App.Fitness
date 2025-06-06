@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/grupos")
@@ -29,8 +30,8 @@ public class GruposController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Grupo> buscarPorId(@PathVariable int id) {
-        Grupo grupo = gruposFacade.buscarPorId(id);
+    public ResponseEntity<Grupo> buscarPorId(@PathVariable UUID id) {
+        Grupo grupo = gruposFacade.buscarPorUUID(id);
         if (grupo != null) {
             return ResponseEntity.ok(grupo);
         } else {
@@ -46,8 +47,8 @@ public class GruposController {
     }
 
     @GetMapping("/criador/{id}")
-    public ResponseEntity<List<Grupo>> buscarPorCriador(@PathVariable int id) {
-        List<Grupo> grupos = gruposFacade.buscarPorCriadorId(id);
+    public ResponseEntity<List<Grupo>> buscarPorCriador(@PathVariable UUID id) {
+        List<Grupo> grupos = gruposFacade.buscarPorCriadorUUID(id);
         return grupos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(grupos);
     }
 
@@ -58,8 +59,8 @@ public class GruposController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Grupo> atualizar(@PathVariable int id, @Valid @RequestBody Grupo grupo) {
-       Grupo existente = gruposFacade.buscarPorId(id);
+    public ResponseEntity<Grupo> atualizar(@PathVariable UUID id, @Valid @RequestBody Grupo grupo) {
+       Grupo existente = gruposFacade.buscarPorUUID(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
@@ -69,7 +70,7 @@ public class GruposController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         gruposFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

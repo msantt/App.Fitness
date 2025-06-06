@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class CheckinFacade {
@@ -24,8 +24,8 @@ public class CheckinFacade {
     }
 
 
-    public CheckIn buscarPorId(int id) {
-        return checkInApplication.buscarPorId(id);
+    public CheckIn buscarPorId(UUID id) {
+        return checkInApplication.buscarPorUUID(id);
     }
 
 
@@ -34,18 +34,18 @@ public class CheckinFacade {
     }
 
 
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         checkInApplication.deletar(id);
     }
 
 
-    public boolean existePorId(int id) {
-        return(checkInApplication.existePorId(id));
+    public boolean existePorId(UUID id) {
+        return(checkInApplication.existePorUUID(id));
     }
 
 
-    public List<CheckIn> buscarPorIdUsuario(int idUsuario) {
-        return checkInApplication.buscarPorIdUsuario(idUsuario);
+    public List<CheckIn> buscarPorMembrosDesafiosId(UUID membrosDesafiosId) {
+        return checkInApplication.buscarPorMembrosDesafiosUUID(membrosDesafiosId);
     }
 
 

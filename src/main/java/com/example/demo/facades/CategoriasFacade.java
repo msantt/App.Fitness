@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class CategoriasFacade {
@@ -24,8 +24,8 @@ public class CategoriasFacade {
     }
 
 
-    public Categoria buscarPorId(int id) {
-        return categoriasApplication.buscarPorId(id);
+    public Categoria buscarPorId(UUID id) {
+        return categoriasApplication.buscarPorUUID(id);
     }
 
 
@@ -39,7 +39,7 @@ public class CategoriasFacade {
     }
 
 
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         categoriasApplication.deletar(id);
     }
 
@@ -48,8 +48,8 @@ public class CategoriasFacade {
         return categoriasApplication.existePorNome(nome);
     }
 
-    public boolean existePorId(int id) {
-        return categoriasApplication.existePorId(id);
+    public boolean existePorId(UUID id) {
+        return categoriasApplication.existePorUUID(id);
     }
 
 
@@ -58,7 +58,12 @@ public class CategoriasFacade {
     }
 
 
-    public List<Desafio> listarDesafiosPorCategoriaId(int idCategoria) {
-        return categoriasApplication.listarDesafiosPorCategoriaId(idCategoria);
+    public List<Desafio> listarDesafiosPorCategoriaUUID(UUID idCategoria) {
+        return categoriasApplication.listarDesafiosPorCategoriaUUID(idCategoria);
     }
+
+    public List<Desafio> listarDesafiosAtivosPorCategoria(UUID idCategoria) {
+        return categoriasApplication.listarDesafiosAtivosPorCategoria(idCategoria);
+    }
+
 }

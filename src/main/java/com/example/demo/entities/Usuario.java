@@ -3,25 +3,38 @@ package com.example.demo.entities;
 import com.example.demo.enums.Objetivo;
 import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoUsuario;
+import com.example.demo.enums.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID uuid;
 
     @Column(name = "nome")
     private String nome;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "senha")
     private String senha;
+
+    @Column(name = "role")
+    private UserRole role;
+
     @Column(name = "data_nascimento")
     private Date dataNascimento;
 
@@ -33,7 +46,7 @@ public class Usuario {
     private String urlFoto;
 
     @Column(name = "data_criacao")
-    private Date dataCriacao;
+    private LocalDateTime dataCriacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -50,18 +63,19 @@ public class Usuario {
     private List<Grupo> grupoCriados;
 
     @OneToMany(mappedBy = "usuario")
-    private List<CheckIn> checkIns;
+    private List<MembrosDesafio> desafios;
 
     @OneToMany(mappedBy = "usuario")
     private List<MembrosGrupo> membrosGrupos;
 
 
 
-    public Usuario(int id, String nome, String email, String senha, Date dataNascimento, Objetivo objetivo, String urlFoto, Date dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
-        this.id = id;
+    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
+        this.uuid = uuid;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.role = role;
         this.dataNascimento = dataNascimento;
         this.objetivo = objetivo;
         this.urlFoto = urlFoto;
@@ -75,12 +89,12 @@ public class Usuario {
 
     }
 
-    public int getId() {
-        return id;
+    public UUID getId() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getNome() {
@@ -107,6 +121,14 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     public Date getDataNascimento() {
         return dataNascimento;
     }
@@ -131,11 +153,11 @@ public class Usuario {
         this.urlFoto = urlFoto;
     }
 
-    public Date getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
@@ -171,20 +193,48 @@ public class Usuario {
         this.grupoCriados = grupoCriados;
     }
 
-    public List<CheckIn> getCheckIns() {
-        return checkIns;
-    }
-
-    public void setCheckIns(List<CheckIn> checkIns) {
-        this.checkIns = checkIns;
-    }
-
     public List<MembrosGrupo> getMembrosGrupos() {
         return membrosGrupos;
     }
 
     public void setMembrosGrupos(List<MembrosGrupo> membrosGrupos) {
         this.membrosGrupos = membrosGrupos;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
 

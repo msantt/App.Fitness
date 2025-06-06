@@ -4,29 +4,30 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoUsuario;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface IMembrosGrupo {
 
     MembrosGrupo salvar(MembrosGrupo membrosGrupo);
 
-    MembrosGrupo buscarPorId(int id);
+    MembrosGrupo buscarPorUUID(UUID id);
 
     List<MembrosGrupo> listarTodos();
 
-    void deletar(int id);
+    void deletar(UUID id);
 
-    boolean existePorId(int id);
+    boolean existePorUUID(UUID id);
 
-    List<MembrosGrupo> buscarPorGrupo(int grupoId);
+    List<MembrosGrupo> buscarPorGrupo(UUID grupoUUID);
 
-    List<MembrosGrupo> buscarPorUsuario(int usuarioId);
+    List<MembrosGrupo> buscarPorUsuario(UUID usuarioUUID);
 
     List<MembrosGrupo> buscarPorStatus(Status status);
 
     MembrosGrupo buscarPorGrupoEUsuario(Grupo grupo, Usuario usuario);
 
-    List<MembrosGrupo> buscarPorRole(String role);
+    List<MembrosGrupo> buscarPorRole(TipoUsuario role);
 }

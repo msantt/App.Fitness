@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/check-in")
@@ -31,7 +32,7 @@ public class CheckinController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CheckIn> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<CheckIn> buscarPorId(@PathVariable UUID id) {
         CheckIn checkIn = checkinFacade.buscarPorId(id);
         if (checkIn != null) {
             return ResponseEntity.ok(checkIn);
@@ -42,8 +43,8 @@ public class CheckinController {
 
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<CheckIn>> buscarPorUsuario(@PathVariable int id) {
-        List<CheckIn> checkIns = checkinFacade.buscarPorIdUsuario(id);
+    public ResponseEntity<List<CheckIn>> buscarPorMembrosDesafiosId(@PathVariable UUID id) {
+        List<CheckIn> checkIns = checkinFacade.buscarPorMembrosDesafiosId(id);
         return checkIns.isEmpty() ?
                 ResponseEntity.noContent().build() :
                 ResponseEntity.ok(checkIns);
@@ -57,7 +58,7 @@ public class CheckinController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CheckIn> atualizar(@PathVariable int id,@Valid @RequestBody CheckIn checkIns) {
+    public ResponseEntity<CheckIn> atualizar(@PathVariable UUID id,@Valid @RequestBody CheckIn checkIns) {
         CheckIn existente = checkinFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -68,7 +69,7 @@ public class CheckinController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         checkinFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

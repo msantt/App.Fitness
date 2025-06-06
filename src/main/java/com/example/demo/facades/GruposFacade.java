@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class GruposFacade {
@@ -23,8 +24,8 @@ public class GruposFacade {
     }
 
 
-    public Grupo buscarPorId(int id) {
-        return gruposApplication.buscarPorId(id);
+    public Grupo buscarPorUUID(UUID id) {
+        return gruposApplication.buscarPorUUID(id);
     }
 
 
@@ -33,13 +34,13 @@ public class GruposFacade {
     }
 
 
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         gruposApplication.deletar(id);
     }
 
 
-    public boolean existePorId(int id) {
-        return gruposApplication.existePorId(id);
+    public boolean existePorUUID(UUID id) {
+        return gruposApplication.existePorUUID(id);
     }
 
 
@@ -48,8 +49,8 @@ public class GruposFacade {
     }
 
 
-    public List<Grupo> buscarPorCriadorId(int criador) {
-        return gruposApplication.buscarPorCriadorId(criador);
+    public List<Grupo> buscarPorCriadorUUID(UUID criador) {
+        return gruposApplication.buscarPorCriadorUUID(criador);
     }
 
 

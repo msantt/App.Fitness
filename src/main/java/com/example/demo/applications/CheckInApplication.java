@@ -1,34 +1,116 @@
 package com.example.demo.applications;
 
-import com.example.demo.entities.CheckIn;
+import com.example.demo.config.RegraNegocioException;
+import com.example.demo.entities.*;
+import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.interfaces.ICheckIn;
-import com.example.demo.repositories.CheckInRepository;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CheckInApplication implements ICheckIn{
 
 
+    private final DesafioRepository desafioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final NotificacaoApplication notificacaoApplication;
     private CheckInRepository checkInRepository;
+    private MembrosDesafioRepository membroDesafioRepository;
 
     @Autowired
-    public CheckInApplication(CheckInRepository checkInRepository) {
+    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository, NotificacaoApplication notificacaoApplication) {
         this.checkInRepository = checkInRepository;
+        this.desafioRepository = desafioRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.membroDesafioRepository = membroDesafioRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.notificacaoApplication = notificacaoApplication;
     }
 
-    @Override
     public CheckIn salvar(CheckIn checkIn) {
-        return checkInRepository.save(checkIn);
+        if (checkIn.getStatus() == null) {
+            checkIn.setStatus(Status.PENDENTE);
+        }
+
+        if (checkIn.getDataHoraCheckin() == null) {
+            checkIn.setDataHoraCheckin(LocalDateTime.now());
+        }
+
+        if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
+            throw new RegraNegocioException("Check-in não pode ser em data passada.");
+        }
+        MembrosDesafio membro = membroDesafioRepository.findByUuid(checkIn.getMembroDesafio().id());
+        if (membro == null) {
+            throw new RegraNegocioException("Membro do desafio não encontrado");
+        }
+        if (!membro.getStatus().equals(Status.ATIVO)) {
+            throw new RegraNegocioException("Membro do desafio não está ativo.");
+        }
+
+        Desafio desafio = desafioRepository.findByUuid(membro.getDesafio().getId());
+                if (desafio == null) {
+                    throw new RegraNegocioException("Desafio não encontrado");
+                }
+
+        if (!desafio.getStatus().equals(Status.ATIVO)) {
+            throw new RegraNegocioException("Check-in só permitido para desafios ativos.");
+        }
+
+        Categoria categoria = categoriaRepository.findByUuid(desafio.getCategoria().id());
+
+        if (categoria == null) {
+            throw new RegraNegocioException("Desafio não tem categoria associada.");
+        }
+
+        Usuario usuario = usuarioRepository.findByUuid(membro.getUsuario().getId());
+        if (usuario == null) {
+            throw new RegraNegocioException("Usuário não encontrado");
+        }
+
+        LocalDate hoje = LocalDate.now();
+        LocalDateTime inicioDoDia = hoje.atStartOfDay();
+        LocalDateTime fimDoDia = hoje.atTime(LocalTime.MAX);
+
+        boolean jaFezCheckinHoje = checkInRepository
+                .existsByMembroDesafio_Usuario_UuidAndMembroDesafio_Desafio_UuidAndDataHoraCheckinBetween(
+                        usuario.getId(), desafio.getId(), inicioDoDia, fimDoDia
+                );
+
+        if (jaFezCheckinHoje) {
+            throw new RegraNegocioException("Usuário já fez check-in hoje para esse desafio.");
+        }
+        checkIn.setMembroDesafio(membro);
+        checkIn.setStatus(Status.CONCLUIDO);
+
+        CheckIn checkInSalvo = checkInRepository.save(checkIn);
+
+        // Notificar os outros membros do desafio
+        List<MembrosDesafio> membros = membroDesafioRepository.findByDesafioUuid(desafio.getId());
+        Usuario quemFez = usuario;
+        for (MembrosDesafio m : membros) {
+            Usuario u = m.getUsuario();
+            if (!u.getId().equals(quemFez.getId())) {
+                String msg = quemFez.getNome() + " fez um check-in no desafio " + desafio.getNome();
+                notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.CHECK_IN);
+            }
+        }
+
+        return checkInSalvo;
     }
 
+
     @Override
-    public CheckIn buscarPorId(int id) {
-        return checkInRepository.findById(id).orElseThrow();
+    public CheckIn buscarPorUUID(UUID id) {
+        return checkInRepository.findByUuid(id);
     }
 
     @Override
@@ -37,18 +119,18 @@ public class CheckInApplication implements ICheckIn{
     }
 
     @Override
-    public void deletar(int id) {
-        checkInRepository.deleteById(id);
+    public void deletar(UUID id) {
+        checkInRepository.deleteByUuid(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return(checkInRepository.existsById(id));
+    public boolean existePorUUID(UUID id) {
+        return(checkInRepository.existsByUuid(id));
     }
 
     @Override
-    public List<CheckIn> buscarPorIdUsuario(int idUsuario) {
-        return checkInRepository.findByUsuarioId(idUsuario);
+    public List<CheckIn> buscarPorMembrosDesafiosUUID(UUID membrosDesafiosId) {
+        return checkInRepository.findByMembroDesafioUuid(membrosDesafiosId);
     }
 
     @Override
