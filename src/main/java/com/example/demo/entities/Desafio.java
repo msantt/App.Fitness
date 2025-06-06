@@ -6,7 +6,6 @@ import com.example.demo.records.CategoriaRecord;
 import com.example.demo.records.GrupoRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -46,8 +45,8 @@ public class Desafio {
     @Column(name = "status")
     private Status status;
 
-    @Column(name = "recompensa")
-    private String recompensa;
+    @Column(name = "valor_aposta")
+    private String valorAposta;
 
     @Column(name = "is_publico")
     private Boolean isPublico;
@@ -67,7 +66,7 @@ public class Desafio {
     @OneToMany(mappedBy = "desafio")
     private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
+    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
         this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
@@ -76,7 +75,7 @@ public class Desafio {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.status = status;
-        this.recompensa = recompensa;
+        this.valorAposta = valorAposta;
         this.isPublico = isPublico;
         this.tipoDesafio = tipoDesafio;
         this.patrocinador = patrocinador;
@@ -150,12 +149,12 @@ public class Desafio {
         this.status = status;
     }
 
-    public String getRecompensa() {
-        return recompensa;
+    public String getValorAposta() {
+        return valorAposta;
     }
 
-    public void setRecompensa(String recompensa) {
-        this.recompensa = recompensa;
+    public void setValorAposta(String valorAposta) {
+        this.valorAposta = valorAposta;
     }
 
     public Boolean getIsPublico() {

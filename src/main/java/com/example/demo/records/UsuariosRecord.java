@@ -1,5 +1,6 @@
 package com.example.demo.records;
 
+import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Objetivo;
 import com.example.demo.enums.Status;
 
@@ -11,5 +12,20 @@ public record UsuariosRecord(UUID id, String nome, String email, String senha, D
                              Status status, Boolean exibirHistorico) {
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

@@ -3,7 +3,9 @@ package com.example.demo.applications;
 import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Desafio;
 import com.example.demo.entities.MembrosDesafio;
+import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosDesafio;
 import com.example.demo.repositories.CategoriaRepository;
@@ -22,14 +24,19 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
     private final MembrosDesafioRepository repository;
     private final DesafioRepository desafioRepository;
     private final CategoriaRepository categoriaRepository;
+    private final UsuariosApplication usuariosApplication;
+    private final MembrosDesafioRepository membrosDesafioRepository;
     private MembrosGrupoRepository membrosGrupoRepository;
+    private NotificacaoApplication notificacaoApplication;
 
-    public MembrosDesafiosApplication(MembrosDesafioRepository repository, CategoriaRepository categoriaRepository, DesafioRepository desafioRepository,MembrosGrupoRepository membrosGrupoRepository) {
+    public MembrosDesafiosApplication(MembrosDesafioRepository repository, CategoriaRepository categoriaRepository, DesafioRepository desafioRepository, MembrosGrupoRepository membrosGrupoRepository, UsuariosApplication usuariosApplication, NotificacaoApplication notificacaoApplication, MembrosDesafioRepository membrosDesafioRepository) {
         this.repository = repository;
         this.desafioRepository = desafioRepository;
         this.categoriaRepository = categoriaRepository;
         this.membrosGrupoRepository = membrosGrupoRepository;
-
+        this.usuariosApplication = usuariosApplication;
+        this.notificacaoApplication = notificacaoApplication;
+        this.membrosDesafioRepository = membrosDesafioRepository;
     }
 
 
@@ -92,7 +99,23 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             throw new IllegalStateException("O membro já está cadastrado neste desafio.");
         }
 
-        return repository.save(membroDesafio);
+        MembrosDesafio membroSalvo = membrosDesafioRepository.save(membroDesafio);
+
+        List<MembrosDesafio> membrosExistentes = membrosDesafioRepository.findByDesafioUuid(membroDesafio.getDesafio().getId());
+
+        Usuario novoMembro = usuariosApplication.buscarPorUUID(membroDesafio.getUsuario().getId());
+
+        Desafio desafioNotificacao = desafioRepository.findByUuid(membroDesafio.getDesafio().getId());
+
+        for (MembrosDesafio membro : membrosExistentes) {
+            Usuario u = usuariosApplication.buscarPorUUID(membro.getUsuario().getId());
+            if (!u.getId().equals(novoMembro.getId())) {
+                String msg = novoMembro.getNome() + " entrou no desafio " + desafioNotificacao.getNome();
+                notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.NOVO_MEMBRO_DESAFIO);
+            }
+        }
+
+        return membroSalvo;
     }
 
 

@@ -3,6 +3,7 @@ package com.example.demo.applications;
 import com.example.demo.config.RegraNegocioException;
 import com.example.demo.entities.*;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.interfaces.ICheckIn;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,18 @@ public class CheckInApplication implements ICheckIn{
     private final DesafioRepository desafioRepository;
     private final UsuarioRepository usuarioRepository;
     private final CategoriaRepository categoriaRepository;
+    private final NotificacaoApplication notificacaoApplication;
     private CheckInRepository checkInRepository;
     private MembrosDesafioRepository membroDesafioRepository;
 
     @Autowired
-    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository) {
+    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository, NotificacaoApplication notificacaoApplication) {
         this.checkInRepository = checkInRepository;
         this.desafioRepository = desafioRepository;
         this.usuarioRepository = usuarioRepository;
         this.membroDesafioRepository = membroDesafioRepository;
         this.categoriaRepository = categoriaRepository;
+        this.notificacaoApplication = notificacaoApplication;
     }
 
     public CheckIn salvar(CheckIn checkIn) {
@@ -86,9 +89,22 @@ public class CheckInApplication implements ICheckIn{
             throw new RegraNegocioException("Usuário já fez check-in hoje para esse desafio.");
         }
         checkIn.setMembroDesafio(membro);
-
         checkIn.setStatus(Status.CONCLUIDO);
-        return checkInRepository.save(checkIn);
+
+        CheckIn checkInSalvo = checkInRepository.save(checkIn);
+
+        // Notificar os outros membros do desafio
+        List<MembrosDesafio> membros = membroDesafioRepository.findByDesafioUuid(desafio.getId());
+        Usuario quemFez = usuario;
+        for (MembrosDesafio m : membros) {
+            Usuario u = m.getUsuario();
+            if (!u.getId().equals(quemFez.getId())) {
+                String msg = quemFez.getNome() + " fez um check-in no desafio " + desafio.getNome();
+                notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.CHECK_IN);
+            }
+        }
+
+        return checkInSalvo;
     }
 
 

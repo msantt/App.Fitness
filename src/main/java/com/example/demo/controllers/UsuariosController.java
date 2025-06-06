@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Desafio;
+import com.example.demo.entities.Notificacao;
 import com.example.demo.entities.Usuario;
 import com.example.demo.facades.UsuariosFacade;
+import com.example.demo.repositories.NotificacaoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,12 @@ import java.util.UUID;
 public class UsuariosController {
 
     private final UsuariosFacade usuariosFacade;
+    private final NotificacaoRepository notificacaoRepository;
 
     @Autowired
-    public UsuariosController(UsuariosFacade usuariosFacade) {
+    public UsuariosController(UsuariosFacade usuariosFacade, NotificacaoRepository notificacaoRepository) {
         this.usuariosFacade = usuariosFacade;
+        this.notificacaoRepository = notificacaoRepository;
     }
 
     @GetMapping("/")
@@ -60,6 +64,13 @@ public class UsuariosController {
         }
         return ResponseEntity.ok(recomendacoes);
     }
+
+    @GetMapping("/{uuid}/notificacoes")
+    public List<Notificacao> listarNotificacoes(@PathVariable UUID uuid) {
+        return notificacaoRepository.findByUsuarioUuidOrderByDataCriacaoDesc(uuid);
+    }
+
+
 
     @PostMapping
     public ResponseEntity<Void> salvar(@Valid @RequestBody Usuario usuario) {

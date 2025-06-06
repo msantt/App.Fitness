@@ -2,8 +2,6 @@ package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoUsuario;
-import com.example.demo.records.CheckInRecord;
-import com.example.demo.records.DesafiosRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 

@@ -4,8 +4,10 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosGrupo;
+import com.example.demo.records.UsuariosRecord;
 import com.example.demo.repositories.GrupoRepository;
 import com.example.demo.repositories.MembrosGrupoRepository;
 import com.example.demo.repositories.UsuarioRepository;
@@ -23,13 +25,23 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
 
     private final GrupoRepository grupoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UsuariosApplication usuariosApplication;
     private MembrosGrupoRepository membrosGrupoRepository;
+    private NotificacaoApplication notificacaoApplication;
 
     @Autowired
-    public MembrosGrupoApplication(MembrosGrupoRepository membrosGrupoRepository, GrupoRepository grupoRepository, UsuarioRepository usuarioRepository) {
+    public MembrosGrupoApplication(
+        MembrosGrupoRepository membrosGrupoRepository,
+        GrupoRepository grupoRepository,
+        UsuarioRepository usuarioRepository,
+        UsuariosApplication usuariosApplication,
+        NotificacaoApplication notificacaoApplication
+    ) {
         this.membrosGrupoRepository = membrosGrupoRepository;
         this.grupoRepository = grupoRepository;
         this.usuarioRepository = usuarioRepository;
+        this.usuariosApplication = usuariosApplication;
+        this.notificacaoApplication = notificacaoApplication;
     }
 
     @Override
@@ -57,12 +69,27 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
             throw new IllegalArgumentException("O grupo deve estar ativo.");
         }
 
-
-
         if (membrosGrupo.getRole() == null) {
             membrosGrupo.setRole(TipoUsuario.MEMBRO);
         }
-        return membrosGrupoRepository.save(membrosGrupo);
+
+        MembrosGrupo membroSalvo = membrosGrupoRepository.save(membrosGrupo);
+
+        List<MembrosGrupo> membrosExistentes = membrosGrupoRepository.findByGrupo_Uuid(membrosGrupo.getGrupo().id());
+
+        Usuario novoMembro = usuariosApplication.buscarPorUUID(membrosGrupo.getUsuario().getId());
+
+        Grupo grupoNotificacao = grupoRepository.findByUuid(membrosGrupo.getGrupo().id());
+
+        for (MembrosGrupo membro : membrosExistentes) {
+            Usuario u = usuariosApplication.buscarPorUUID(membro.getUsuario().getId());
+            if (!u.getId().equals(novoMembro.getId())) {
+                String msg = novoMembro.getNome() + " entrou no grupo " + grupoNotificacao.getNome();
+                notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.NOVO_MEMBRO);
+            }
+        }
+
+        return membroSalvo;
     }
 
     @Override

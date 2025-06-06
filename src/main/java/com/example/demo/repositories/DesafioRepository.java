@@ -4,6 +4,7 @@ import com.example.demo.entities.Desafio;
 import com.example.demo.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,4 +22,6 @@ public interface DesafioRepository extends JpaRepository<Desafio, Integer> {
     Desafio findByUuid(UUID uuid);
     boolean existsByUuid(UUID uuid);
     void deleteByUuid(UUID uuid);
+
+    List<Desafio> findByDataFim(LocalDate doisDiasDepois);
 }

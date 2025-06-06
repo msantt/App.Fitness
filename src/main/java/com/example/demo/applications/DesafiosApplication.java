@@ -3,12 +3,11 @@ package com.example.demo.applications;
 import com.example.demo.config.RegraNegocioException;
 import com.example.demo.entities.*;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IDesafios;
-import com.example.demo.repositories.CategoriaRepository;
-import com.example.demo.repositories.DesafioRepository;
-import com.example.demo.repositories.GrupoRepository;
-import com.example.demo.repositories.MembrosDesafioRepository;
+import com.example.demo.records.UsuariosRecord;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +23,20 @@ public class DesafiosApplication implements IDesafios {
     private final GrupoRepository grupoRepository;
     private final CategoriaRepository categoriaRepository;
     private final MembrosDesafioRepository membrosDesafioRepository;
+    private final MembrosGrupoRepository membrosGrupoRepository;
+    private NotificacaoApplication notificacaoApplication;
     private DesafioRepository desafiosRepository;
     private UsuariosApplication usuarioRepository;
 
     @Autowired
-    public DesafiosApplication(DesafioRepository desafiosRepository, GrupoRepository grupoRepository, CategoriaRepository categoriaRepository, UsuariosApplication usuarioRepository, MembrosDesafioRepository membrosDesafioRepository) {
+    public DesafiosApplication(DesafioRepository desafiosRepository, GrupoRepository grupoRepository, CategoriaRepository categoriaRepository, UsuariosApplication usuarioRepository, MembrosDesafioRepository membrosDesafioRepository, MembrosGrupoRepository membrosGrupoRepository,NotificacaoApplication notificacaoApplication) {
         this.desafiosRepository = desafiosRepository;
         this.grupoRepository = grupoRepository;
         this.categoriaRepository = categoriaRepository;
         this.usuarioRepository = usuarioRepository;
         this.membrosDesafioRepository = membrosDesafioRepository;
+        this.membrosGrupoRepository = membrosGrupoRepository;
+        this.notificacaoApplication = notificacaoApplication;
     }
 
     @Override
@@ -83,7 +86,16 @@ public class DesafiosApplication implements IDesafios {
         membro.setDataEntrada(LocalDate.from(LocalDateTime.now()));
 
         membrosDesafioRepository.save(membro);
-
+        List<MembrosGrupo> membrosGrupo = membrosGrupoRepository.findByGrupo_Uuid(grupo.getId());
+        Usuario criador = usuario;
+        for (MembrosGrupo membroGrupo : membrosGrupo) {
+            // Buscar a entidade Usuario pelo UUID do UsuariosRecord
+            Usuario u = usuarioRepository.buscarPorUUID(membroGrupo.getUsuario().getId());
+            if (!u.getId().equals(criador.getId())) {
+                String msg = criador.getNome() + " criou um novo desafio no grupo " + grupo.getNome() + ": " + desafio.getNome();
+                notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.NOVO_DESAFIO);
+            }
+        }
         return desafioSalvo;
     }
 
