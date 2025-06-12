@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RecompensaApplication implements IRecompensa {
 
-    private RecompensaRepository recompensaRepository;
+    private final RecompensaRepository recompensaRepository;
 
     @Autowired
     public RecompensaApplication(RecompensaRepository recompensaRepository) {
@@ -24,7 +25,7 @@ public class RecompensaApplication implements IRecompensa {
     }
 
     @Override
-    public Recompensa buscarPorId(int id) {
+    public Recompensa buscarPorId(UUID id) {
         return recompensaRepository.findById(id).orElseThrow();
     }
 
@@ -34,22 +35,18 @@ public class RecompensaApplication implements IRecompensa {
     }
 
     @Override
-    public void deletar(int id) {
+    public void deletar(UUID id) {
         recompensaRepository.deleteById(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return recompensaRepository.findById(id).isPresent();
+    public boolean existePorId(UUID id) {
+        return recompensaRepository.existsById(id);
     }
 
     @Override
-    public List<Recompensa> listarPorUsuarioId(int idUsuario) {
-        return recompensaRepository.findByUsuarioId(idUsuario);
-    }
-
-    @Override
-    public List<Recompensa> listarPorDesafioId(int idDesafio) {
-        return recompensaRepository.findByDesafioId(idDesafio);
+    public List<Recompensa> listarPorMembroDesafioId(UUID idDesafio) {
+        return recompensaRepository.findByMembroDesafioId(idDesafio);
     }
 }
+

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class RecompensaFacade {
@@ -21,7 +22,7 @@ public class RecompensaFacade {
         return recompensaApplication.salvar(recompensa);
     }
 
-    public Recompensa buscarRecompensaPorId(int id) {
+    public Recompensa buscarRecompensaPorId(UUID id) {
         return recompensaApplication.buscarPorId(id);
     }
 
@@ -29,19 +30,15 @@ public class RecompensaFacade {
         return recompensaApplication.listarTodos();
     }
 
-    public void deletarRecompensa(int id) {
+    public void deletarRecompensa(UUID id) {
         recompensaApplication.deletar(id);
     }
 
-    public boolean existeRecompensaPorId(int id) {
+    public boolean existeRecompensaPorId(UUID id) {
         return recompensaApplication.existePorId(id);
     }
 
-    public List<Recompensa> buscarRecompensasPorUsuario(int idUsuario) {
-        return recompensaApplication.listarPorUsuarioId(idUsuario);
-    }
-
-    public List<Recompensa> buscarRecompensasPorDesafio(int idDesafio) {
-        return recompensaApplication.listarPorDesafioId(idDesafio);
+    public List<Recompensa> buscarRecompensasPorDesafio(UUID idDesafio) {
+        return recompensaApplication.listarPorMembroDesafioId(idDesafio);
     }
 }

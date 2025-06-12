@@ -68,9 +68,13 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario")
     private List<MembrosGrupo> membrosGrupos;
 
+    @Column(name = "saldo")
+    private double saldo;
 
+    @Column(name = "chave_pix")
+    private String chavePix;
 
-    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
+    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario, double saldo, String chavePix) {
         this.uuid = uuid;
         this.nome = nome;
         this.email = email;
@@ -83,10 +87,27 @@ public class Usuario implements UserDetails {
         this.status = status;
         this.exibirHistorico = exibirHistorico;
         this.tipoUsuario = tipoUsuario;
+        this.saldo = saldo;
+        this.chavePix = chavePix;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getChavePix() {
+        return chavePix;
+    }
+
+    public void setChavePix(String chavePix) {
+        this.chavePix = chavePix;
     }
 
     public Usuario() {
-
     }
 
     public UUID getId() {

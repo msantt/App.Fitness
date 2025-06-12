@@ -2,23 +2,21 @@ package com.example.demo.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "recompensa")
 public class Recompensa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_recompensa")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    // Alteração: Mapear UUID para VARCHAR(36) no MySQL
+    @Column(name = "id_recompensa", columnDefinition = "VARCHAR(36)", updatable = false, nullable = false)
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "id_desafio", nullable = false)
-    private Desafio desafio;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "id_membro_desafio", nullable = false)
+    private MembrosDesafio membroDesafio;
 
     @Column(name = "tipo_recompensa", nullable = false)
     private String tipoRecompensa;
@@ -27,38 +25,33 @@ public class Recompensa {
     private LocalDate dataRecompensa;
 
     public Recompensa() {
+        // Gerar um UUID automaticamente ao criar uma nova instância se não for passado
+        this.id = UUID.randomUUID();
     }
 
-    public Recompensa(int id, Desafio desafio, Usuario usuario, String tipoRecompensa, LocalDate dataRecompensa) {
-        this.id = id;
-        this.desafio = desafio;
-        this.usuario = usuario;
+    public Recompensa(UUID id, MembrosDesafio desafio, String tipoRecompensa, LocalDate dataRecompensa) {
+        // Se um ID for passado, use-o; caso contrário, gere um novo UUID
+        this.id = (id == null) ? UUID.randomUUID() : id;
+        this.membroDesafio = desafio;
         this.tipoRecompensa = tipoRecompensa;
         this.dataRecompensa = dataRecompensa;
     }
 
-    public int getId() {
+    // Getters e Setters
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Desafio getDesafio() {
-        return desafio;
+    public MembrosDesafio getDesafio() {
+        return membroDesafio;
     }
 
-    public void setDesafio(Desafio desafio) {
-        this.desafio = desafio;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setDesafio(MembrosDesafio desafio) {
+        this.membroDesafio = desafio;
     }
 
     public String getTipoRecompensa() {

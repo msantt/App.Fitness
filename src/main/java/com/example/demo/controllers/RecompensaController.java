@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/recompensa")
@@ -28,7 +29,7 @@ public class RecompensaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recompensa> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<Recompensa> buscarPorId(@PathVariable UUID id) {
         Recompensa recompensa = recompensaFacade.buscarRecompensaPorId(id);
         if (recompensa != null) {
             return ResponseEntity.ok(recompensa);
@@ -44,7 +45,7 @@ public class RecompensaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Recompensa> atualizar(@PathVariable int id, @Valid @RequestBody Recompensa recompensa) {
+    public ResponseEntity<Recompensa> atualizar(@PathVariable UUID id, @Valid @RequestBody Recompensa recompensa) {
         Recompensa existente = recompensaFacade.buscarRecompensaPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -55,7 +56,7 @@ public class RecompensaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         recompensaFacade.deletarRecompensa(id);
         return ResponseEntity.noContent().build();
     }
