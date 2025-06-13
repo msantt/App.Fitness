@@ -6,14 +6,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface PagamentoDesafioRepository extends JpaRepository<PagamentoDesafio, Integer> {
 
-    boolean existsById(int id);
+    boolean existsByUuid(UUID id);
 
-    @Query("SELECT p FROM PagamentoDesafio p WHERE p.usuario.id = :idUsuario")
-    List<PagamentoDesafio> findByUsuarioId(@Param("idUsuario") int idUsuario);
+    @Query("SELECT p FROM PagamentoDesafio p WHERE p.usuario.uuid = :idUsuario")
+    List<PagamentoDesafio> findByUsuarioUuid(@Param("idUsuario") UUID idUsuario);
 
-    @Query("SELECT p FROM PagamentoDesafio p WHERE p.desafio.id = :idDesafio")
-    List<PagamentoDesafio> findByDesafioId(@Param("idDesafio") int idDesafio);
+    @Query("SELECT p FROM PagamentoDesafio p WHERE p.desafio.uuid = :idDesafio")
+    List<PagamentoDesafio> findByDesafioUuid(@Param("idDesafio") UUID idDesafio);
+
+    void deleteByUuid(UUID id);
+
+    PagamentoDesafio findByUuid(UUID id);
 }

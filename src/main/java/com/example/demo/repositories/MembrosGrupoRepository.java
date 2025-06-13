@@ -26,4 +26,6 @@ public interface MembrosGrupoRepository extends JpaRepository<MembrosGrupo, Inte
     void deleteByUuid(UUID uuid);
     boolean existsByUuid(UUID uuid);
     MembrosGrupo findByUuid(UUID uuid);
+
+    boolean existsByGrupoUuidAndUsuarioIdAndRole(UUID grupoOuDesafioId, UUID usuarioId, TipoUsuario tipoUsuario);
 }

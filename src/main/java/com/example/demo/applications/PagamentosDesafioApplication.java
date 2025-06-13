@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PagamentosDesafioApplication implements IPagamentosDesafio {
@@ -24,8 +25,8 @@ public class PagamentosDesafioApplication implements IPagamentosDesafio {
     }
 
     @Override
-    public PagamentoDesafio buscarPorId(int id) {
-        return pagamentoDesafioRepository.findById(id).orElseThrow();
+    public PagamentoDesafio buscarPorUuid(UUID id) {
+        return pagamentoDesafioRepository.findByUuid(id);
     }
 
     @Override
@@ -34,22 +35,22 @@ public class PagamentosDesafioApplication implements IPagamentosDesafio {
     }
 
     @Override
-    public void deletar(int id) {
-        pagamentoDesafioRepository.deleteById(id);
+    public void deletar(UUID id) {
+        pagamentoDesafioRepository.deleteByUuid(id);
     }
 
     @Override
-    public boolean existePorId(int id) {
-        return pagamentoDesafioRepository.existsById(id);
+    public boolean existePorUuid(UUID id) {
+        return pagamentoDesafioRepository.existsByUuid(id);
     }
 
     @Override
-    public List<PagamentoDesafio> listarPorUsuario(int idUsuario) {
-        return pagamentoDesafioRepository.findByUsuarioId(idUsuario);
+    public List<PagamentoDesafio> listarPorUsuario(UUID idUsuario) {
+        return pagamentoDesafioRepository.findByUsuarioUuid(idUsuario);
     }
 
     @Override
-    public List<PagamentoDesafio> listarPorDesafio(int idDesafio) {
-        return pagamentoDesafioRepository.findByDesafioId(idDesafio);
+    public List<PagamentoDesafio> listarPorDesafio(UUID idDesafio) {
+        return pagamentoDesafioRepository.findByDesafioUuid(idDesafio);
     }
 }

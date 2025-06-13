@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/pagamentos-desafio")
@@ -28,7 +29,7 @@ public class PagamentosDesafioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PagamentoDesafio> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<PagamentoDesafio> buscarPorId(@PathVariable UUID id) {
         PagamentoDesafio pagamento = pagamentosDesafioFacade.buscarPorId(id);
         if (pagamento != null) {
             return ResponseEntity.ok(pagamento);
@@ -38,13 +39,13 @@ public class PagamentosDesafioController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<PagamentoDesafio>> listarPorUsuario(@PathVariable int idUsuario) {
+    public ResponseEntity<List<PagamentoDesafio>> listarPorUsuario(@PathVariable UUID idUsuario) {
         List<PagamentoDesafio> pagamentos = pagamentosDesafioFacade.listarPorUsuario(idUsuario);
         return ResponseEntity.ok(pagamentos);
     }
 
     @GetMapping("/desafio/{idDesafio}")
-    public ResponseEntity<List<PagamentoDesafio>> listarPorDesafio(@PathVariable int idDesafio) {
+    public ResponseEntity<List<PagamentoDesafio>> listarPorDesafio(@PathVariable UUID idDesafio) {
         List<PagamentoDesafio> pagamentos = pagamentosDesafioFacade.listarPorDesafio(idDesafio);
         return ResponseEntity.ok(pagamentos);
     }
@@ -56,7 +57,7 @@ public class PagamentosDesafioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PagamentoDesafio> atualizar(@PathVariable int id, @Valid @RequestBody PagamentoDesafio pagamento) {
+    public ResponseEntity<PagamentoDesafio> atualizar(@PathVariable UUID id, @Valid @RequestBody PagamentoDesafio pagamento) {
         PagamentoDesafio existente = pagamentosDesafioFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -67,7 +68,7 @@ public class PagamentosDesafioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         pagamentosDesafioFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }

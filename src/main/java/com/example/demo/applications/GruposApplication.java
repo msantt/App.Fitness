@@ -10,6 +10,7 @@ import com.example.demo.interfaces.IGrupos;
 import com.example.demo.repositories.GrupoRepository;
 import com.example.demo.repositories.MembrosGrupoRepository;
 import com.example.demo.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class GruposApplication implements IGrupos {
     }
 
     @Override
+    @Transactional
     public Grupo salvar(Grupo grupo) {
         if (grupo.getStatus() == null) {
             grupo.setStatus(Status.ATIVO);

@@ -3,15 +3,16 @@ package com.example.demo.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "pagamento_desafio")
 public class PagamentoDesafio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_pagamento")
-    private int idPagamento;
+    private UUID uuid;
 
     @Column(name = "valor", nullable = false)
     private double valor;
@@ -20,13 +21,10 @@ public class PagamentoDesafio {
     private String metodoPagamento;
 
     @Column(name = "status_pagamento", nullable = false)
-    private String statusPagamento; // Ex: confirmado, pendente, cancelado
+    private String statusPagamento;
 
     @Column(name = "data_pagamento", nullable = false)
     private LocalDate dataPagamento;
-
-    @Column(name = "transacao_id")
-    private String transacaoId;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
@@ -39,24 +37,22 @@ public class PagamentoDesafio {
     public PagamentoDesafio() {
     }
 
-    public PagamentoDesafio(int idPagamento, double valor, String metodoPagamento, String statusPagamento,
-                            LocalDate dataPagamento, String transacaoId, Usuario usuario, Desafio desafio) {
-        this.idPagamento = idPagamento;
+    public PagamentoDesafio( double valor, String metodoPagamento, String statusPagamento,
+                            LocalDate dataPagamento, Usuario usuario, Desafio desafio) {
         this.valor = valor;
         this.metodoPagamento = metodoPagamento;
         this.statusPagamento = statusPagamento;
         this.dataPagamento = dataPagamento;
-        this.transacaoId = transacaoId;
         this.usuario = usuario;
         this.desafio = desafio;
     }
 
-    public int getIdPagamento() {
-        return idPagamento;
+    public UUID getIdPagamento() {
+        return uuid;
     }
 
-    public void setIdPagamento(int idPagamento) {
-        this.idPagamento = idPagamento;
+    public void setIdPagamento(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public double getValor() {
@@ -89,14 +85,6 @@ public class PagamentoDesafio {
 
     public void setDataPagamento(LocalDate dataPagamento) {
         this.dataPagamento = dataPagamento;
-    }
-
-    public String getTransacaoId() {
-        return transacaoId;
-    }
-
-    public void setTransacaoId(String transacaoId) {
-        this.transacaoId = transacaoId;
     }
 
     public Usuario getUsuario() {

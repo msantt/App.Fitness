@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -69,12 +70,12 @@ public class Usuario implements UserDetails {
     private List<MembrosGrupo> membrosGrupos;
 
     @Column(name = "saldo")
-    private double saldo;
+    private BigDecimal saldo;
 
     @Column(name = "chave_pix")
     private String chavePix;
 
-    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario, double saldo, String chavePix) {
+    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario, BigDecimal saldo, String chavePix) {
         this.uuid = uuid;
         this.nome = nome;
         this.email = email;
@@ -91,11 +92,11 @@ public class Usuario implements UserDetails {
         this.chavePix = chavePix;
     }
 
-    public double getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
     }
 

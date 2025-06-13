@@ -34,7 +34,11 @@ public class MembrosDesafio {
     @Column(name = "desafio_id")
     private UUID desafioId;
 
+    @Column(name = "pontos")
+    private int pontos;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
 
     @Column(name = "data_entrada")
@@ -104,6 +108,14 @@ public class MembrosDesafio {
         if (desafio != null) {
             this.desafioId = desafio.getId();
         }
+    }
+
+    public int getPontos() {
+        return pontos;
+    }
+
+    public void setPontos(int pontos) {
+        this.pontos = pontos;
     }
 
     public Status getStatus() {

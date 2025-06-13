@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -9,8 +11,7 @@ import java.util.UUID;
 public class Recompensa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    // Alteração: Mapear UUID para VARCHAR(36) no MySQL
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_recompensa", columnDefinition = "VARCHAR(36)", updatable = false, nullable = false)
     private UUID id;
 
@@ -21,23 +22,22 @@ public class Recompensa {
     @Column(name = "tipo_recompensa", nullable = false)
     private String tipoRecompensa;
 
+    @Column(name = "valor_recompensa")
+    private BigDecimal valorRecompensa;
+
     @Column(name = "data_recompensa", nullable = false)
     private LocalDate dataRecompensa;
 
-    public Recompensa() {
-        // Gerar um UUID automaticamente ao criar uma nova instância se não for passado
-        this.id = UUID.randomUUID();
-    }
+    public Recompensa() {}
 
-    public Recompensa(UUID id, MembrosDesafio desafio, String tipoRecompensa, LocalDate dataRecompensa) {
-        // Se um ID for passado, use-o; caso contrário, gere um novo UUID
-        this.id = (id == null) ? UUID.randomUUID() : id;
+    public Recompensa(MembrosDesafio desafio, String tipoRecompensa, BigDecimal valorRecompensa, LocalDate dataRecompensa) {
         this.membroDesafio = desafio;
         this.tipoRecompensa = tipoRecompensa;
+        this.valorRecompensa = valorRecompensa;
         this.dataRecompensa = dataRecompensa;
     }
 
-    // Getters e Setters
+
     public UUID getId() {
         return id;
     }
@@ -60,6 +60,14 @@ public class Recompensa {
 
     public void setTipoRecompensa(String tipoRecompensa) {
         this.tipoRecompensa = tipoRecompensa;
+    }
+
+    public BigDecimal getValorRecompensa() {
+        return valorRecompensa;
+    }
+
+    public void setValorRecompensa(BigDecimal valorRecompensa) {
+        this.valorRecompensa = valorRecompensa;
     }
 
     public LocalDate getDataRecompensa() {

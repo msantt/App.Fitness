@@ -6,6 +6,7 @@ import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
 import com.example.demo.interfaces.IUsuarios;
 import com.example.demo.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ public class UsuariosApplication implements IUsuarios {
     }
 
     @Override
+    @Transactional
     public Usuario salvar(Usuario usuario) {
         if (usuario.getStatus() == null) {
             usuario.setStatus(Status.ATIVO);
@@ -37,6 +39,8 @@ public class UsuariosApplication implements IUsuarios {
         if (usuario.getDataCriacao() == null) {
             usuario.setDataCriacao(LocalDateTime.now());
         }
+
+        usuario.setSaldo(java.math.BigDecimal.ZERO);
 
         if (usuario.getNome().length() < 3 || usuario.getNome().length() > 100) {
             throw new IllegalArgumentException("O nome deve ter entre 3 e 100 caracteres.");

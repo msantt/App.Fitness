@@ -24,4 +24,6 @@ public interface DesafioRepository extends JpaRepository<Desafio, Integer> {
     void deleteByUuid(UUID uuid);
 
     List<Desafio> findByDataFim(LocalDate doisDiasDepois);
+    boolean existsByCodigo(String codigo);
+    Desafio findByCodigo(String codigo);
 }

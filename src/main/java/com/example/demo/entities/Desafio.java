@@ -41,6 +41,9 @@ public class Desafio {
     @Column(name = "data_Fim")
     private LocalDate dataFim;
 
+    @Column(name = "codigo")
+    private String codigo;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -139,6 +142,14 @@ public class Desafio {
 
     public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public Status getStatus() {

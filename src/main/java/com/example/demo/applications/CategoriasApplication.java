@@ -5,6 +5,7 @@ import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Desafio;
 import com.example.demo.interfaces.ICategorias;
 import com.example.demo.repositories.CategoriaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class CategoriasApplication implements ICategorias {
     }
 
     @Override
+    @Transactional
     public Categoria salvar(Categoria categoria) {
         String nome = categoria.getNome();
         if (nome == null || nome.trim().isEmpty() || nome.length() < 3) {

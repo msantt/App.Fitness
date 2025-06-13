@@ -57,4 +57,12 @@ public class DesafiosFacade {
     public List<Desafio> buscarPorStatus(Status status) {
         return desafiosApplication.buscarPorStatus(status);
     }
+
+    public Desafio buscarPorCodigo(String codigo) {
+        return desafiosApplication.buscarPorCodigo(codigo);
+    }
+
+    public boolean cancelarDesafio(UUID desafioId, UUID usuarioId) {
+        return desafiosApplication.cancelarDesafio(desafioId, usuarioId);
+    }
 }

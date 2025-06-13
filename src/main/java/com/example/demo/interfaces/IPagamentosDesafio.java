@@ -1,24 +1,23 @@
 package com.example.demo.interfaces;
 
 import com.example.demo.entities.PagamentoDesafio;
-import com.example.demo.entities.Desafio;
-import com.example.demo.entities.Usuario;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IPagamentosDesafio {
 
     PagamentoDesafio salvar(PagamentoDesafio pagamentoDesafio);
 
-    PagamentoDesafio buscarPorId(int id);
+    PagamentoDesafio buscarPorUuid(UUID id);
 
     List<PagamentoDesafio> listarTodos();
 
-    void deletar(int id);
+    void deletar(UUID id);
 
-    boolean existePorId(int id);
+    boolean existePorUuid(UUID id);
 
-    List<PagamentoDesafio> listarPorUsuario(int idUsuario);
+    List<PagamentoDesafio> listarPorUsuario(UUID idUsuario);
 
-    List<PagamentoDesafio> listarPorDesafio(int idDesafio);
+    List<PagamentoDesafio> listarPorDesafio(UUID idDesafio);
 }

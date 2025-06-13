@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entities.MembrosDesafio;
+import com.example.demo.enums.TipoUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,6 @@ public interface MembrosDesafioRepository extends JpaRepository<MembrosDesafio, 
     boolean existsByUuid(UUID uuid);
     MembrosDesafio findByUuid(UUID uuid);
     void deleteByUuid(UUID uuid);
+
+    boolean existsByDesafioIdAndUsuarioIdAndRole(UUID desafioId, UUID usuarioId, TipoUsuario role);
 }

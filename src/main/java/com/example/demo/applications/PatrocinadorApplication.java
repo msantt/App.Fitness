@@ -3,6 +3,7 @@ package com.example.demo.applications;
 import com.example.demo.entities.Patrocinador;
 import com.example.demo.interfaces.IPatrocinador;
 import com.example.demo.repositories.PatrocinadorRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class PatrocinadorApplication implements IPatrocinador {
 
 
     @Override
+    @Transactional
     public Patrocinador salvarPatrocinador(Patrocinador patrocinador) {
         if (patrocinador.getNome() == null || patrocinador.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome do patrocinador não pode ser nulo ou vazio.");
