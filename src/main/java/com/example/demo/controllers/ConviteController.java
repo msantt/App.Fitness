@@ -32,4 +32,11 @@ public class ConviteController {
         conviteApplication.responderConvite(id, aceitar);
         return ResponseEntity.ok().build();
     }
+
+    //crie um endpoint para listar convites
+    @GetMapping("/listar")
+    public ResponseEntity<Iterable<Convite>> listarConvites() {
+        Iterable<Convite> convites = conviteApplication.listarConvites();
+        return ResponseEntity.ok(convites);
+    }
 }

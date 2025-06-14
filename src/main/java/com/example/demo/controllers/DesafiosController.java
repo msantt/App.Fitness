@@ -96,4 +96,14 @@ public class DesafiosController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+    @PostMapping("/{id}/finalizar")
+    public ResponseEntity<Void> finalizarDesafio(@PathVariable UUID id) {
+        boolean finalizado = desafiosFacade.concluirDesafio(id);
+        if (finalizado) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }

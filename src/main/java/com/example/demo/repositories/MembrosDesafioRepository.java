@@ -20,4 +20,6 @@ public interface MembrosDesafioRepository extends JpaRepository<MembrosDesafio, 
     void deleteByUuid(UUID uuid);
 
     boolean existsByDesafioIdAndUsuarioIdAndRole(UUID desafioId, UUID usuarioId, TipoUsuario role);
+
+    List<MembrosDesafio> findByUsuarioUuid(UUID id);
 }

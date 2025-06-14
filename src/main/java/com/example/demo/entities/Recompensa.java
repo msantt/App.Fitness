@@ -12,7 +12,7 @@ public class Recompensa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_recompensa", columnDefinition = "VARCHAR(36)", updatable = false, nullable = false)
+    @Column(name = "id_recompensa", updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne

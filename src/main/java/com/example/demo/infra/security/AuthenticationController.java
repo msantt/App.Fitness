@@ -51,6 +51,8 @@ public class AuthenticationController {
         novoUsuario.setStatus(data.status());
         novoUsuario.setExibirHistorico(data.exibirHistorico());
         novoUsuario.setTipoUsuario(data.tipoUsuario());
+        novoUsuario.setSaldo(data.saldo());
+        novoUsuario.setChavePix(data.chavePix());
 
         usuariosFacade.salvar(novoUsuario);
 

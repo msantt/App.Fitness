@@ -65,4 +65,9 @@ public class DesafiosFacade {
     public boolean cancelarDesafio(UUID desafioId, UUID usuarioId) {
         return desafiosApplication.cancelarDesafio(desafioId, usuarioId);
     }
+
+    public boolean concluirDesafio(UUID desafioId) {
+        desafiosApplication.encerrarDesafio(desafioId);
+        return true;
+    }
 }

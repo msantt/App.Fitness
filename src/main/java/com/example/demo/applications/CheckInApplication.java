@@ -49,9 +49,9 @@ public class CheckInApplication implements ICheckIn{
             checkIn.setDataHoraCheckin(LocalDateTime.now());
         }
 
-        if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
-            throw new RegraNegocioException("Check-in não pode ser em data passada.");
-        }
+//        if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
+//            throw new RegraNegocioException("Check-in não pode ser em data passada.");
+//        }
         MembrosDesafio membro = membroDesafioRepository.findByUuid(checkIn.getMembroDesafio().id());
         if (membro == null) {
             throw new RegraNegocioException("Membro do desafio não encontrado");
@@ -108,10 +108,13 @@ public class CheckInApplication implements ICheckIn{
         }
 
 
-        Pontuacao pontuacao = pontuacaoRepository.findByMembroDesafioUuid(membro.getId());
-        if (pontuacao != null) {
-            pontuacao.registrarCheckin(LocalDate.now());
-            pontuacaoRepository.save(pontuacao);
+        List<MembrosDesafio> desafiosDoUsuario = membroDesafioRepository.findByUsuarioUuid(usuario.getId());
+        for (MembrosDesafio desafioUsuario : desafiosDoUsuario) {
+            Pontuacao pontuacao = pontuacaoRepository.findByMembroDesafioUuid(desafioUsuario.getId());
+            if (pontuacao != null) {
+                pontuacao.registrarCheckin(LocalDate.now());
+                pontuacaoRepository.save(pontuacao);
+            }
         }
 
         return checkInSalvo;

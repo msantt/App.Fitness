@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.records.MembroDesafioRecord;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public class Pontuacao {
     private UUID uuid;
 
     @OneToOne
-    @JoinColumn(name = "id_membro_desafio", nullable = false, unique = true)
+    @JoinColumn(name = "membro_desafio_id", referencedColumnName = "uuid")
     private MembrosDesafio membroDesafio;
 
     @Column(name = "dias_consecutivos", nullable = false)

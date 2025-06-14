@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,11 +34,13 @@ public class ConviteApplication {
     private GruposApplication gruposApplication;
     @Autowired
     private NotificacaoApplication notificacaoApplication;
+    @Autowired
+    private MembrosDesafiosApplication membrosDesafiosApplication;
 
-    public ConviteApplication(ConviteRepository conviteRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, MembrosGrupoRepository membroGrupoRepository, MembrosGrupoApplication membrosGrupoApplication, DesafiosApplication desafiosApplication, GruposApplication gruposApplication, NotificacaoApplication notificacaoApplication) {
+    public ConviteApplication(ConviteRepository conviteRepository, UsuarioRepository usuarioRepository, MembrosDesafiosApplication membrosDesafiosApplication, MembrosGrupoRepository membroGrupoRepository, MembrosGrupoApplication membrosGrupoApplication, DesafiosApplication desafiosApplication, GruposApplication gruposApplication, NotificacaoApplication notificacaoApplication) {
         this.conviteRepository = conviteRepository;
         this.usuarioRepository = usuarioRepository;
-        this.membroDesafioRepository = membroDesafioRepository;
+        this.membrosDesafiosApplication = membrosDesafiosApplication;
         this.membroGrupoRepository = membroGrupoRepository;
         this.membrosGrupoApplication = membrosGrupoApplication;
         this.desafiosApplication = desafiosApplication;
@@ -63,12 +66,13 @@ public class ConviteApplication {
             throw new RegraNegocioException("Não é possível convidar a si mesmo.");
         }
 
-        if (!isAdmin(remetenteId, grupoOuDesafioId, isGrupo)) {
-            throw new RegraNegocioException("Apenas admin pode convidar.");
-        }
-        if (!conviteRepository.findByGrupoOuDesafioIdAndConvidado_Id(grupoOuDesafioId, convidadoId).isEmpty()) {
-            throw new IllegalArgumentException("Usuário já convidado ou participante.");
-        }
+//        if (!isAdmin(remetenteId, grupoOuDesafioId, isGrupo)) {
+//            throw new RegraNegocioException("Apenas admin pode convidar.");
+//        }
+
+//        if (!conviteRepository.findByGrupoOuDesafioIdAndConvidado_Id(grupoOuDesafioId, convidadoId).isEmpty()) {
+//            throw new IllegalArgumentException("Usuário já convidado ou participante.");
+//        }
         Usuario remetente = usuarioRepository.findByUuid(remetenteId);
         Usuario convidado = usuarioRepository.findByUuid(convidadoId);
         if (remetente == null || convidado == null) {
@@ -91,8 +95,9 @@ public class ConviteApplication {
     }
 
     public void responderConvite(UUID id, boolean aceitar) {
-        Convite convite = conviteRepository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Convite não encontrado."));
+        Convite convite = conviteRepository.findById(id).orElseThrow(
+                () -> new RegraNegocioException("Convite não encontrado.")
+        );
         if (aceitar) {
             convite.setStatus(StatusConvite.ACEITO);
             if(convite.getTipo() == TipoConvite.GRUPO) {
@@ -141,6 +146,10 @@ public class ConviteApplication {
         membrosDesafio.setRole(TipoUsuario.MEMBRO);
         membrosDesafio.setDataEntrada(LocalDate.now());
         membrosDesafio.setStatus(Status.ATIVO);
-        membroDesafioRepository.save(membrosDesafio);
+        membrosDesafiosApplication.salvar(membrosDesafio);
+    }
+
+    public List<Convite> listarConvites() {
+        return conviteRepository.findAll();
     }
 }
