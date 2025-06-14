@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
@@ -68,9 +69,13 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario")
     private List<MembrosGrupo> membrosGrupos;
 
+    @Column(name = "saldo")
+    private BigDecimal saldo;
 
+    @Column(name = "chave_pix")
+    private String chavePix;
 
-    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario) {
+    public Usuario(UUID uuid, String nome, String email, String senha,UserRole role, Date dataNascimento, Objetivo objetivo, String urlFoto, LocalDateTime dataCriacao, Status status, Boolean exibirHistorico, TipoUsuario tipoUsuario, BigDecimal saldo, String chavePix) {
         this.uuid = uuid;
         this.nome = nome;
         this.email = email;
@@ -83,10 +88,27 @@ public class Usuario implements UserDetails {
         this.status = status;
         this.exibirHistorico = exibirHistorico;
         this.tipoUsuario = tipoUsuario;
+        this.saldo = saldo;
+        this.chavePix = chavePix;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigDecimal saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getChavePix() {
+        return chavePix;
+    }
+
+    public void setChavePix(String chavePix) {
+        this.chavePix = chavePix;
     }
 
     public Usuario() {
-
     }
 
     public UUID getId() {

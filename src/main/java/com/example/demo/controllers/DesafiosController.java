@@ -78,4 +78,32 @@ public class DesafiosController {
         desafiosFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<Desafio> buscarPorCodigo(@PathVariable String codigo) {
+        Desafio desafio = desafiosFacade.buscarPorCodigo(codigo);
+        return Optional.ofNullable(desafio)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/cancelar")
+    public ResponseEntity<Void> cancelarDesafio(@PathVariable UUID id, @RequestParam UUID usuarioId) {
+        boolean cancelado = desafiosFacade.cancelarDesafio(id, usuarioId);
+        if (cancelado) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+    @PostMapping("/{id}/finalizar")
+    public ResponseEntity<Void> finalizarDesafio(@PathVariable UUID id) {
+        boolean finalizado = desafiosFacade.concluirDesafio(id);
+        if (finalizado) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }

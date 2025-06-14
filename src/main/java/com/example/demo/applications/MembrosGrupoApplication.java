@@ -11,6 +11,7 @@ import com.example.demo.records.UsuariosRecord;
 import com.example.demo.repositories.GrupoRepository;
 import com.example.demo.repositories.MembrosGrupoRepository;
 import com.example.demo.repositories.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
     }
 
     @Override
+    @Transactional
     public MembrosGrupo salvar(MembrosGrupo membrosGrupo) {
         if (membrosGrupo.getStatus() == null) {
             membrosGrupo.setStatus(Status.ATIVO);

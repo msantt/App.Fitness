@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoUsuario;
+import com.example.demo.records.PontuacaoRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 
@@ -34,7 +35,11 @@ public class MembrosDesafio {
     @Column(name = "desafio_id")
     private UUID desafioId;
 
+    @OneToOne(mappedBy = "membroDesafio", cascade = CascadeType.ALL)
+    private Pontuacao pontuacao;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
 
     @Column(name = "data_entrada")
@@ -104,6 +109,14 @@ public class MembrosDesafio {
         if (desafio != null) {
             this.desafioId = desafio.getId();
         }
+    }
+
+    public PontuacaoRecord getPontuacao() {
+        return new PontuacaoRecord(pontuacao.getId(),pontuacao.getPontuacao(), pontuacao.getDiasConsecutivos(),pontuacao.getDataUltimoCheckin());
+    }
+
+    public void setPontuacao(Pontuacao pontuacao) {
+        this.pontuacao = pontuacao;
     }
 
     public Status getStatus() {

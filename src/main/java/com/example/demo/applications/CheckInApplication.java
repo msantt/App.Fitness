@@ -6,6 +6,7 @@ import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.interfaces.ICheckIn;
 import com.example.demo.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +26,20 @@ public class CheckInApplication implements ICheckIn{
     private final NotificacaoApplication notificacaoApplication;
     private CheckInRepository checkInRepository;
     private MembrosDesafioRepository membroDesafioRepository;
+    private PontuacaoRepository pontuacaoRepository;
 
     @Autowired
-    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository, NotificacaoApplication notificacaoApplication) {
+    public CheckInApplication(CheckInRepository checkInRepository, DesafioRepository desafioRepository, UsuarioRepository usuarioRepository, MembrosDesafioRepository membroDesafioRepository, CategoriaRepository categoriaRepository, NotificacaoApplication notificacaoApplication,PontuacaoRepository pontuacaoRepository) {
         this.checkInRepository = checkInRepository;
         this.desafioRepository = desafioRepository;
         this.usuarioRepository = usuarioRepository;
         this.membroDesafioRepository = membroDesafioRepository;
         this.categoriaRepository = categoriaRepository;
         this.notificacaoApplication = notificacaoApplication;
+        this.pontuacaoRepository = pontuacaoRepository;
     }
 
+    @Transactional
     public CheckIn salvar(CheckIn checkIn) {
         if (checkIn.getStatus() == null) {
             checkIn.setStatus(Status.PENDENTE);
@@ -45,9 +49,9 @@ public class CheckInApplication implements ICheckIn{
             checkIn.setDataHoraCheckin(LocalDateTime.now());
         }
 
-        if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
-            throw new RegraNegocioException("Check-in não pode ser em data passada.");
-        }
+//        if (checkIn.getDataHoraCheckin().isBefore(LocalDateTime.now())) {
+//            throw new RegraNegocioException("Check-in não pode ser em data passada.");
+//        }
         MembrosDesafio membro = membroDesafioRepository.findByUuid(checkIn.getMembroDesafio().id());
         if (membro == null) {
             throw new RegraNegocioException("Membro do desafio não encontrado");
@@ -93,7 +97,6 @@ public class CheckInApplication implements ICheckIn{
 
         CheckIn checkInSalvo = checkInRepository.save(checkIn);
 
-        // Notificar os outros membros do desafio
         List<MembrosDesafio> membros = membroDesafioRepository.findByDesafioUuid(desafio.getId());
         Usuario quemFez = usuario;
         for (MembrosDesafio m : membros) {
@@ -101,6 +104,16 @@ public class CheckInApplication implements ICheckIn{
             if (!u.getId().equals(quemFez.getId())) {
                 String msg = quemFez.getNome() + " fez um check-in no desafio " + desafio.getNome();
                 notificacaoApplication.notificarUsuario(u, msg, TipoNotificacao.CHECK_IN);
+            }
+        }
+
+
+        List<MembrosDesafio> desafiosDoUsuario = membroDesafioRepository.findByUsuarioUuid(usuario.getId());
+        for (MembrosDesafio desafioUsuario : desafiosDoUsuario) {
+            Pontuacao pontuacao = pontuacaoRepository.findByMembroDesafioUuid(desafioUsuario.getId());
+            if (pontuacao != null) {
+                pontuacao.registrarCheckin(LocalDate.now());
+                pontuacaoRepository.save(pontuacao);
             }
         }
 

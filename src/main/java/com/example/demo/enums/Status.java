@@ -8,5 +8,5 @@ public enum Status {
     PENDENTE,
     ACEITO,
     RECUSADO,
-    CONCLUIDO,
+    CONCLUIDO, CANCELADO,
 }

@@ -1,10 +1,8 @@
 package com.example.demo.applications;
 
-import com.example.demo.entities.Categoria;
-import com.example.demo.entities.Desafio;
-import com.example.demo.entities.MembrosDesafio;
-import com.example.demo.entities.Usuario;
+import com.example.demo.entities.*;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoDesafio;
 import com.example.demo.enums.TipoNotificacao;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosDesafio;
@@ -12,8 +10,10 @@ import com.example.demo.repositories.CategoriaRepository;
 import com.example.demo.repositories.DesafioRepository;
 import com.example.demo.repositories.MembrosDesafioRepository;
 import com.example.demo.repositories.MembrosGrupoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -26,10 +26,12 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
     private final CategoriaRepository categoriaRepository;
     private final UsuariosApplication usuariosApplication;
     private final MembrosDesafioRepository membrosDesafioRepository;
+    private final PagamentosDesafioApplication pagamentosDesafioApplication;
+    private final PontuacaoApplication pontuacaoApplication;
     private MembrosGrupoRepository membrosGrupoRepository;
     private NotificacaoApplication notificacaoApplication;
 
-    public MembrosDesafiosApplication(MembrosDesafioRepository repository, CategoriaRepository categoriaRepository, DesafioRepository desafioRepository, MembrosGrupoRepository membrosGrupoRepository, UsuariosApplication usuariosApplication, NotificacaoApplication notificacaoApplication, MembrosDesafioRepository membrosDesafioRepository) {
+    public MembrosDesafiosApplication(MembrosDesafioRepository repository, CategoriaRepository categoriaRepository, DesafioRepository desafioRepository, MembrosGrupoRepository membrosGrupoRepository, UsuariosApplication usuariosApplication, NotificacaoApplication notificacaoApplication, MembrosDesafioRepository membrosDesafioRepository, PagamentosDesafioApplication pagamentosDesafioApplication, PontuacaoApplication pontuacaoApplication) {
         this.repository = repository;
         this.desafioRepository = desafioRepository;
         this.categoriaRepository = categoriaRepository;
@@ -37,10 +39,13 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
         this.usuariosApplication = usuariosApplication;
         this.notificacaoApplication = notificacaoApplication;
         this.membrosDesafioRepository = membrosDesafioRepository;
+        this.pagamentosDesafioApplication = pagamentosDesafioApplication;
+        this.pontuacaoApplication = pontuacaoApplication;
     }
 
 
     @Override
+    @Transactional
     public MembrosDesafio salvar(MembrosDesafio membroDesafio) {
         if(membroDesafio.getRole() == null){
             membroDesafio.setRole(TipoUsuario.MEMBRO);
@@ -51,11 +56,9 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
         if (membroDesafio.getDesafio() == null || membroDesafio.getUsuario() == null) {
             throw new IllegalArgumentException("Desafio e Membro não podem ser nulos.");
         }
-
         if (membroDesafio.getUsuario() == null) {
             throw new IllegalArgumentException("Usuário deve ter um ID válido.");
         }
-
         if (membroDesafio.getDataEntrada() == null) {
             membroDesafio.setDataEntrada(LocalDate.now());
         }
@@ -63,6 +66,30 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
         Desafio desafio = desafioRepository.findByUuid(membroDesafio.getDesafio().getId());
         if (desafio == null) {
             throw new IllegalArgumentException("Desafio não encontrado.");
+        }
+
+        Usuario usuario = usuariosApplication.buscarPorUUID(membroDesafio.getUsuario().getId());
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+
+        if ((desafio.getCriador() == null || !desafio.getCriador().getId().equals(usuario.getId()))
+                && !(desafio.getTipoDesafio() == TipoDesafio.PATROCINADO)) {
+            BigDecimal valorAposta = new BigDecimal(desafio.getValorAposta());
+            if (usuario.getSaldo().compareTo(valorAposta) < 0) {
+                throw new IllegalStateException("Saldo insuficiente para participar do desafio.");
+            }
+            usuario.setSaldo(usuario.getSaldo().subtract(valorAposta));
+            usuariosApplication.update(usuario);
+            PagamentoDesafio pagamento = new PagamentoDesafio(
+                    valorAposta.doubleValue(),
+                    "saldo",
+                    "pago",
+                    LocalDate.now(),
+                    usuario,
+                    desafio
+            );
+            pagamentosDesafioApplication.salvar(pagamento);
         }
 
         if (!desafio.getIsPublico()) {
@@ -103,9 +130,18 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
 
         List<MembrosDesafio> membrosExistentes = membrosDesafioRepository.findByDesafioUuid(membroDesafio.getDesafio().getId());
 
-        Usuario novoMembro = usuariosApplication.buscarPorUUID(membroDesafio.getUsuario().getId());
+        Usuario novoMembro = usuario;
 
-        Desafio desafioNotificacao = desafioRepository.findByUuid(membroDesafio.getDesafio().getId());
+        Desafio desafioNotificacao = desafio;
+
+        Pontuacao pontuacao = new Pontuacao();
+        pontuacao.setMembroDesafio(membroSalvo);
+        pontuacao.setDiasConsecutivos(0);
+        pontuacao.setPontuacao(0);
+        pontuacao.setDataUltimoCheckin(null);
+        pontuacaoApplication.salvarPontuacao(pontuacao);
+        membroDesafio.setPontuacao(pontuacao);
+
 
         for (MembrosDesafio membro : membrosExistentes) {
             Usuario u = usuariosApplication.buscarPorUUID(membro.getUsuario().getId());
