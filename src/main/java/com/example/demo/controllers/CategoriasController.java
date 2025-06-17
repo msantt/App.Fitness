@@ -51,9 +51,12 @@ public class CategoriasController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody Categoria categorias) {
-        categoriasFacade.salvar(categorias);
-        return new ResponseEntity(null, HttpStatus.CREATED);
+    public ResponseEntity<Categoria> salvar(@Valid @RequestBody Categoria categoria) {
+        Categoria salva = categoriasFacade.salvar(categoria);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header("Location", "/categorias/" + salva.getId())
+                .body(salva);
     }
 
     @PutMapping("/{id}")

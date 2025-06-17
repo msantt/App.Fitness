@@ -8,6 +8,7 @@ import com.example.demo.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +68,14 @@ public class UsuariosFacade {
 
     public List<Desafio> recomendarDesafiosPopulares(UUID usuarioId) {
         return usuariosApplication.recomendarDesafiosPopulares(usuarioId);
+    }
+
+    public BigDecimal sacar(UUID idUsuario, BigDecimal valor) {
+        return usuariosApplication.sacar(idUsuario,valor);
+    }
+
+    public BigDecimal depositar(UUID idUsuario, BigDecimal valor) {
+        return usuariosApplication.depositar(idUsuario,valor);
     }
 
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -174,4 +176,56 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
     public List<MembrosDesafio> buscarPorDesafioUUID(UUID desafioId) {
         return repository.findByDesafioUuid(desafioId);
     }
+
+    public List<MembrosDesafio> buscarPorUsuarioUUID(UUID usuarioId) {
+        return repository.findByUsuarioUuid(usuarioId);
+    }
+
+    public MembrosDesafio atualizarStatus(MembrosDesafio existente) {
+        return repository.save(existente);
+    }
+
+    public List<MembrosDesafio> rankingPorDesafio(UUID desafioId) {
+        return repository.findByDesafioUuidAndStatusOrderByPontuacaoDesc(desafioId, Status.ATIVO);
+    }
+
+    @Transactional
+    public boolean desistirDoDesafio(UUID desafioId, UUID usuarioId) {
+        MembrosDesafio membroDesafio = membrosDesafioRepository.findByDesafioIdAndUsuarioId(desafioId, usuarioId);
+        if (membroDesafio == null) {
+            throw new IllegalStateException("Membro do desafio não encontrado.");
+        }
+
+        Desafio desafio = membroDesafio.getDesafio();
+
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (desafio.getStatus() != Status.ATIVO) {
+            // Só pode desistir se o desafio estiver ativo (não finalizado/cancelado)
+            throw new IllegalStateException("Desafio não está ativo.");
+        }
+
+        BigDecimal valorAposta = new BigDecimal(desafio.getValorAposta());
+        BigDecimal valorDevolvido;
+
+        if (desafio.getDataInicio().isAfter(ChronoLocalDate.from(agora))) {
+            // Desafio ainda não começou, devolve 100%
+            valorDevolvido = valorAposta;
+        } else {
+            // Desafio já começou, devolve 50%
+            valorDevolvido = valorAposta.multiply(new BigDecimal("0.5"));
+        }
+
+        if (desafio.getTipoDesafio() != TipoDesafio.PATROCINADO) {
+            Usuario usuario = usuariosApplication.buscarPorUUID(usuarioId);
+            usuario.setSaldo(usuario.getSaldo().add(valorDevolvido));
+            usuariosApplication.update(usuario);
+        }
+
+        membroDesafio.setStatus(Status.INATIVO);
+        membrosDesafioRepository.save(membroDesafio);
+
+        return true;
+    }
+
 }

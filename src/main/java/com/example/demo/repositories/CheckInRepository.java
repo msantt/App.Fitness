@@ -26,4 +26,8 @@ public interface CheckInRepository extends JpaRepository<CheckIn, Integer> {
     boolean existsByUuid(UUID uuid);
 
     CheckIn findByUuid(UUID uuid);
+
+    List<CheckIn> findByMembroDesafio_Desafio_Uuid(UUID desafioId);
+
+    List<CheckIn> findByMembroDesafio_Usuario_Uuid(UUID usuarioId);
 }

@@ -4,15 +4,15 @@ import com.example.demo.entities.PagamentoDesafio;
 import com.example.demo.facades.PagamentosDesafioFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/pagamentos-desafio")
+@RequestMapping("/pagamentos-desafios")
 public class PagamentosDesafioController {
 
     private final PagamentosDesafioFacade pagamentosDesafioFacade;
@@ -22,42 +22,55 @@ public class PagamentosDesafioController {
         this.pagamentosDesafioFacade = pagamentosDesafioFacade;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<PagamentoDesafio>> buscarTodos() {
         List<PagamentoDesafio> pagamentos = pagamentosDesafioFacade.listarTodos();
+        if (pagamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(pagamentos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PagamentoDesafio> buscarPorId(@PathVariable UUID id) {
         PagamentoDesafio pagamento = pagamentosDesafioFacade.buscarPorId(id);
-        if (pagamento != null) {
-            return ResponseEntity.ok(pagamento);
-        } else {
+        if (pagamento == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(pagamento);
     }
 
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<PagamentoDesafio>> listarPorUsuario(@PathVariable UUID idUsuario) {
         List<PagamentoDesafio> pagamentos = pagamentosDesafioFacade.listarPorUsuario(idUsuario);
+        if (pagamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(pagamentos);
     }
 
     @GetMapping("/desafio/{idDesafio}")
     public ResponseEntity<List<PagamentoDesafio>> listarPorDesafio(@PathVariable UUID idDesafio) {
         List<PagamentoDesafio> pagamentos = pagamentosDesafioFacade.listarPorDesafio(idDesafio);
+        if (pagamentos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(pagamentos);
     }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody PagamentoDesafio pagamento) {
-        pagamentosDesafioFacade.salvar(pagamento);
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+    public ResponseEntity<PagamentoDesafio> salvar(@Valid @RequestBody PagamentoDesafio pagamento) {
+        PagamentoDesafio salvo = pagamentosDesafioFacade.salvar(pagamento);
+        return ResponseEntity
+                .created(URI.create("/pagamentos-desafios/" + salvo.getIdPagamento()))
+                .body(salvo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PagamentoDesafio> atualizar(@PathVariable UUID id, @Valid @RequestBody PagamentoDesafio pagamento) {
+    public ResponseEntity<PagamentoDesafio> atualizar(
+            @PathVariable UUID id,
+            @Valid @RequestBody PagamentoDesafio pagamento) {
+
         PagamentoDesafio existente = pagamentosDesafioFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();

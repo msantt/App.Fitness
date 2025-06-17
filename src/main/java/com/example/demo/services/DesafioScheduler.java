@@ -18,13 +18,13 @@ public class DesafioScheduler {
         this.desafiosApplication = desafiosApplication;
     }
 
-    // Executa todo dia à meia-noite
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 * * * *") // Todo começo da hora (minuto 0, segundo 0)
     public void encerrarDesafiosExpirados() {
         List<Desafio> desafiosAtivos = desafiosApplication.buscarPorStatus(Status.ATIVO);
         LocalDate hoje = LocalDate.now();
+
         for (Desafio desafio : desafiosAtivos) {
-            if (desafio.getDataFim() != null && desafio.getDataFim().isBefore(hoje)) {
+            if (desafio.getDataFim() != null && hoje.isAfter(desafio.getDataFim())) {
                 desafiosApplication.encerrarDesafio(desafio.getId());
             }
         }

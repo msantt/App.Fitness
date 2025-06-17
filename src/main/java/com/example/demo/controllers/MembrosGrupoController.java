@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -25,23 +25,20 @@ public class MembrosGrupoController {
     }
 
     @PostMapping
-    public ResponseEntity<MembrosGrupo> salvar( @Valid @RequestBody MembrosGrupo membrosGrupo) {
+    public ResponseEntity<MembrosGrupo> salvar(@Valid @RequestBody MembrosGrupo membrosGrupo) {
         MembrosGrupo salvo = membrosGrupoFacade.salvar(membrosGrupo);
-        return ResponseEntity.status(201).body(salvo);
+        return ResponseEntity
+                .created(URI.create("/membros-grupo/" + salvo.getId()))
+                .body(salvo);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MembrosGrupo> buscarPorId(@PathVariable UUID id) {
         MembrosGrupo membro = membrosGrupoFacade.buscarPorUUID(id);
-        if (membro != null) {
-            return ResponseEntity.ok(membro);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return membro != null ? ResponseEntity.ok(membro) : ResponseEntity.notFound().build();
     }
 
-
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<MembrosGrupo>> listarTodos() {
         List<MembrosGrupo> membros = membrosGrupoFacade.listarTodos();
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
@@ -86,8 +83,7 @@ public class MembrosGrupoController {
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);
     }
 
-
-    @GetMapping("/role/{role}")
+    @GetMapping("/tipo-usuario/{role}")
     public ResponseEntity<List<MembrosGrupo>> buscarPorRole(@PathVariable TipoUsuario role) {
         List<MembrosGrupo> membros = membrosGrupoFacade.buscarPorRole(role);
         return membros.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(membros);

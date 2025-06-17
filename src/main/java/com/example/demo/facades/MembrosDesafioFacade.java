@@ -35,4 +35,20 @@ public class MembrosDesafioFacade {
     public List<MembrosDesafio> buscarPorDesafio(UUID desafioId) {
         return membrosDesafiosApplication.buscarPorDesafioUUID(desafioId);
     }
+
+    public List<MembrosDesafio> buscarPorUsuario(UUID usuarioId) {
+        return membrosDesafiosApplication.buscarPorUsuarioUUID(usuarioId);
+    }
+
+    public MembrosDesafio atualizarStatus(MembrosDesafio existente) {
+        return membrosDesafiosApplication.atualizarStatus(existente);
+    }
+
+    public List<MembrosDesafio> rankingPorDesafio(UUID desafioId) {
+        return membrosDesafiosApplication.rankingPorDesafio(desafioId);
+    }
+
+    public boolean desistirDoDesafio(UUID id, UUID usuarioId) {
+        return membrosDesafiosApplication.desistirDoDesafio(id, usuarioId);
+    }
 }

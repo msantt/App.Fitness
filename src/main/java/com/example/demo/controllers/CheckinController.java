@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.CheckIn;
-import com.example.demo.facades.CategoriasFacade;
 import com.example.demo.facades.CheckinFacade;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,10 @@ import java.util.UUID;
 @RequestMapping("/check-in")
 public class CheckinController {
 
-
-    CheckinFacade checkinFacade;
+    private final CheckinFacade checkinFacade;
 
     @Autowired
-    public CheckinController(CheckinFacade checkinFacade, CategoriasFacade categoriasFacade) {
+    public CheckinController(CheckinFacade checkinFacade) {
         this.checkinFacade = checkinFacade;
     }
 
@@ -34,31 +32,37 @@ public class CheckinController {
     @GetMapping("/{id}")
     public ResponseEntity<CheckIn> buscarPorId(@PathVariable UUID id) {
         CheckIn checkIn = checkinFacade.buscarPorId(id);
-        if (checkIn != null) {
-            return ResponseEntity.ok(checkIn);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return checkIn != null ? ResponseEntity.ok(checkIn) : ResponseEntity.notFound().build();
     }
 
-
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/membro/{id}")
     public ResponseEntity<List<CheckIn>> buscarPorMembrosDesafiosId(@PathVariable UUID id) {
         List<CheckIn> checkIns = checkinFacade.buscarPorMembrosDesafiosId(id);
-        return checkIns.isEmpty() ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.ok(checkIns);
+        return checkIns.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(checkIns);
     }
 
+    // ✅ 1. Buscar check-ins por desafio
+    @GetMapping("/desafio/{desafioId}")
+    public ResponseEntity<List<CheckIn>> buscarPorDesafio(@PathVariable UUID desafioId) {
+        List<CheckIn> checkIns = checkinFacade.buscarPorDesafioId(desafioId);
+        return checkIns.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(checkIns);
+    }
+
+    // ✅ 2. Buscar check-ins por usuário (todos os desafios)
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<CheckIn>> buscarPorUsuario(@PathVariable UUID usuarioId) {
+        List<CheckIn> checkIns = checkinFacade.buscarPorUsuarioId(usuarioId);
+        return checkIns.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(checkIns);
+    }
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid  @RequestBody CheckIn checkIns) {
+    public ResponseEntity<Void> salvar(@Valid @RequestBody CheckIn checkIns) {
         checkinFacade.salvar(checkIns);
-        return new ResponseEntity(null, HttpStatus.CREATED);
+        return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CheckIn> atualizar(@PathVariable UUID id,@Valid @RequestBody CheckIn checkIns) {
+    public ResponseEntity<CheckIn> atualizar(@PathVariable UUID id, @Valid @RequestBody CheckIn checkIns) {
         CheckIn existente = checkinFacade.buscarPorId(id);
         if (existente == null) {
             return ResponseEntity.notFound().build();
@@ -73,5 +77,4 @@ public class CheckinController {
         checkinFacade.deletar(id);
         return ResponseEntity.noContent().build();
     }
-
 }

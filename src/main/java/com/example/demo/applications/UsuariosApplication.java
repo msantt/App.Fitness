@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -140,5 +141,34 @@ public class UsuariosApplication implements IUsuarios {
         }
 
         return usuariosRepository.save(existente);
+    }
+
+    public BigDecimal sacar(UUID usuarioId, BigDecimal valor) {
+        Usuario usuario = usuariosRepository.findByUuid(usuarioId);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Valor de saque deve ser positivo.");
+        }
+        if (usuario.getSaldo().compareTo(valor) < 0) {
+            throw new IllegalArgumentException("Saldo insuficiente.");
+        }
+        usuario.setSaldo(usuario.getSaldo().subtract(valor));
+        usuariosRepository.save(usuario);
+        return usuario.getSaldo();
+    }
+
+    public BigDecimal depositar(UUID usuarioId, BigDecimal valor) {
+        Usuario usuario = usuariosRepository.findByUuid(usuarioId);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
+        }
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Valor de depósito deve ser positivo.");
+        }
+        usuario.setSaldo(usuario.getSaldo().add(valor));
+        usuariosRepository.save(usuario);
+        return usuario.getSaldo();
     }
 }

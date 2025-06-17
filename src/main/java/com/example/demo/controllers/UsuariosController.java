@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,16 +67,18 @@ public class UsuariosController {
     }
 
     @GetMapping("/{uuid}/notificacoes")
-    public List<Notificacao> listarNotificacoes(@PathVariable UUID uuid) {
-        return notificacaoRepository.findByUsuarioUuidOrderByDataCriacaoDesc(uuid);
+    public ResponseEntity<List<Notificacao>> listarNotificacoes(@PathVariable UUID uuid) {
+        List<Notificacao> notificacoes = notificacaoRepository.findByUsuarioUuidOrderByDataCriacaoDesc(uuid);
+        if (notificacoes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(notificacoes);
     }
 
-
-
     @PostMapping
-    public ResponseEntity<Void> salvar(@Valid @RequestBody Usuario usuario) {
-        usuariosFacade.salvar(usuario);
-        return new ResponseEntity(null, HttpStatus.CREATED);
+    public ResponseEntity<Usuario> salvar(@Valid @RequestBody Usuario usuario) {
+        Usuario usuarioSalvo = usuariosFacade.salvar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
     }
 
     @PutMapping("/{id}")
@@ -93,6 +96,18 @@ public class UsuariosController {
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         usuariosFacade.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{idUsuario}/sacar")
+    public ResponseEntity<BigDecimal> sacar(@PathVariable UUID idUsuario, @RequestParam BigDecimal valor) {
+        BigDecimal saldo = usuariosFacade.sacar(idUsuario, valor);
+        return ResponseEntity.ok(saldo);
+    }
+
+    @PostMapping("/{idUsuario}/depositar")
+    public ResponseEntity<BigDecimal> depositar(@PathVariable UUID idUsuario, @RequestParam BigDecimal valor) {
+        BigDecimal saldo = usuariosFacade.depositar(idUsuario, valor);
+        return ResponseEntity.ok(saldo);
     }
 
 }

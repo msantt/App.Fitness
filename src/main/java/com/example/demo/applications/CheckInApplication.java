@@ -150,4 +150,12 @@ public class CheckInApplication implements ICheckIn{
     public List<CheckIn> buscarPorIntervaloDeDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
         return checkInRepository.findByDataHoraCheckinBetween(dataInicio, dataFim);
     }
+
+    public List<CheckIn> buscarPorDesafioUUID(UUID desafioId) {
+        return checkInRepository.findByMembroDesafio_Desafio_Uuid(desafioId);
+    }
+
+    public List<CheckIn> buscarPorUsuarioUUID(UUID usuarioId) {
+        return checkInRepository.findByMembroDesafio_Usuario_Uuid(usuarioId);
+    }
 }

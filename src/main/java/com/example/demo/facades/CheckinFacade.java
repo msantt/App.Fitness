@@ -52,4 +52,12 @@ public class CheckinFacade {
     public List<CheckIn> buscarPorIntervaloDeDatas(LocalDateTime dataInicio, LocalDateTime dataFim) {
         return checkInApplication.buscarPorIntervaloDeDatas(dataInicio, dataFim);
     }
+
+    public List<CheckIn> buscarPorDesafioId(UUID desafioId) {
+        return checkInApplication.buscarPorDesafioUUID(desafioId);
+    }
+
+    public List<CheckIn> buscarPorUsuarioId(UUID usuarioId) {
+        return checkInApplication.buscarPorUsuarioUUID(usuarioId);
+    }
 }
