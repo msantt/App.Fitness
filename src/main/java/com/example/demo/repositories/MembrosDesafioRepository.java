@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface MembrosDesafioRepository extends JpaRepository<MembrosDesafio, Integer> {
+public interface MembrosDesafioRepository extends JpaRepository<MembrosDesafio, UUID> {
 
     boolean existsByUsuarioUuidAndDesafioUuid(UUID usuarioUUID, UUID desafioUUID);
 

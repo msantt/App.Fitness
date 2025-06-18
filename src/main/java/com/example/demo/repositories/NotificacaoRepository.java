@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> {
+public interface NotificacaoRepository extends JpaRepository<Notificacao, UUID> {
     List<Notificacao> findByUsuarioIdAndLidaFalse(UUID usuarioUuid);
 
     List<Notificacao> findByUsuarioUuidOrderByDataCriacaoDesc(UUID uuid);

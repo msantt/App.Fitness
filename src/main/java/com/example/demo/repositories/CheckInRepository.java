@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public interface CheckInRepository extends JpaRepository<CheckIn, Integer> {
+public interface CheckInRepository extends JpaRepository<CheckIn, UUID> {
 
     List<CheckIn> findByMembroDesafioUuid(UUID membrodesafioUUID);
 

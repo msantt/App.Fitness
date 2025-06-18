@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
+public interface GrupoRepository extends JpaRepository<Grupo, UUID> {
     List<Grupo> findByNome(String nome);
 
     List<Grupo> findByStatus(Status status);

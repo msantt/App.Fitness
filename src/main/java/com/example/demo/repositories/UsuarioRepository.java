@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 import java.util.UUID;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     Usuario findByUuid(UUID uuid);
     void deleteByUuid(UUID uuid);
     boolean existsByUuid(UUID uuid);
 
-    UserDetails findByEmail(String email);
+    Usuario findByEmail(String email);
 
     List<Usuario> findByStatusTrue();
 

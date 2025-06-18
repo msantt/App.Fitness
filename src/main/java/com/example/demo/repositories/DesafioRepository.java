@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface DesafioRepository extends JpaRepository<Desafio, Integer> {
+public interface DesafioRepository extends JpaRepository<Desafio, UUID> {
 
     List<Desafio> findByNome(String nome);
 

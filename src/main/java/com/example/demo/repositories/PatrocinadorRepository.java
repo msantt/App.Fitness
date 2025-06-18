@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface PatrocinadorRepository extends JpaRepository<Patrocinador, Integer> {
+public interface PatrocinadorRepository extends JpaRepository<Patrocinador, UUID> {
     Patrocinador findByNome(String nome);
 
     boolean existsByUuid(UUID uuid);

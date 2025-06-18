@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface MembrosGrupoRepository extends JpaRepository<MembrosGrupo, Integer> {
+public interface MembrosGrupoRepository extends JpaRepository<MembrosGrupo, UUID> {
 
     List<MembrosGrupo> findByGrupo_Uuid(UUID grupoUUID);
 
