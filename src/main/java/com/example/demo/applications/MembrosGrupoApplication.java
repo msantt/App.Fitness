@@ -5,6 +5,7 @@ import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
 import com.example.demo.enums.TipoNotificacao;
+import com.example.demo.enums.TipoPrivacidade;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IMembrosGrupo;
 import com.example.demo.records.UsuariosRecord;
@@ -69,6 +70,17 @@ public class MembrosGrupoApplication implements IMembrosGrupo {
         Grupo grupo = grupoRepository.findByUuid(membrosGrupo.getGrupo().id());
         if (grupo.getStatus() != Status.ATIVO) {
             throw new IllegalArgumentException("O grupo deve estar ativo.");
+        }
+
+        if (grupo.getTipoGrupo() == TipoPrivacidade.PRIVADO) {
+            if (membrosGrupo.getCodigoAcesso() == null || !grupo.getCodigoAcesso().equalsIgnoreCase(grupo.getCodigoAcesso())) {
+                throw new IllegalArgumentException("Código de acesso inválido.");
+            }
+        }
+
+        if (membrosGrupoRepository.existsByGrupo_UuidAndUsuario_Uuid(
+                grupo.getId(), membrosGrupo.getUsuario().getId())) {
+            throw new IllegalArgumentException("Você já é membro deste grupo.");
         }
 
         if (membrosGrupo.getRole() == null) {

@@ -32,6 +32,7 @@ public class MembrosGrupoController {
                 .body(salvo);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<MembrosGrupo> buscarPorId(@PathVariable UUID id) {
         MembrosGrupo membro = membrosGrupoFacade.buscarPorUUID(id);

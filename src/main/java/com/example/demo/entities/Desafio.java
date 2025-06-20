@@ -7,8 +7,8 @@ import com.example.demo.records.GrupoRecord;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class Desafio {
     private Status status;
 
     @Column(name = "valor_aposta")
-    private String valorAposta;
+    private BigDecimal valorAposta;
 
     @Column(name = "is_publico")
     private Boolean isPublico;
@@ -69,7 +69,7 @@ public class Desafio {
     @OneToMany(mappedBy = "desafio")
     private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, String valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
+    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, BigDecimal valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
         this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
@@ -121,7 +121,7 @@ public class Desafio {
     }
 
     public GrupoRecord getGrupos() {
-        return new GrupoRecord(grupo.getId(), grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(), grupo.getDataCriacao(), grupo.getStatus(), grupo.getCriador());
+        return new GrupoRecord(grupo.getId(), grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(), grupo.getDataCriacao(), grupo.getStatus(), grupo.getCriador(),grupo.getTipoGrupo(),grupo.getCodigoAcesso());
     }
 
     public void setGrupos(Grupo grupo) {
@@ -160,11 +160,11 @@ public class Desafio {
         this.status = status;
     }
 
-    public String getValorAposta() {
+    public BigDecimal getValorAposta() {
         return valorAposta;
     }
 
-    public void setValorAposta(String valorAposta) {
+    public void setValorAposta(BigDecimal valorAposta) {
         this.valorAposta = valorAposta;
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoPrivacidade;
 import com.example.demo.records.UsuariosRecord;
 import jakarta.persistence.*;
 
@@ -13,8 +14,8 @@ import java.util.UUID;
 public class Grupo {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     private UUID uuid;
 
     @Column(name = "nome")
@@ -37,13 +38,22 @@ public class Grupo {
     @JoinColumn(name = "id_criador")
     private Usuario criador;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_grupo")
+    private TipoPrivacidade tipoGrupo;
+    
+    @Column(name = "codigo_acesso")
+    private String codigoAcesso;
+
     @OneToMany(mappedBy = "grupo")
     private List<Desafio> desafios;
 
     @OneToMany(mappedBy = "grupo")
     private List<MembrosGrupo> membros;
 
-    public Grupo(UUID uuid, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Status status, Usuario criador) {
+    public Grupo() {}
+
+    public Grupo(UUID uuid, String nome, String descricao, String urlFoto, LocalDate dataCriacao, Status status, Usuario criador, TipoPrivacidade tipoGrupo, String codigoAcesso) {
         this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
@@ -51,9 +61,8 @@ public class Grupo {
         this.dataCriacao = dataCriacao;
         this.status = status;
         this.criador = criador;
-    }
-
-    public Grupo() {
+        this.tipoGrupo = tipoGrupo;
+        this.codigoAcesso = codigoAcesso;
     }
 
     public UUID getId() {
@@ -63,15 +72,6 @@ public class Grupo {
     public void setId(UUID uuid) {
         this.uuid = uuid;
     }
-
-    public List<MembrosGrupo> getMembros() {
-        return membros;
-    }
-
-    public void setMembros(List<MembrosGrupo> membros) {
-        this.membros = membros;
-    }
-
 
     public String getNome() {
         return nome;
@@ -113,11 +113,42 @@ public class Grupo {
         this.status = status;
     }
 
+    public TipoPrivacidade getTipoGrupo() {
+        return tipoGrupo;
+    }
+
+    public void setTipoGrupo(TipoPrivacidade tipoGrupo) {
+        this.tipoGrupo = tipoGrupo;
+    }
+
+    public String getCodigoAcesso() {
+        return codigoAcesso;
+    }
+
+    public void setCodigoAcesso(String codigoAcesso) {
+        this.codigoAcesso = codigoAcesso;
+    }
+
+    public List<Desafio> getDesafios() {
+        return desafios;
+    }
+
+    public void setDesafios(List<Desafio> desafios) {
+        this.desafios = desafios;
+    }
+
+    public List<MembrosGrupo> getMembros() {
+        return membros;
+    }
+
+    public void setMembros(List<MembrosGrupo> membros) {
+        this.membros = membros;
+    }
+
     public UsuariosRecord getCriador() {
         if (criador == null) {
             return null;
         }
-
         return new UsuariosRecord(
                 criador.getId(),
                 criador.getNome(),
@@ -135,14 +166,4 @@ public class Grupo {
     public void setCriador(Usuario idCriador) {
         this.criador = idCriador;
     }
-
-    public List<Desafio> getDesafios() {
-        return desafios;
-    }
-
-    public void setDesafios(List<Desafio> desafios) {
-        this.desafios = desafios;
-    }
-
-
 }

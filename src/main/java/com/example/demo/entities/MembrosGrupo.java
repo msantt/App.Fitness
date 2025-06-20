@@ -38,6 +38,9 @@ public class MembrosGrupo {
     @Column(name = "role")
     private TipoUsuario role;
 
+    @Transient
+    private String codigoAcesso;
+
 
     public MembrosGrupo(UUID uuid, Grupo grupo, Usuario usuario, Status status, LocalDate dataEntrada, TipoUsuario role) {
         this.uuid = uuid;
@@ -68,7 +71,7 @@ public class MembrosGrupo {
     }
 
     public GrupoRecord getGrupo() {
-        return new GrupoRecord(grupo.getId(),grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(),grupo.getDataCriacao(),grupo.getStatus(),grupo.getCriador());
+        return new GrupoRecord(grupo.getId(),grupo.getNome(), grupo.getDescricao(), grupo.getUrlFoto(),grupo.getDataCriacao(),grupo.getStatus(),grupo.getCriador(),grupo.getTipoGrupo(), grupo.getCodigoAcesso());
     }
 
     public void setGrupo(Grupo idGrupo) {
@@ -97,5 +100,13 @@ public class MembrosGrupo {
 
     public void setRole(TipoUsuario role) {
         this.role = role;
+    }
+
+    public String getCodigoAcesso() {
+        return codigoAcesso;
+    }
+
+    public void setCodigoAcesso(String codigoAcesso) {
+        this.codigoAcesso = codigoAcesso;
     }
 }

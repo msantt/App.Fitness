@@ -17,4 +17,6 @@ public interface GrupoRepository extends JpaRepository<Grupo, UUID> {
     Grupo findByUuid(UUID uuid);
     boolean existsByUuid(UUID uuid);
     void deleteByUuid(UUID uuid);
+
+    boolean existsByCodigoAcesso(String codigo);
 }

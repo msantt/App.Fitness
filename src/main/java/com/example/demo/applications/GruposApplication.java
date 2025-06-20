@@ -5,6 +5,7 @@ import com.example.demo.entities.Grupo;
 import com.example.demo.entities.MembrosGrupo;
 import com.example.demo.entities.Usuario;
 import com.example.demo.enums.Status;
+import com.example.demo.enums.TipoPrivacidade;
 import com.example.demo.enums.TipoUsuario;
 import com.example.demo.interfaces.IGrupos;
 import com.example.demo.repositories.GrupoRepository;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,6 +56,20 @@ public class GruposApplication implements IGrupos {
             throw new RegraNegocioException("O grupo deve ter um criador associado.");
         }
 
+        if (grupo.getTipoGrupo() == TipoPrivacidade.PRIVADO) {
+            if (grupo.getCodigoAcesso() == null || grupo.getCodigoAcesso().isEmpty()) {
+                grupo.setCodigoAcesso(gerarCodigoUnico(6));
+            }
+        } else {
+            grupo.setCodigoAcesso(null);
+        }
+
+        if (grupo.getDataCriacao() == null) {
+            grupo.setDataCriacao(LocalDate.now());
+        }
+
+        grupo.setStatus(Status.ATIVO);
+
         Grupo grupoSalvo = gruposRepository.save(grupo);
 
 
@@ -69,6 +85,24 @@ public class GruposApplication implements IGrupos {
 
         return grupoSalvo;
     }
+
+    public String gerarCodigoUnico(int tamanho) {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        SecureRandom random = new SecureRandom();
+        String codigo;
+
+        do {
+            StringBuilder sb = new StringBuilder(tamanho);
+            for (int i = 0; i < tamanho; i++) {
+                int index = random.nextInt(caracteres.length());
+                sb.append(caracteres.charAt(index));
+            }
+            codigo = sb.toString();
+        } while (gruposRepository.existsByCodigoAcesso(codigo));
+
+        return codigo;
+    }
+
 
     @Override
     public Grupo buscarPorUUID(UUID id) {

@@ -77,7 +77,7 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
 
         if ((desafio.getCriador() == null || !desafio.getCriador().getId().equals(usuario.getId()))
                 && !(desafio.getTipoDesafio() == TipoDesafio.PATROCINADO)) {
-            BigDecimal valorAposta = new BigDecimal(desafio.getValorAposta());
+            BigDecimal valorAposta = desafio.getValorAposta();
             if (usuario.getSaldo().compareTo(valorAposta) < 0) {
                 throw new IllegalStateException("Saldo insuficiente para participar do desafio.");
             }
@@ -205,7 +205,7 @@ public class MembrosDesafiosApplication implements IMembrosDesafio {
             throw new IllegalStateException("Desafio não está ativo.");
         }
 
-        BigDecimal valorAposta = new BigDecimal(desafio.getValorAposta());
+        BigDecimal valorAposta = desafio.getValorAposta();
         BigDecimal valorDevolvido;
 
         if (desafio.getDataInicio().isAfter(ChronoLocalDate.from(agora))) {

@@ -41,7 +41,7 @@ public class UsuariosApplication implements IUsuarios {
             usuario.setDataCriacao(LocalDateTime.now());
         }
 
-        //usuario.setSaldo(java.math.BigDecimal.ZERO);
+        usuario.setSaldo(java.math.BigDecimal.ZERO);
 
         if (usuario.getNome().length() < 3 || usuario.getNome().length() > 100) {
             throw new IllegalArgumentException("O nome deve ter entre 3 e 100 caracteres.");

@@ -93,7 +93,7 @@ public class DesafiosApplication implements IDesafios {
         Desafio desafioSalvo = desafiosRepository.save(desafio);
 
         Usuario usuario = usuariosApplication.buscarPorUUID(desafioSalvo.getCriador().getId());
-        BigDecimal valorAposta = new BigDecimal(desafioSalvo.getValorAposta());
+        BigDecimal valorAposta = desafioSalvo.getValorAposta();
         if (usuario.getSaldo().compareTo(valorAposta) < 0) {
             throw new RegraNegocioException("Saldo insuficiente para criar e participar do desafio.");
         }
@@ -236,7 +236,7 @@ public class DesafiosApplication implements IDesafios {
             // Apenas um participante: recebe 100%
             Pontuacao primeiro = ranking.get(0);
             Usuario usuarioPrimeiro = primeiro.getMembroDesafio().getUsuario();
-            BigDecimal valorTotal = new BigDecimal(desafio.getValorAposta());
+            BigDecimal valorTotal = desafio.getValorAposta();
             usuarioPrimeiro.setSaldo(usuarioPrimeiro.getSaldo().add(valorTotal));
             usuariosApplication.update(usuarioPrimeiro);
             notificacaoApplication.notificarUsuario(
@@ -249,7 +249,7 @@ public class DesafiosApplication implements IDesafios {
             recompensaApplication.salvar(recompensa);
         } else if (ranking.size() == 2) {
             // Dois participantes: 1º lugar 75%, 2º lugar 25%
-            BigDecimal valorTotal = new BigDecimal(desafio.getValorAposta()).multiply(BigDecimal.valueOf(2)).multiply(BigDecimal.valueOf(0.9));
+            BigDecimal valorTotal =desafio.getValorAposta().multiply(BigDecimal.valueOf(2)).multiply(BigDecimal.valueOf(0.9));
             // 1º lugar
             Pontuacao primeiro = ranking.get(0);
             Usuario usuarioPrimeiro = primeiro.getMembroDesafio().getUsuario();
@@ -280,7 +280,7 @@ public class DesafiosApplication implements IDesafios {
             Recompensa recompensaSegundo = new Recompensa(segundo.getMembroDesafio(), "2º lugar", valorSegundo, LocalDate.now());
             recompensaApplication.salvar(recompensaSegundo);
         } else if (ranking.size() >= 3) {
-            BigDecimal valorTotal = new BigDecimal(desafio.getValorAposta()).multiply(BigDecimal.valueOf(ranking.size())).multiply(BigDecimal.valueOf(0.9));
+            BigDecimal valorTotal = desafio.getValorAposta().multiply(BigDecimal.valueOf(ranking.size())).multiply(BigDecimal.valueOf(0.9));
 
             // 1º lugar - 50%
             Pontuacao primeiro = ranking.get(0);
@@ -342,7 +342,7 @@ public class DesafiosApplication implements IDesafios {
         if (LocalDate.now().isAfter(desafio.getDataInicio())) return false;
 
         List<MembrosDesafio> membros = membrosDesafioRepository.findByDesafioUuid(desafioId);
-        BigDecimal valorAposta = new BigDecimal(desafio.getValorAposta());
+        BigDecimal valorAposta = desafio.getValorAposta();
         for (MembrosDesafio membro : membros) {
             Usuario usuario = membro.getUsuario();
             usuario.setSaldo(usuario.getSaldo().add(valorAposta));
