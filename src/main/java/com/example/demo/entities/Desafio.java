@@ -44,6 +44,9 @@ public class Desafio {
     @Column(name = "codigo")
     private String codigo;
 
+    @Column(name = "url_foto")
+    private String urlFoto;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -69,7 +72,7 @@ public class Desafio {
     @OneToMany(mappedBy = "desafio")
     private List<MembrosDesafio> membrosDesafios;
 
-    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status, BigDecimal valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
+    public Desafio(UUID uuid, String nome, String descricao, Categoria categoria, Grupo grupo, LocalDate dataInicio, LocalDate dataFim, Status status,String urlFoto, BigDecimal valorAposta, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador,Usuario criador) {
         this.uuid = uuid;
         this.nome = nome;
         this.descricao = descricao;
@@ -77,6 +80,7 @@ public class Desafio {
         this.grupo = grupo;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
+        this.urlFoto = urlFoto;
         this.status = status;
         this.valorAposta = valorAposta;
         this.isPublico = isPublico;
@@ -150,6 +154,14 @@ public class Desafio {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
     public Status getStatus() {

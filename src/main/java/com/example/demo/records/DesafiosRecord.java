@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
-public record DesafiosRecord(UUID id, String nome, String descricao, CategoriaRecord categoria, GrupoRecord grupos, LocalDate dataInicio, LocalDate dataFim,String codigo, Status status, String valorAposta,String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador)
+public record DesafiosRecord(UUID id, String nome, String descricao, CategoriaRecord categoria, GrupoRecord grupos, LocalDate dataInicio, LocalDate dataFim,String codigo,String urlFoto, Status status, String valorAposta,String recompensa, Boolean isPublico, TipoDesafio tipoDesafio, Patrocinador patrocinador)
 {
     public UUID getId() {
         return id;
