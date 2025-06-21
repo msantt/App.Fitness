@@ -88,7 +88,7 @@ public class UsuariosController {
             return ResponseEntity.notFound().build();
         }
         usuario.setId(id);
-        Usuario atualizado = usuariosFacade.salvar(usuario);
+        Usuario atualizado = usuariosFacade.atualizar(usuario);
         return ResponseEntity.ok(atualizado);
     }
 

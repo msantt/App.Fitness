@@ -26,6 +26,9 @@ public class UsuariosFacade {
         return usuariosApplication.salvar(usuario);
     }
 
+    public Usuario atualizar(Usuario usuario) {
+        return usuariosApplication.update(usuario);
+    }
 
     public Usuario buscarPorId(UUID id) {
         return usuariosApplication.buscarPorUUID(id);
